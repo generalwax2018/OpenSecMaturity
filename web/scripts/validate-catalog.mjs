@@ -11,6 +11,7 @@ const load = (name) => JSON.parse(readFileSync(fileURLToPath(new URL("../../cata
 const categories = load("categories.json");
 const products = load("products.json");
 const suites = load("suites.json");
+const version = load("version.json");
 const errors = [];
 const warnings = [];
 
@@ -18,6 +19,8 @@ const DOMAINS = ["Red Team", "Blue Team", "Governance"];
 const LEVELS = ["required", "addressable", "recommended", "none"];
 const DEPLOYMENTS = ["SaaS", "Self-hosted"];
 const FEDRAMP = ["High", "Moderate", "Low", "Authorized"];
+const PRICING = ["included", "higher-tier", "add-on", "usage", "service"];
+const EXTENSION_KEYS = ["name", "detail", "covers", "pricing", "ai", "pricingNote", "pricingSource"];
 const TIERS = ["Low", "Medium", "High"];
 const SIZES = ["SMB", "Mid-market", "Enterprise"];
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -81,6 +84,11 @@ for (const product of products) {
   }
   for (const extension of product.extensions ?? []) {
     if (!text(extension.name) || !text(extension.detail)) errors.push(at + ": each extension needs name and detail");
+    for (const key of Object.keys(extension)) if (!EXTENSION_KEYS.includes(key)) errors.push(at + ": extension " + extension.name + " has unknown field " + key);
+    if (extension.pricing !== undefined && !PRICING.includes(extension.pricing)) errors.push(at + ": extension " + extension.name + " pricing must be one of " + PRICING.join(", "));
+    if (extension.pricing !== undefined) checkSource("extension " + extension.name + " pricing", extension.pricingSource);
+    if (extension.pricing === undefined && (extension.pricingNote !== undefined || extension.pricingSource !== undefined)) errors.push(at + ": extension " + extension.name + " has pricing details but no pricing");
+    if (extension.ai !== undefined && typeof extension.ai !== "boolean") errors.push(at + ": extension " + extension.name + " ai must be true or false");
     if (extension.covers !== undefined && !categoryIds.has(extension.covers)) errors.push(at + ": extension covers unknown category " + extension.covers);
   }
   if (product.compete && (!text(product.compete.wins) || !text(product.compete.loses))) errors.push(at + ": compete needs both wins and loses");
@@ -126,6 +134,9 @@ for (const suite of suites) {
     if (!text(source.title) || !/^https:\/\/\S+$/.test(source.url ?? "")) errors.push(at + ": each source needs a title and an https:// url");
   }
 }
+
+if (version.format !== 2) errors.push("version.json: format must be 2 for this app");
+if (!/^\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(version.version ?? "")) errors.push("version.json: version must look like 2026.11.10 or 2026.11.10.2");
 
 for (const line of warnings) console.log("warning  " + line);
 for (const line of errors) console.error("error    " + line);

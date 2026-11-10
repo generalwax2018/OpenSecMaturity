@@ -56,6 +56,7 @@ export const WORKSPACE_SCHEMA: Record<string, Guard> = {
   ),
   picked: arrayOf(isString),
   suites: arrayOf(isString),
+  addons: arrayOf(isString),
   shortlist: recordOf(arrayOf(isString)),
   filters: shape({ deployment: oneOf("any", "SaaS", "Self-hosted"), fedramp: isBoolean, eu: isBoolean }),
   competeFilter: oneOf("gaps", "all"),

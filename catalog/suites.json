@@ -84,5 +84,39 @@
         "url": "https://www.microsoft.com/en-us/security/pricing/enterprise-plans"
       }
     ]
+  },
+  {
+    "id": "m365-e7",
+    "name": "Microsoft 365 E7",
+    "vendor": "Microsoft",
+    "includes": [
+      {
+        "product": "microsoft-defender",
+        "as": "Defender for Endpoint Plan 2"
+      },
+      {
+        "product": "entra",
+        "as": "Entra ID P2 and ID Governance (through Entra Suite)"
+      },
+      {
+        "product": "defender-office",
+        "as": "Defender for Office 365 Plan 2"
+      },
+      {
+        "product": "entra-global-secure-access",
+        "as": "Entra Internet Access and Private Access (through Entra Suite)"
+      }
+    ],
+    "notes": "E5 plus Microsoft 365 Copilot, Agent 365, and Entra Suite, available from May 2026. Microsoft lists Security Copilot with default capacity. Sentinel and Defender for Cloud are billed separately.",
+    "sources": [
+      {
+        "title": "Microsoft 365 E7 plan",
+        "url": "https://www.microsoft.com/en-us/microsoft-365/enterprise/microsoft365-plans-and-pricing"
+      },
+      {
+        "title": "Microsoft 365 E7 explained (LazyAdmin)",
+        "url": "https://lazyadmin.nl/office-365/new-microsoft-365-e7-plan-explained/"
+      }
+    ]
   }
 ]

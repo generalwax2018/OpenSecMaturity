@@ -49,6 +49,20 @@ Each product records whether it runs as SaaS, self-hosted, or both. FedRAMP stat
 
 The FedRAMP and EU filters let self-hosted products through, because you control where they run.
 
+## Add-ons
+
+Products can list add-ons: modules, higher plans, managed services, and AI features such as Security Copilot, Charlotte AI, or Purple AI. Each add-on can say how it is paid for (included, higher plan, paid add-on, usage-based, or managed service), with a source. Add-ons without a source show "Pricing not checked".
+
+For the products you run, the app says what each add-on would do for your maturity:
+
+- **Closes a gap**: it covers another category you have not covered (for example a vulnerability module on your EDR agent). Once you mark it deployed, the score goes up.
+- **Strengthens, no score change**: it improves a category you already cover, such as faster triage with AI. That can matter a great deal for how well the control works, but the score only counts whether an essential category is operating.
+- **Overlaps**: you already cover that category with something else.
+
+## Updates
+
+"Check for updates" looks at the project's GitHub repository. Catalog updates (products, sources, add-ons, review dates) are data, so the app can download them, check them, and use them straight away; you can always go back to the built-in catalog. New app versions are a download you choose to install. The app never replaces its own code in the background, and the Content-Security-Policy would block it from running downloaded code.
+
 ## Shortlist
 
 You can star up to three products per category to compare them side by side and download a one-page PDF. The shortlist appears in the full reports too.

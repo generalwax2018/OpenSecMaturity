@@ -1,0 +1,48 @@
+name: Add a product, add-on, or licence suite
+description: Suggest something the catalog is missing.
+title: "Add: "
+labels: [catalog, new-entry]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you adding?
+      options: [Product, Add-on to an existing product, Licence suite, New category]
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Name and vendor
+    validations:
+      required: true
+  - type: input
+    id: category
+    attributes:
+      label: Category
+      description: For example endpoint, siem, identity, email, backup, vuln, cloud, sse, webapp, appsec, emulation, validation, awareness, compliance, grc.
+  - type: textarea
+    id: details
+    attributes:
+      label: What it does, where it wins, and where it loses
+      description: Every entry needs both a strength and a weakness.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Public https links.
+    validations:
+      required: true
+  - type: dropdown
+    id: affiliation
+    attributes:
+      label: Do you work for, sell, or resell this product or a competitor?
+      options:
+        - "No"
+        - "Yes, this vendor"
+        - "Yes, a competitor"
+        - "Yes, a reseller or partner"
+    validations:
+      required: true

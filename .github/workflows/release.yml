@@ -1,0 +1,40 @@
+name: Release
+
+# Push a tag such as v2026.11.10 to publish a release with the single-file app.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Package
+        run: |
+          cp dist/index.html "opensecmaturity-${GITHUB_REF_NAME}.html"
+          sha256sum "opensecmaturity-${GITHUB_REF_NAME}.html" > "opensecmaturity-${GITHUB_REF_NAME}.html.sha256"
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "opensecmaturity-${GITHUB_REF_NAME}.html" \
+            "opensecmaturity-${GITHUB_REF_NAME}.html.sha256" \
+            --title "OpenSecMaturity $GITHUB_REF_NAME" \
+            --notes "Download the .html file and open it in a browser. Check it with the .sha256 file. See CHANGELOG.md for what changed."

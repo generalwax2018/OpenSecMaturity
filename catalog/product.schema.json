@@ -163,6 +163,40 @@
             "covers": {
               "type": "string",
               "description": "Category id this add-on also covers."
+            },
+            "pricing": {
+              "enum": [
+                "included",
+                "higher-tier",
+                "add-on",
+                "usage",
+                "service"
+              ],
+              "description": "How the add-on is paid for. Leave out when not checked."
+            },
+            "ai": {
+              "type": "boolean",
+              "description": "True for AI assistants and agents."
+            },
+            "pricingNote": {
+              "type": "string"
+            },
+            "pricingSource": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "title",
+                "url"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://"
+                }
+              }
             }
           }
         }

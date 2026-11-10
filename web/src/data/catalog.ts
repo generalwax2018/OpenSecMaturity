@@ -1,6 +1,7 @@
 import categoriesData from "@catalog/categories.json";
 import productsData from "@catalog/products.json";
 import suitesData from "@catalog/suites.json";
+import versionData from "@catalog/version.json";
 
 export type Domain = "Red Team" | "Blue Team" | "Governance";
 export type PriceTier = "Low" | "Medium" | "High";
@@ -34,10 +35,17 @@ export type RequirementLevel = "required" | "addressable" | "recommended" | "non
 
 export type Requirement = { level: RequirementLevel; ref: string };
 
+export type AddonPricing = "included" | "higher-tier" | "add-on" | "usage" | "service";
+
 export type ToolExtension = {
   name: string;
   detail: string;
+  /** Another category this add-on can cover on its own. */
   covers?: string;
+  pricing?: AddonPricing;
+  ai?: boolean;
+  pricingNote?: string;
+  pricingSource?: Source;
 };
 
 export type Deployment = "SaaS" | "Self-hosted";
@@ -129,13 +137,17 @@ export const FRAMEWORKS: Framework[] = [
   },
 ];
 
-export const CATEGORIES: Category[] = categoriesData as Category[];
+export const CATEGORIES: Category[] = [...(categoriesData as Category[])];
 
-export const TOOLS: Tool[] = (productsData as ProductRecord[]).map((record) => {
-  const category = CATEGORIES.find((item) => item.id === record.categoryId);
-  if (!category) throw new Error("Catalog product " + record.id + " names an unknown category: " + record.categoryId);
-  return { ...record, domain: category.domain, nist: category.nist };
-});
+function toTools(records: ProductRecord[], categories: Category[]): Tool[] {
+  return records.map((record) => {
+    const category = categories.find((item) => item.id === record.categoryId);
+    if (!category) throw new Error("Catalog product " + record.id + " names an unknown category: " + record.categoryId);
+    return { ...record, domain: category.domain, nist: category.nist };
+  });
+}
+
+export const TOOLS: Tool[] = toTools(productsData as ProductRecord[], CATEGORIES);
 
 function normalize(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -674,7 +686,43 @@ export type Suite = {
   sources: Source[];
 };
 
-export const SUITES: Suite[] = suitesData as Suite[];
+export const SUITES: Suite[] = [...(suitesData as Suite[])];
+
+export type CatalogData = {
+  version: { format: number; version: string };
+  categories: Category[];
+  products: ProductRecord[];
+  suites: Suite[];
+};
+
+export const CATALOG_FORMAT = 2;
+export const BUNDLED_CATALOG_VERSION: string = (versionData as { version: string }).version;
+export let activeCatalogVersion = BUNDLED_CATALOG_VERSION;
+
+/**
+ * Swap in a newer catalog (already validated) before the app renders.
+ * The exported arrays are updated in place so every module sees the new data.
+ */
+export function applyCatalog(data: CatalogData) {
+  const tools = toTools(data.products, data.categories);
+  CATEGORIES.splice(0, CATEGORIES.length, ...data.categories);
+  TOOLS.splice(0, TOOLS.length, ...tools);
+  SUITES.splice(0, SUITES.length, ...data.suites);
+  for (const key of Object.keys(COMPETE)) delete COMPETE[key];
+  for (const tool of tools) if (tool.compete) COMPETE[tool.id] = tool.compete;
+  activeCatalogVersion = data.version.version;
+}
+
+/** Compares versions like 2026.11.10 and 2026.11.10.2. */
+export function compareVersions(a: string, b: string): number {
+  const left = a.split(".").map(Number);
+  const right = b.split(".").map(Number);
+  for (let index = 0; index < Math.max(left.length, right.length); index += 1) {
+    const delta = (left[index] ?? 0) - (right[index] ?? 0);
+    if (delta !== 0) return delta;
+  }
+  return 0;
+}
 
 /** Product id -> the licensed edition and the suite that carries it. */
 export function licensedProducts(suiteIds: readonly string[]): Map<string, { suite: Suite; as: string }> {
@@ -684,4 +732,67 @@ export function licensedProducts(suiteIds: readonly string[]): Map<string, { sui
     for (const item of suite.includes) map.set(item.product, { suite, as: item.as });
   }
   return map;
+}
+
+export type AddonEffect = "Closes a gap" | "Strengthens" | "Overlaps";
+
+export type AddonOpportunity = {
+  product: Tool;
+  addon: ToolExtension;
+  key: string;
+  effect: AddonEffect;
+  categoryId: string;
+  why: string;
+};
+
+export function addonKey(productId: string, name: string): string {
+  return productId + "::" + name;
+}
+
+export const PRICING_LABEL: Record<AddonPricing, string> = {
+  included: "Included",
+  "higher-tier": "Higher plan",
+  "add-on": "Paid add-on",
+  usage: "Usage-based",
+  service: "Managed service",
+};
+
+/**
+ * For every product you run, what each add-on you do not have yet would do:
+ * close a gap in another category, overlap something you already run there,
+ * or strengthen the product's own category without changing the score.
+ */
+export function addonOpportunities(
+  owned: Tool[],
+  ownedAddons: readonly string[],
+  coveredCategoryIds: Set<string>,
+): AddonOpportunity[] {
+  const rows: AddonOpportunity[] = [];
+  for (const product of owned) {
+    for (const addon of product.extensions ?? []) {
+      const key = addonKey(product.id, addon.name);
+      if (ownedAddons.includes(key)) continue;
+      if (addon.covers && addon.covers !== product.categoryId) {
+        const category = CATEGORIES.find((item) => item.id === addon.covers);
+        const name = category?.name ?? addon.covers;
+        if (coveredCategoryIds.has(addon.covers)) {
+          rows.push({ product, addon, key, effect: "Overlaps", categoryId: addon.covers, why: `You already cover ${name.toLowerCase()}. This would be a second tool for it.` });
+        } else {
+          rows.push({ product, addon, key, effect: "Closes a gap", categoryId: addon.covers, why: `Would cover ${name.toLowerCase()} on the ${product.name} you already run, and raise the score once it is deployed.` });
+        }
+      } else {
+        const category = CATEGORIES.find((item) => item.id === product.categoryId);
+        rows.push({
+          product,
+          addon,
+          key,
+          effect: "Strengthens",
+          categoryId: product.categoryId,
+          why: `Improves how well ${(category?.name ?? "this category").toLowerCase()} runs. It does not close a gap or change the score.`,
+        });
+      }
+    }
+  }
+  const order: Record<AddonEffect, number> = { "Closes a gap": 0, Strengthens: 1, Overlaps: 2 };
+  return rows.sort((a, b) => order[a.effect] - order[b.effect]);
 }

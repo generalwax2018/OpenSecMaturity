@@ -28,6 +28,14 @@ import {
   reviewState,
   vendorOf,
   gapFit,
+  addonKey,
+  addonOpportunities,
+  activeCatalogVersion,
+  BUNDLED_CATALOG_VERSION,
+  compareVersions,
+  PRICING_LABEL,
+  type AddonOpportunity,
+  type ToolExtension,
   gapPriority,
   licensedProducts,
   requiredBy,
@@ -51,12 +59,13 @@ import {
   type ScanRow,
   type Severity,
 } from "@/data/catalog";
-import { CONNECTORS } from "@/data/connectors";
 import { BUNDLED_STANDARDS, type StandardsFeed } from "@/data/standards";
 import { downloadInventoryTemplate, parseInventoryFile } from "@/lib/inventory-import";
 import { downloadPdfReport, downloadTextReport, downloadWorkbook } from "@/lib/report-files";
 import { checkGitHub, type GitHubCheck } from "@/lib/github-check";
-import { exportWorkspace, importWorkspace, resetWorkspace, usePersistedState, useTheme, type Theme } from "@/lib/persist";
+import { fetchRemoteCatalog, installCatalog, resetCatalog, type CatalogCheck } from "@/lib/catalog-update";
+import { GITHUB_REPO } from "@/data/app-meta";
+import { exportWorkspace, importWorkspace, loadWorkspaceData, resetWorkspace, usePersistedState, useTheme, type Theme } from "@/lib/persist";
 
 const DOMAIN_ICON: Record<Domain, typeof Shield> = {
   "Blue Team": Shield,
@@ -65,6 +74,22 @@ const DOMAIN_ICON: Record<Domain, typeof Shield> = {
 };
 
 const STARTING_COVERED: string[] = [];
+
+/** A fictional mid-market healthcare company, used by "Try an example company". */
+const EXAMPLE_WORKSPACE: Record<string, unknown> = {
+  size: "Mid-market",
+  budget: "Balanced",
+  areas: [
+    { id: "company", name: "Company-wide", frameworks: ["cis", "soc2"] },
+    { id: "clinical", name: "Clinical", frameworks: ["hipaa"] },
+  ],
+  suites: ["m365-e3"],
+  picked: ["microsoft-defender", "okta", "veeam", "knowbe4", "microsoft-sentinel"],
+  categoryStatus: { endpoint: "Deployed", identity: "Deployed", backup: "Partial", awareness: "Deployed", siem: "Partial" },
+  board: "compete",
+  competeFilter: "gaps",
+  competeId: "email",
+};
 
 type CategoryState = "Covered" | "Not proven" | "Licensed" | "Gap";
 
@@ -153,13 +178,15 @@ export function MaturityApp() {
   const [draftNote, setDraftNote] = useState("");
   const [inventory, setInventory] = useState("");
   const [proposals, setProposals] = useState<Proposal[]>([]);
-  const [connectorId, setConnectorId] = useState<string | null>(null);
   const [workspaceNote, setWorkspaceNote] = useState("");
   const [theme, setTheme] = useTheme();
   const [importNote, setImportNote] = useState("");
   const [stack, setStack] = usePersistedState<ConfirmedTool[]>("stack", []);
   const [picked, setPicked] = usePersistedState<string[]>("picked", []);
   const [suites, setSuites] = usePersistedState<string[]>("suites", []);
+  const [addons, setAddons] = usePersistedState<string[]>("addons", []);
+  const [catalogCheck, setCatalogCheck] = useState<CatalogCheck | null>(null);
+  const [catalogError, setCatalogError] = useState("");
   const [shortlist, setShortlist] = usePersistedState<Record<string, string[]>>("shortlist", {});
   const [filters, setFilters] = usePersistedState<{ deployment: "any" | "SaaS" | "Self-hosted"; fedramp: boolean; eu: boolean }>(
     "filters",
@@ -203,16 +230,30 @@ export function MaturityApp() {
     () => new Set(TOOLS.filter((tool) => picked.includes(tool.id)).map((tool) => tool.categoryId)),
     [picked],
   );
+  // Add-ons you have on products you run can cover another category (for example Falcon Spotlight for vulnerabilities).
+  const addonCovers = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const tool of TOOLS) {
+      if (!ownedIds.has(tool.id)) continue;
+      for (const extension of tool.extensions ?? []) {
+        if (extension.covers && addons.includes(addonKey(tool.id, extension.name))) {
+          map.set(extension.covers, extension.name + " on " + tool.name);
+        }
+      }
+    }
+    return map;
+  }, [ownedIds, addons]);
   const present = useMemo(() => {
     const ids = new Set(checked);
     for (const tool of TOOLS) {
       if (ownedIds.has(tool.id)) ids.add(tool.categoryId);
     }
+    for (const id of addonCovers.keys()) ids.add(id);
     return ids;
-  }, [checked, ownedIds]);
+  }, [checked, ownedIds, addonCovers]);
   const operating = useMemo(() => {
     const ids = new Set<string>();
-    for (const id of [...checked, ...pickedCategories]) {
+    for (const id of [...checked, ...pickedCategories, ...addonCovers.keys()]) {
       if ((categoryStatus[id] ?? "Untested") === "Deployed") ids.add(id);
     }
     for (const item of stack) {
@@ -221,7 +262,7 @@ export function MaturityApp() {
       if (match) ids.add(match.tool.categoryId);
     }
     return ids;
-  }, [checked, pickedCategories, categoryStatus, stack]);
+  }, [checked, pickedCategories, addonCovers, categoryStatus, stack]);
   const score = useMemo(() => maturityScore(CATEGORIES, operating), [operating]);
   const domains = useMemo(() => domainStats(CATEGORIES, operating), [operating]);
   const recommendations = useMemo(
@@ -457,6 +498,14 @@ export function MaturityApp() {
         ? ["None."]
         : selectedFrameworks.map((framework) => `${framework.name}${versions[framework.id] ? " | " + versions[framework.id] : ""}`)),
       "",
+      "Add-ons for the products you run",
+      ...(addonRows.length === 0
+        ? ["None listed for the products you picked."]
+        : addonRows.map(
+            (row) =>
+              `${row.product.name}: ${row.addon.name}${row.addon.ai ? " (AI)" : ""} | ${row.addon.pricing ? PRICING_LABEL[row.addon.pricing] : "pricing not checked"} | ${row.effect}. ${row.why}`,
+          )),
+      "",
       "Licence suites",
       ...(suites.length === 0 ? ["None selected."] : SUITES.filter((suite) => suites.includes(suite.id)).map((suite) => suite.name)),
       "",
@@ -504,6 +553,15 @@ export function MaturityApp() {
         })),
         "Gap comparison": competeRows,
         Shortlist: shortlistRows,
+        "Add-ons": addonRows.map((row) => ({
+          Product: row.product.name,
+          "Add-on": row.addon.name,
+          AI: row.addon.ai ? "Yes" : "",
+          Pricing: row.addon.pricing ? PRICING_LABEL[row.addon.pricing] : "Not checked",
+          "Pricing note": row.addon.pricingNote ?? "",
+          Effect: row.effect,
+          Why: row.why,
+        })),
       });
       return;
     }
@@ -575,9 +633,33 @@ export function MaturityApp() {
   function fieldFor(categoryId: string) {
     const held = ownedTools.filter((tool) => tool.categoryId === categoryId);
     const call = competeCall(held, TOOLS, categoryId, size, budget);
+    const viaAddon = held.length === 0 ? addonCovers.get(categoryId) : undefined;
     return call.field
-      .map((tool) => ({ tool, fit: gapFit(tool, ownedTools, size, budget, licensed) }))
+      .map((tool) => {
+        const fit = gapFit(tool, ownedTools, size, budget, licensed);
+        if (viaAddon && (fit.kind === "Fills the gap" || fit.kind === "Fills it, with a catch")) {
+          return {
+            tool,
+            fit: {
+              kind: "Overlaps" as const,
+              detail: `You already run ${viaAddon} here. ${tool.name} would be a second product for the same job.`,
+            },
+          };
+        }
+        return { tool, fit };
+      })
       .sort((x, y) => FIT_ORDER[x.fit.kind] - FIT_ORDER[y.fit.kind]);
+  }
+
+  const addonRows = addonOpportunities(ownedTools, addons, present);
+
+  function toggleAddon(tool: Tool, extension: ToolExtension) {
+    const key = addonKey(tool.id, extension.name);
+    setAddons((current) => (current.includes(key) ? current.filter((item) => item !== key) : [...current, key]));
+    if (extension.covers) {
+      const covers = extension.covers;
+      setCategoryStatus((current) => (current[covers] ? current : { ...current, [covers]: "Deployed" }));
+    }
   }
 
   function toggleShortlist(categoryId: string, toolId: string) {
@@ -739,11 +821,17 @@ export function MaturityApp() {
   async function checkRepo() {
     setGitChecking(true);
     setGitError("");
-    try {
-      setGitCheck(await checkGitHub());
-    } catch {
+    setCatalogError("");
+    const [app, catalog] = await Promise.allSettled([checkGitHub(), fetchRemoteCatalog()]);
+    if (app.status === "fulfilled") setGitCheck(app.value);
+    else {
       setGitCheck(null);
       setGitError("GitHub could not be reached. The check is optional and the app works without it.");
+    }
+    if (catalog.status === "fulfilled") setCatalogCheck(catalog.value);
+    else {
+      setCatalogCheck(null);
+      setCatalogError("The catalog on GitHub could not be downloaded.");
     }
     setGitChecking(false);
   }
@@ -823,49 +911,87 @@ export function MaturityApp() {
           {workspaceNote ? <p role="alert" className="w-full">{workspaceNote}</p> : null}
         </div>
           {gitError ? <p className="mt-3 text-sm text-ink-muted">{gitError}</p> : null}
-          {gitCheck ? (
-            <div className="mt-4 rounded-card bg-surface p-4 text-sm text-ink">
-              <p>
-                {gitCheck.matches
-                  ? "This copy matches GitHub (" + gitCheck.localVersion + ")."
-                  : gitCheck.remoteVersion
-                    ? "GitHub has " + gitCheck.remoteVersion + ". This copy is " + gitCheck.localVersion + "."
-                    : "This copy is " + gitCheck.localVersion + ". The version file was not on main."}
-              </p>
-              <div className="mt-3 grid gap-4 md:grid-cols-2">
+          {gitCheck || catalogCheck || catalogError ? (
+            <div className="rounded-card bg-surface p-4 text-sm text-ink">
+              <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <p className="font-medium">Program features</p>
-                  {gitCheck.features.length === 0 ? (
-                    <p className="mt-1 text-ink-muted">No feature commits on main.</p>
-                  ) : (
-                    <ul className="mt-1 flex flex-col gap-1">
-                      {gitCheck.features.map((item) => (
-                        <li key={item.sha}>
-                          <a href={safeHref(item.url)} className="text-brand underline" target="_blank" rel="noreferrer">
-                            {item.title}
-                          </a>
-                          <span className="text-ink-muted"> · {item.date}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <p className="font-semibold">Product catalog</p>
+                  <p className="mt-1 text-ink-muted">
+                    This copy uses catalog {activeCatalogVersion}
+                    {activeCatalogVersion !== BUNDLED_CATALOG_VERSION ? " (downloaded; built-in " + BUNDLED_CATALOG_VERSION + ")" : ""}.
+                  </p>
+                  {catalogError ? <p className="mt-1 text-ink-muted">{catalogError}</p> : null}
+                  {catalogCheck ? (
+                    catalogCheck.problems.length > 0 ? (
+                      <p className="mt-2 text-risk-high">
+                        GitHub has catalog {catalogCheck.remoteVersion}, but it did not pass the checks, so it was not used: {catalogCheck.problems[0]}
+                      </p>
+                    ) : compareVersions(catalogCheck.remoteVersion, activeCatalogVersion) > 0 ? (
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <span>
+                          Catalog {catalogCheck.remoteVersion} is available with {catalogCheck.data.products.length} products.
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => installCatalog(catalogCheck.data)}
+                          className="min-h-11 rounded-lg bg-brand px-3 text-sm font-medium text-on-brand md:min-h-8"
+                        >
+                          Update catalog
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="mt-2">The catalog is up to date.</p>
+                    )
+                  ) : null}
+                  {activeCatalogVersion !== BUNDLED_CATALOG_VERSION ? (
+                    <button type="button" onClick={resetCatalog} className="mt-2 text-brand hover:underline">
+                      Go back to the built-in catalog
+                    </button>
+                  ) : null}
+                  <p className="mt-2 text-xs text-ink-muted">
+                    Catalog updates are data only: products, sources, and review dates. They are checked before use.
+                  </p>
                 </div>
                 <div>
-                  <p className="font-medium">Catalog and standards</p>
-                  {gitCheck.vendors.length === 0 ? (
-                    <p className="mt-1 text-ink-muted">No catalog or standards commits on main.</p>
+                  <p className="font-semibold">App version</p>
+                  {gitCheck ? (
+                    <>
+                      <p className="mt-1">
+                        {gitCheck.matches
+                          ? "You have the latest version (" + gitCheck.localVersion + ")."
+                          : gitCheck.remoteVersion
+                            ? "Version " + gitCheck.remoteVersion + " is available. You have " + gitCheck.localVersion + "."
+                            : "This copy is " + gitCheck.localVersion + "."}
+                      </p>
+                      {!gitCheck.matches && gitCheck.remoteVersion ? (
+                        <a
+                          href={"https://github.com/" + GITHUB_REPO + "/releases/latest"}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-2 inline-flex min-h-11 items-center rounded-lg bg-brand px-3 text-sm font-medium text-on-brand md:min-h-8"
+                        >
+                          Download the new version
+                        </a>
+                      ) : null}
+                      {gitCheck.features.length > 0 ? (
+                        <ul className="mt-2 flex flex-col gap-1">
+                          {gitCheck.features.slice(0, 4).map((item) => (
+                            <li key={item.sha}>
+                              <a href={safeHref(item.url)} className="text-brand hover:underline" target="_blank" rel="noreferrer">
+                                {item.title}
+                              </a>
+                              <span className="text-ink-muted"> · {item.date}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </>
                   ) : (
-                    <ul className="mt-1 flex flex-col gap-1">
-                      {gitCheck.vendors.map((item) => (
-                        <li key={item.sha}>
-                          <a href={safeHref(item.url)} className="text-brand underline" target="_blank" rel="noreferrer">
-                            {item.title}
-                          </a>
-                          <span className="text-ink-muted"> · {item.date}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="mt-1 text-ink-muted">Could not check.</p>
                   )}
+                  <p className="mt-2 text-xs text-ink-muted">
+                    New features come as a download you choose to install. The app never replaces its own code in the background.
+                  </p>
                 </div>
               </div>
             </div>
@@ -951,6 +1077,16 @@ export function MaturityApp() {
           </article>
         </section>
 
+        {addonRows.length > 0 ? (
+          <section className="rounded-card bg-surface p-5 text-ink shadow-card md:p-6">
+            <h2 className="font-display text-lg font-semibold">Add-ons for the products you run</h2>
+            <p className="mt-1 max-w-2xl text-sm text-ink-muted">
+              Paid add-ons, AI features, and higher plans from vendors you already use, and whether each would raise your maturity score or only strengthen a category you already cover.
+            </p>
+            <AddonList rows={addonRows} showProduct />
+          </section>
+        ) : null}
+
         <section className="grid gap-4 md:grid-cols-3" aria-label="Domain coverage">
           {domains.map((row) => {
             const Icon = DOMAIN_ICON[row.domain];
@@ -973,6 +1109,31 @@ export function MaturityApp() {
 
         {board === "stack" ? (
           <div role="tabpanel" id="panel-stack" aria-labelledby="tab-stack" className="flex flex-col gap-5">
+        <section className="flex flex-col gap-3 rounded-card bg-brand-soft p-5 text-ink md:flex-row md:items-center md:justify-between md:p-6">
+          <ol className="grid gap-2 text-sm md:grid-cols-3 md:gap-6">
+            <li>
+              <span className="font-semibold">1. Describe your company.</span> Size, budget, frameworks, and the licences you already pay for.
+            </li>
+            <li>
+              <span className="font-semibold">2. Pick what you run.</span> Mark each category Deployed, Partial, or Untested.
+            </li>
+            <li>
+              <span className="font-semibold">3. Compare.</span> See which products would close each gap, and their strengths and weaknesses.
+            </li>
+          </ol>
+          <button
+            type="button"
+            onClick={() => {
+              const hasData = picked.length > 0 || checked.length > 0 || owned.trim().length > 0;
+              if (hasData && !window.confirm("Replace your current assessment with the example company? Save it to a file first if you want to keep it.")) return;
+              loadWorkspaceData(EXAMPLE_WORKSPACE);
+            }}
+            className="min-h-11 shrink-0 rounded-lg border border-brand bg-surface px-4 text-sm font-medium text-brand hover:bg-subtle md:min-h-9"
+          >
+            Try an example company
+          </button>
+        </section>
+
         <section className="rounded-card bg-surface p-5 text-ink shadow-card md:p-6">
           <h2 className="font-display text-lg font-semibold">Your company</h2>
           <p className="mt-1 max-w-2xl text-sm text-ink-muted">
@@ -1227,7 +1388,36 @@ export function MaturityApp() {
                                 Something else
                               </button>
                             </div>
-                            {inUse ? (
+                            {products
+                              .filter((tool) => picked.includes(tool.id) && (tool.extensions?.length ?? 0) > 0)
+                              .map((tool) => (
+                                <div key={tool.id} className="flex flex-wrap items-center gap-1.5 text-xs">
+                                  <span className="text-ink-muted">Add-ons you have on {tool.name}:</span>
+                                  {(tool.extensions ?? []).map((extension) => {
+                                    const on = addons.includes(addonKey(tool.id, extension.name));
+                                    return (
+                                      <button
+                                        key={extension.name}
+                                        type="button"
+                                        aria-pressed={on}
+                                        onClick={() => toggleAddon(tool, extension)}
+                                        title={extension.detail}
+                                        className={
+                                          "min-h-11 rounded-md px-2 text-xs md:min-h-7 " +
+                                          (on ? "bg-brand font-medium text-on-brand" : "bg-surface text-ink")
+                                        }
+                                      >
+                                        {extension.name}
+                                        {extension.ai ? " · AI" : ""}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              ))}
+                            {addonCovers.has(category.id) && !pickedCategories.has(category.id) ? (
+                              <p className="text-xs text-ink-muted">Covered by {addonCovers.get(category.id)}.</p>
+                            ) : null}
+                            {inUse || addonCovers.has(category.id) ? (
                               <StatusPicker
                                 value={categoryStatus[category.id] ?? "Untested"}
                                 onChange={(status) => setCategoryStatus((current) => ({ ...current, [category.id]: status }))}
@@ -1262,73 +1452,8 @@ export function MaturityApp() {
           <section className="mt-2">
           <h2 className="sr-only">Environment</h2>
           <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-            Import an Excel or CSV inventory, or add a tool by hand. A lookup confirms the vendor and purpose. Nothing counts until you confirm it. The connectors below are planned and not live: they show sample data only and nothing connects to your systems.
+            Import an Excel or CSV inventory, or add a tool by hand. A lookup confirms the vendor and purpose. Nothing counts until you confirm it.
           </p>
-
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {CONNECTORS.map((item) => {
-              const selected = item.id === connectorId;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setConnectorId(item.id)}
-                  className={
-                    "min-h-11 md:min-h-9 rounded-lg px-4 py-3 text-left text-sm " +
-                    (selected ? "bg-brand text-on-brand" : "bg-subtle text-ink")
-                  }
-                >
-                  <span className="block font-medium">{item.name}</span>
-                  <span className={"mt-1 block text-xs " + (selected ? "text-on-brand" : "text-ink-muted")}>
-                    {"Planned · sample data only"}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {connectorId ? (
-            <div className="mt-4 rounded-lg bg-subtle p-4">
-              {CONNECTORS.filter((item) => item.id === connectorId).map((item) => (
-                <div key={item.id}>
-                  <p className="text-sm font-medium text-ink">{item.method}</p>
-                  <p className="mt-2 text-xs break-all text-ink-muted">{item.authorizeUrl}</p>
-                  <p className="mt-3 text-sm text-ink">{item.finds}</p>
-                  <ul className="mt-2 flex flex-col gap-1">
-                    {item.scopes.map((scope) => (
-                      <li key={scope} className="text-xs text-ink-muted">
-                        {scope}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-xs text-ink-muted">
-                    Not live in this release. This is the read-only access the connector would ask for. Nothing is sent to or read from your tenant. Use the spreadsheet import to load a real inventory.
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const lines = item.sample.split("\n");
-                        setInventory(item.sample);
-                        setProposals(
-                          lines.map((line) => ({
-                            line,
-                            match: lookupTool(TOOLS, line),
-                            evidence: item.name + " sample",
-                          })),
-                        );
-                        recordScan(lines);
-                      }}
-                      className="min-h-11 md:min-h-9 rounded-lg bg-surface px-4 text-sm font-medium text-ink"
-                    >
-                      Load sample data
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : null}
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <label className="min-h-11 md:min-h-9 cursor-pointer rounded-lg bg-brand px-4 py-3 text-sm font-medium text-on-brand">
@@ -1923,7 +2048,9 @@ export function MaturityApp() {
                       <dd className="mt-1 text-sm text-ink">
                         {held.length > 0
                           ? held.map((tool) => tool.name).join(", ") + " · " + (categoryStatus[category.id] ?? "Untested")
-                          : marked
+                          : addonCovers.has(category.id)
+                            ? addonCovers.get(category.id) + " · " + (categoryStatus[category.id] ?? "Untested")
+                            : marked
                             ? "A product not in the list · " + (categoryStatus[category.id] ?? "Untested")
                             : allRows.some((row) => row.fit.kind === "Already licensed")
                               ? "Nothing deployed, but you license " +
@@ -1973,6 +2100,16 @@ export function MaturityApp() {
                     )}
                   </div>
                 </article>
+
+                {addonRows.some((row) => row.categoryId === category.id) ? (
+                  <article className="rounded-card bg-surface p-5 text-ink shadow-card md:p-6">
+                    <h3 className="font-display text-lg font-semibold">Add-ons for what you already run</h3>
+                    <p className="mt-1 text-sm text-ink-muted">
+                      Before buying a new product, check what the vendors you already pay offer here, and what it costs.
+                    </p>
+                    <AddonList rows={addonRows.filter((row) => row.categoryId === category.id)} />
+                  </article>
+                ) : null}
 
                 {starredRows.length > 0 ? (
                   <article className="rounded-card bg-surface p-5 text-ink shadow-card md:p-6">
@@ -2195,17 +2332,22 @@ export function MaturityApp() {
                         {tool.extensions && tool.extensions.length > 0 ? (
                           <div className="mt-3">
                             <p className="text-xs font-semibold tracking-wide text-ink-muted uppercase">Add-ons</p>
-                            <ul className="mt-1 flex flex-col gap-1">
+                            <ul className="mt-1 flex flex-col gap-2">
                               {tool.extensions.map((extension) => (
                                 <li key={extension.name} className="text-sm text-ink-muted">
-                                  <span className="font-medium text-ink">{extension.name}</span> — {extension.detail}
+                                  <AddonLine extension={extension} />
                                 </li>
                               ))}
                             </ul>
                           </div>
                         ) : null}
                         <div className="mt-auto pt-4 text-xs text-ink-muted">
-                          <p>{reviewState(tool).label}</p>
+                          <p>
+                            {reviewState(tool).label}{" "}
+                            <a href={correctionUrl(tool)} target="_blank" rel="noreferrer" className="text-brand hover:underline">
+                              Suggest a correction
+                            </a>
+                          </p>
                           {tool.sources.length > 0 ? (
                             <p className="mt-1 flex flex-wrap gap-x-3">
                               {tool.sources.map((source) => (
@@ -2507,6 +2649,12 @@ export function MaturityApp() {
   );
 }
 
+/** Opens a pre-filled GitHub issue. Nothing is sent until the person submits it on GitHub. */
+function correctionUrl(tool: Tool): string {
+  const params = new URLSearchParams({ template: "correction.yml", title: "Correction: " + tool.name, product: tool.id });
+  return "https://github.com/" + GITHUB_REPO + "/issues/new?" + params.toString();
+}
+
 /** Only https links leave the app; anything else is neutralised. */
 function safeHref(url: string): string {
   return /^https:\/\//i.test(url) ? url : "#";
@@ -2528,6 +2676,60 @@ function StateBadge({ state, large = false }: { state: CategoryState; large?: bo
     <span className={"shrink-0 rounded-full font-medium " + tone + (large ? " px-3 py-1 text-sm" : " px-2 py-0.5 text-xs")}>
       {state}
     </span>
+  );
+}
+
+function AddonLine({ extension }: { extension: ToolExtension }) {
+  return (
+    <span className="block">
+      <span className="font-medium text-ink">{extension.name}</span>
+      {extension.ai ? <span className="ml-1.5 rounded-full bg-brand-soft px-1.5 py-0.5 text-xs font-medium text-brand">AI</span> : null}
+      <span
+        className={
+          "ml-1.5 rounded-full px-1.5 py-0.5 text-xs font-medium " +
+          (extension.pricing ? "bg-subtle text-ink" : "bg-subtle text-ink-muted")
+        }
+      >
+        {extension.pricing ? PRICING_LABEL[extension.pricing] : "Pricing not checked"}
+      </span>
+      <span className="block">{extension.detail}</span>
+      {extension.pricingNote || extension.pricingSource ? (
+        <span className="block text-xs">
+          {extension.pricingNote}
+          {extension.pricingSource ? (
+            <>
+              {" "}
+              <a href={safeHref(extension.pricingSource.url)} target="_blank" rel="noreferrer" className="text-brand hover:underline">
+                Source
+              </a>
+            </>
+          ) : null}
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
+function AddonList({ rows, showProduct = false }: { rows: AddonOpportunity[]; showProduct?: boolean }) {
+  const tone = (effect: AddonOpportunity["effect"]) =>
+    effect === "Closes a gap" ? "bg-brand-soft text-brand" : effect === "Overlaps" ? "bg-subtle text-ink-muted" : "bg-risk-mid-soft text-risk-mid";
+  return (
+    <ul className="mt-4 flex flex-col divide-y divide-line rounded-lg border border-line">
+      {rows.map((row) => (
+        <li key={row.key} className="flex flex-col gap-2 p-3 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0 text-sm text-ink-muted">
+            {showProduct ? <p className="text-xs font-medium text-ink-muted">{row.product.name}</p> : null}
+            <AddonLine extension={row.addon} />
+          </div>
+          <div className="md:w-64 md:shrink-0">
+            <span className={"inline-block rounded-full px-2 py-0.5 text-xs font-medium " + tone(row.effect)}>
+              {row.effect === "Strengthens" ? "Strengthens, no score change" : row.effect}
+            </span>
+            <p className="mt-1 text-xs text-ink-muted">{row.why}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }
 

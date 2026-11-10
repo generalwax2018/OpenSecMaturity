@@ -62,6 +62,14 @@ export function exportWorkspace(): void {
 }
 
 /** Replace the saved assessment with one from a file, then reload to show it. */
+/** Replace the saved assessment with known-good data (used by the example company). */
+export function loadWorkspaceData(data: Record<string, unknown>): void {
+  const entries = Object.entries(data).filter(([key, value]) => isValidEntry(key, value));
+  for (const key of storedKeys()) window.localStorage.removeItem(key);
+  for (const [key, value] of entries) window.localStorage.setItem(PREFIX + key, JSON.stringify(value));
+  window.location.reload();
+}
+
 const MAX_WORKSPACE_BYTES = 5 * 1024 * 1024;
 
 export async function importWorkspace(file: File): Promise<void> {

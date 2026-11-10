@@ -51,6 +51,14 @@ A minimal entry:
 
 See `METHODOLOGY.md` for how the app turns the catalog into a verdict.
 
+## Add-ons and their pricing
+
+Each entry in `extensions` can carry `pricing` (`included`, `higher-tier`, `add-on`, `usage`, or `service`), `ai: true` for AI features, a short `pricingNote`, and a `pricingSource`. Set `covers` when the add-on can cover another category on its own. Leave pricing out if you have not checked it.
+
+## Catalog version
+
+When you change anything in `catalog/`, bump `catalog/version.json` (for example `2026.11.10.3` to `2026.11.12`). That is how the app's "Check for updates" knows there is a newer catalog.
+
 ## Rules for FedRAMP and EU residency
 
 Add `fedramp` or `euResidency` only with a source that confirms it for the SaaS offering. Leave the field out when you have not checked. Use `"Authorized"` when the source does not state the impact level.
@@ -71,3 +79,11 @@ npm install
 npm run dev        # http://127.0.0.1:8080
 npm test           # catalog checks and type check
 ```
+
+## Releasing (maintainers)
+
+1. Update the version in `web/src/data/app-meta.ts` and `web/public/app.json`, and add an entry to `CHANGELOG.md`.
+2. Commit, then tag and push: `git tag v2026.11.20` and `git push origin v2026.11.20`.
+3. The Release workflow builds the app, runs the tests, and publishes the `.html` file with a SHA-256 checksum.
+
+To refresh the README screenshots: `npm run build && npm run screenshots` in `web/`.

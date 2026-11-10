@@ -44,6 +44,17 @@
         "name": "Defender for Identity",
         "detail": "Detect identity-based attacks on Active Directory.",
         "covers": "identity"
+      },
+      {
+        "name": "Security Copilot",
+        "detail": "AI assistant and agents for investigation, hunting, and summaries across Defender, Sentinel, and Entra.",
+        "pricing": "usage",
+        "ai": true,
+        "pricingNote": "Billed in Security Compute Units. Microsoft 365 E5 includes a monthly allowance of 400 SCUs per 1,000 licences, rolling out from November 2025.",
+        "pricingSource": {
+          "title": "Security Compute Units included with Microsoft 365 E5",
+          "url": "https://www.licensingschool.co.uk/licensing-blog/2025/11/24/microsoft-365-e5-and-security-compute-units/"
+        }
       }
     ],
     "compete": {
@@ -98,6 +109,17 @@
         "name": "Falcon Spotlight",
         "detail": "Vulnerability assessment from the Falcon agent.",
         "covers": "vuln"
+      },
+      {
+        "name": "Charlotte AI",
+        "detail": "Generative and agentic AI for triage, investigation, and natural-language search in Falcon.",
+        "pricing": "usage",
+        "ai": true,
+        "pricingNote": "Credit-based. CrowdStrike says qualifying customers get 50 AI credits a month at no cost; heavier use needs more credits.",
+        "pricingSource": {
+          "title": "Charlotte AI FAQ",
+          "url": "https://crowdstrike.com/products/charlotte-ai/faq"
+        }
       }
     ],
     "compete": {
@@ -147,6 +169,17 @@
       {
         "name": "WatchTower",
         "detail": "Threat hunting and intelligence add-on."
+      },
+      {
+        "name": "Purple AI",
+        "detail": "AI analyst for natural-language hunting, investigation summaries, and agentic investigation.",
+        "pricing": "usage",
+        "ai": true,
+        "pricingNote": "Agentic investigation opened to all customers in June 2026 as a free trial; continued use draws down paid Singularity Credits.",
+        "pricingSource": {
+          "title": "SentinelOne opens Purple AI agentic investigation to all customers",
+          "url": "https://www.sentinelone.com/press/sentinelone-opens-purple-ai-agentic-investigation-to-all-customers-bringing-frontier-ai-directly-into-the-soc/"
+        }
       }
     ],
     "compete": {
@@ -248,7 +281,24 @@
       },
       {
         "name": "Automation rules",
-        "detail": "Playbooks that triage and notify without a separate SOAR."
+        "detail": "Rules that triage, assign, and run playbooks on incidents without a separate SOAR.",
+        "pricing": "included",
+        "pricingNote": "Playbooks run on Azure Logic Apps, which Azure bills separately.",
+        "pricingSource": {
+          "title": "Azure Logic Apps for Sentinel playbooks",
+          "url": "https://learn.microsoft.com/en-us/azure/sentinel/automation/logic-apps-playbooks"
+        }
+      },
+      {
+        "name": "Security Copilot",
+        "detail": "AI assistant and agents for investigation, hunting, and summaries across Defender, Sentinel, and Entra.",
+        "pricing": "usage",
+        "ai": true,
+        "pricingNote": "Billed in Security Compute Units. Microsoft 365 E5 includes a monthly allowance of 400 SCUs per 1,000 licences, rolling out from November 2025.",
+        "pricingSource": {
+          "title": "Security Compute Units included with Microsoft 365 E5",
+          "url": "https://www.licensingschool.co.uk/licensing-blog/2025/11/24/microsoft-365-e5-and-security-compute-units/"
+        }
       }
     ],
     "compete": {
@@ -350,6 +400,39 @@
       {
         "title": "About Splunk Enterprise Security",
         "url": "https://help.splunk.com/en/splunk-enterprise-security-8/user-guide/8.8/introduction/about-splunk-enterprise-security"
+      }
+    ],
+    "extensions": [
+      {
+        "name": "Splunk SOAR",
+        "detail": "Playbook automation and case response paired with Enterprise Security.",
+        "pricing": "higher-tier",
+        "pricingNote": "Included in the Premier edition, not Essentials.",
+        "pricingSource": {
+          "title": "Splunk Enterprise Security editions",
+          "url": "https://help.splunk.com/en/splunk-enterprise-security-8/enterprise-security-editions/overview-of-splunk-enterprise-security-editions"
+        }
+      },
+      {
+        "name": "UEBA",
+        "detail": "User and entity behaviour analytics for insider and compromised-account detection.",
+        "pricing": "higher-tier",
+        "pricingNote": "Premier edition only.",
+        "pricingSource": {
+          "title": "Splunk Enterprise Security editions",
+          "url": "https://help.splunk.com/en/splunk-enterprise-security-8/enterprise-security-editions/overview-of-splunk-enterprise-security-editions"
+        }
+      },
+      {
+        "name": "AI Assistant for Security",
+        "detail": "Natural-language help for investigations and searches.",
+        "pricing": "included",
+        "ai": true,
+        "pricingNote": "Both editions; Essentials on Splunk Cloud only.",
+        "pricingSource": {
+          "title": "Splunk Enterprise Security editions",
+          "url": "https://help.splunk.com/en/splunk-enterprise-security-8/enterprise-security-editions/overview-of-splunk-enterprise-security-editions"
+        }
       }
     ]
   },
@@ -513,11 +596,33 @@
     "extensions": [
       {
         "name": "ID Protection",
-        "detail": "Risk-based sign-in detections and automated response."
+        "detail": "Risk-based sign-in detections and automated response.",
+        "pricing": "higher-tier",
+        "pricingNote": "Risk-based policies need Entra ID P2.",
+        "pricingSource": {
+          "title": "Microsoft Entra licensing",
+          "url": "https://learn.microsoft.com/en-us/entra/fundamentals/licensing"
+        }
       },
       {
         "name": "Privileged Identity Management",
-        "detail": "Just-in-time admin roles instead of standing privilege."
+        "detail": "Just-in-time admin roles instead of standing privilege.",
+        "pricing": "higher-tier",
+        "pricingNote": "Needs Entra ID P2 or Entra ID Governance.",
+        "pricingSource": {
+          "title": "Microsoft Entra licensing",
+          "url": "https://learn.microsoft.com/en-us/entra/fundamentals/licensing"
+        }
+      },
+      {
+        "name": "Entra ID Governance",
+        "detail": "Lifecycle workflows, entitlement management, and access reviews.",
+        "pricing": "add-on",
+        "pricingNote": "A separate licence from P1 and P2.",
+        "pricingSource": {
+          "title": "Microsoft Entra licensing",
+          "url": "https://learn.microsoft.com/en-us/entra/fundamentals/licensing"
+        }
       }
     ],
     "compete": {
@@ -570,11 +675,40 @@
     "extensions": [
       {
         "name": "Okta Workflows",
-        "detail": "No-code joiner, mover, and leaver automation."
+        "detail": "No-code joiner, mover, and leaver automation.",
+        "pricing": "add-on",
+        "pricingSource": {
+          "title": "Okta pricing add-ons",
+          "url": "https://www.okta.com/pricing/add-ons/"
+        }
       },
       {
         "name": "Adaptive MFA",
-        "detail": "Step-up authentication based on device and risk signals."
+        "detail": "Step-up authentication based on device and risk signals.",
+        "pricing": "add-on",
+        "pricingSource": {
+          "title": "Okta pricing add-ons",
+          "url": "https://www.okta.com/pricing/add-ons/"
+        }
+      },
+      {
+        "name": "Identity Threat Protection with Okta AI",
+        "detail": "Continuous risk evaluation after sign-in, with session revocation when risk changes.",
+        "pricing": "add-on",
+        "ai": true,
+        "pricingSource": {
+          "title": "Okta pricing add-ons",
+          "url": "https://www.okta.com/pricing/add-ons/"
+        }
+      },
+      {
+        "name": "Identity Governance",
+        "detail": "Access requests, certifications, and lifecycle automation; includes Workflows.",
+        "pricing": "add-on",
+        "pricingSource": {
+          "title": "Okta pricing add-ons",
+          "url": "https://www.okta.com/pricing/add-ons/"
+        }
       }
     ],
     "compete": {
@@ -1746,6 +1880,44 @@
       {
         "title": "SSE packages comparison guide",
         "url": "https://www.cisco.com/c/en/us/solutions/collateral/security-service-edge-sse/security-service-edge-sse-package-og.pdf"
+      }
+    ]
+  },
+  {
+    "id": "entra-global-secure-access",
+    "name": "Microsoft Entra Internet Access and Private Access",
+    "vendor": "Microsoft",
+    "aliases": [
+      "entra internet access",
+      "entra private access",
+      "global secure access",
+      "microsoft sse"
+    ],
+    "categoryId": "sse",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Microsoft's security service edge: a secure web gateway (Internet Access) and zero trust access to private apps (Private Access), tied to Entra ID conditional access.",
+    "compete": {
+      "wins": "Uses the same Entra ID identities and conditional access policies, so it is a natural fit when identity is already Entra and it comes bundled in Entra Suite or Microsoft 365 E7.",
+      "loses": "Younger than the dedicated SSE vendors. Check data protection depth, branch connectivity, and non-Windows client support against Zscaler or Netskope before relying on it alone."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Microsoft Entra licensing",
+        "url": "https://learn.microsoft.com/en-us/entra/fundamentals/licensing"
+      },
+      {
+        "title": "Microsoft 365 E7 plan",
+        "url": "https://www.microsoft.com/en-us/microsoft-365/enterprise/microsoft365-plans-and-pricing"
       }
     ]
   },
