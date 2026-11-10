@@ -1,0 +1,602 @@
+[
+  {
+    "id": "endpoint",
+    "name": "Endpoint detection & response",
+    "domain": "Blue Team",
+    "essential": true,
+    "summary": "See and contain malicious activity on laptops, servers, and other endpoints.",
+    "nist": "DE.CM",
+    "controls": {
+      "cis": "CIS 10 · Malware defenses",
+      "nist": "DE.CM · Continuous monitoring",
+      "iso": "A.8.7 · Protection against malware",
+      "soc2": "CC7.1 · Detection of changes and anomalies"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 10 · Malware defenses"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "DE.CM · Continuous monitoring"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.7 · Protection against malware"
+      },
+      "soc2": {
+        "level": "required",
+        "ref": "CC7.1 · Detection of changes and anomalies"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "5.2–5.3 · Anti-malware on all systems"
+      },
+      "hipaa": {
+        "level": "addressable",
+        "ref": "164.308(a)(5)(ii)(B) · Protection from malicious software"
+      }
+    }
+  },
+  {
+    "id": "siem",
+    "name": "Security monitoring",
+    "domain": "Blue Team",
+    "essential": true,
+    "summary": "Collect logs and investigate detections across the estate.",
+    "nist": "DE.AE",
+    "controls": {
+      "cis": "CIS 8 · Audit log management",
+      "nist": "DE.AE · Adverse event analysis",
+      "iso": "A.8.15 · Logging",
+      "soc2": "CC7.2 · Monitoring of system components"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 8 · Audit log management"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "DE.AE · Adverse event analysis"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.15 · Logging"
+      },
+      "soc2": {
+        "level": "required",
+        "ref": "CC7.2 · Monitoring of system components"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "10 · Log and monitor all access"
+      },
+      "hipaa": {
+        "level": "required",
+        "ref": "164.312(b) · Audit controls"
+      }
+    }
+  },
+  {
+    "id": "identity",
+    "name": "Identity & access",
+    "domain": "Blue Team",
+    "essential": true,
+    "summary": "Authenticate people, gate privileged access, and retire stale accounts.",
+    "nist": "PR.AA",
+    "controls": {
+      "cis": "CIS 6 · Access control management",
+      "nist": "PR.AA · Identity management & access control",
+      "iso": "A.5.15 · Access control",
+      "soc2": "CC6.1 · Logical access"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 6 · Access control management"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "PR.AA · Identity management & access control"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.5.15 · Access control"
+      },
+      "soc2": {
+        "level": "required",
+        "ref": "CC6.1 · Logical access"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "8 · Identify users and authenticate access, incl. MFA (8.4)"
+      },
+      "hipaa": {
+        "level": "required",
+        "ref": "164.312(a)(1) · Access control, unique user identification"
+      }
+    }
+  },
+  {
+    "id": "email",
+    "name": "Email security",
+    "domain": "Blue Team",
+    "essential": true,
+    "summary": "Stop phishing, malware, and impersonation before the inbox.",
+    "nist": "PR.DS",
+    "controls": {
+      "cis": "CIS 9 · Email and web browser protections",
+      "nist": "PR.DS · Data security",
+      "iso": "A.5.14 · Information transfer",
+      "soc2": "CC6.7 · Transmission integrity"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 9 · Email and web browser protections"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "PR.DS · Data security"
+      },
+      "iso": {
+        "level": "recommended",
+        "ref": "A.5.14 · Information transfer"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC6.7 · Transmission integrity"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "5.4.1 · Detect and protect against phishing"
+      },
+      "hipaa": {
+        "level": "recommended",
+        "ref": "164.312(e)(1) · Transmission security"
+      }
+    }
+  },
+  {
+    "id": "backup",
+    "name": "Backup & recovery",
+    "domain": "Blue Team",
+    "essential": true,
+    "summary": "Keep restorable copies so ransomware is not the only copy of the data.",
+    "nist": "RC.RP",
+    "controls": {
+      "cis": "CIS 11 · Data recovery",
+      "nist": "RC.RP · Incident recovery plan execution",
+      "iso": "A.8.13 · Information backup",
+      "soc2": "A1.2 · Recovery and continuity"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 11 · Data recovery"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "RC.RP · Incident recovery plan execution"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.13 · Information backup"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "A1.2 · Recovery and continuity"
+      },
+      "pci": {
+        "level": "recommended",
+        "ref": "12.10.1 · Incident response plan covers recovery"
+      },
+      "hipaa": {
+        "level": "required",
+        "ref": "164.308(a)(7)(ii)(A) · Data backup plan"
+      }
+    }
+  },
+  {
+    "id": "vuln",
+    "name": "Vulnerability management",
+    "domain": "Blue Team",
+    "essential": true,
+    "summary": "Find exposed weaknesses and drive them to a patch or a compensating control.",
+    "nist": "ID.RA",
+    "controls": {
+      "cis": "CIS 7 · Continuous vulnerability management",
+      "nist": "ID.RA · Risk assessment",
+      "iso": "A.8.8 · Management of technical vulnerabilities",
+      "soc2": "CC7.1 · Vulnerability and anomaly detection"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 7 · Continuous vulnerability management"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "ID.RA · Risk assessment"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.8 · Management of technical vulnerabilities"
+      },
+      "soc2": {
+        "level": "required",
+        "ref": "CC7.1 · Vulnerability and anomaly detection"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "11.3 · Internal and external vulnerability scans"
+      },
+      "hipaa": {
+        "level": "recommended",
+        "ref": "164.308(a)(1)(ii)(A) · Risk analysis"
+      }
+    }
+  },
+  {
+    "id": "cloud",
+    "name": "Cloud security posture",
+    "domain": "Blue Team",
+    "essential": false,
+    "summary": "Watch configuration, identity, and workload risk in public cloud.",
+    "nist": "PR.PS",
+    "controls": {
+      "cis": "CIS 4 · Secure configuration of enterprise assets",
+      "nist": "PR.PS · Platform security",
+      "iso": "A.5.23 · Cloud services security",
+      "soc2": "CC6.6 · Boundary protection"
+    },
+    "requirements": {
+      "cis": {
+        "level": "recommended",
+        "ref": "CIS 4 · Secure configuration of enterprise assets"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "PR.PS · Platform security"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.5.23 · Cloud services security"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC6.6 · Boundary protection"
+      },
+      "pci": {
+        "level": "recommended",
+        "ref": "2.2 · Secure configuration standards"
+      },
+      "hipaa": {
+        "level": "recommended",
+        "ref": "164.312(a)(1) · Access control"
+      }
+    }
+  },
+  {
+    "id": "sse",
+    "name": "Secure web access",
+    "domain": "Blue Team",
+    "essential": false,
+    "summary": "Inspect web traffic and connect users to private apps without a flat network.",
+    "nist": "PR.IR",
+    "controls": {
+      "cis": "CIS 12 · Network infrastructure management",
+      "nist": "PR.IR · Technology infrastructure resilience",
+      "iso": "A.8.20 · Networks security",
+      "soc2": "CC6.6 · External access points"
+    },
+    "requirements": {
+      "cis": {
+        "level": "recommended",
+        "ref": "CIS 12 · Network infrastructure management"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "PR.IR · Technology infrastructure resilience"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.23 · Web filtering; A.8.20 · Network security"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC6.6 · External access points"
+      },
+      "pci": {
+        "level": "recommended",
+        "ref": "1.3–1.4 · Restrict traffic to and from the CDE"
+      },
+      "hipaa": {
+        "level": "recommended",
+        "ref": "164.312(e)(1) · Transmission security"
+      }
+    }
+  },
+  {
+    "id": "webapp",
+    "name": "Web application testing",
+    "domain": "Red Team",
+    "essential": false,
+    "summary": "Probe web apps the way an attacker would, request by request.",
+    "nist": "ID.RA",
+    "controls": {
+      "cis": "CIS 16 · Application software security",
+      "nist": "ID.RA · Risk assessment",
+      "iso": "A.8.29 · Security testing",
+      "soc2": "CC8.1 · Change and release testing"
+    },
+    "requirements": {
+      "cis": {
+        "level": "recommended",
+        "ref": "CIS 16 · Application software security"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "ID.RA · Risk assessment"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.29 · Security testing"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC8.1 · Change and release testing"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "6.4 · Protect public-facing web applications; 11.4 penetration testing"
+      },
+      "hipaa": {
+        "level": "none",
+        "ref": "No specific requirement"
+      }
+    }
+  },
+  {
+    "id": "appsec",
+    "name": "Application security testing",
+    "domain": "Red Team",
+    "essential": false,
+    "summary": "Catch vulnerable code, dependencies, containers, and IaC before release.",
+    "nist": "PR.PS",
+    "controls": {
+      "cis": "CIS 16 · Application software security",
+      "nist": "PR.PS · Platform security",
+      "iso": "A.8.28 · Secure coding",
+      "soc2": "CC8.1 · Change management"
+    },
+    "requirements": {
+      "cis": {
+        "level": "recommended",
+        "ref": "CIS 16 · Application software security"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "PR.PS · Platform security"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.8.28 · Secure coding"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC8.1 · Change management"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "6.2.4 · Secure coding for bespoke software"
+      },
+      "hipaa": {
+        "level": "none",
+        "ref": "No specific requirement"
+      }
+    }
+  },
+  {
+    "id": "emulation",
+    "name": "Adversary emulation",
+    "domain": "Red Team",
+    "essential": false,
+    "summary": "Run small, repeatable attack techniques to see whether detections fire.",
+    "nist": "ID.IM",
+    "controls": {
+      "cis": "CIS 18 · Penetration testing",
+      "nist": "ID.IM · Improvement",
+      "iso": "A.5.7 · Threat intelligence",
+      "soc2": "CC4.1 · Monitoring activities"
+    },
+    "requirements": {
+      "cis": {
+        "level": "recommended",
+        "ref": "CIS 18 · Penetration testing"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "ID.IM · Improvement"
+      },
+      "iso": {
+        "level": "recommended",
+        "ref": "A.5.7 · Threat intelligence"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC4.1 · Monitoring activities"
+      },
+      "pci": {
+        "level": "recommended",
+        "ref": "11.4 · Penetration testing"
+      },
+      "hipaa": {
+        "level": "recommended",
+        "ref": "164.308(a)(8) · Periodic technical evaluation"
+      }
+    }
+  },
+  {
+    "id": "validation",
+    "name": "Security control validation",
+    "domain": "Red Team",
+    "essential": false,
+    "summary": "Safely execute real attack paths to prove controls work in production.",
+    "nist": "DE.CM",
+    "controls": {
+      "cis": "CIS 18 · Penetration testing",
+      "nist": "DE.CM · Continuous monitoring",
+      "iso": "A.8.29 · Security testing",
+      "soc2": "CC4.1 · Control effectiveness"
+    },
+    "requirements": {
+      "cis": {
+        "level": "recommended",
+        "ref": "CIS 18 · Penetration testing"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "DE.CM · Continuous monitoring"
+      },
+      "iso": {
+        "level": "recommended",
+        "ref": "A.8.29 · Security testing"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC4.1 · Control effectiveness"
+      },
+      "pci": {
+        "level": "recommended",
+        "ref": "11.4 · Penetration testing"
+      },
+      "hipaa": {
+        "level": "recommended",
+        "ref": "164.308(a)(8) · Periodic technical evaluation"
+      }
+    }
+  },
+  {
+    "id": "awareness",
+    "name": "Security awareness",
+    "domain": "Governance",
+    "essential": true,
+    "summary": "Train people to spot phishing and report it without slowing the business.",
+    "nist": "PR.AT",
+    "controls": {
+      "cis": "CIS 14 · Security awareness and skills training",
+      "nist": "PR.AT · Awareness and training",
+      "iso": "A.6.3 · Awareness, education and training",
+      "soc2": "CC2.2 · Internal communication"
+    },
+    "requirements": {
+      "cis": {
+        "level": "required",
+        "ref": "CIS 14 · Security awareness and skills training"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "PR.AT · Awareness and training"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "A.6.3 · Awareness, education and training"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC2.2 · Internal communication"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "12.6 · Security awareness program"
+      },
+      "hipaa": {
+        "level": "required",
+        "ref": "164.308(a)(5)(i) · Security awareness and training"
+      }
+    }
+  },
+  {
+    "id": "compliance",
+    "name": "Compliance automation",
+    "domain": "Governance",
+    "essential": true,
+    "summary": "Map evidence to frameworks so audits are a readout, not a fire drill.",
+    "nist": "GV.OV",
+    "controls": {
+      "cis": "CIS Controls · Implementation group governance",
+      "nist": "GV.OV · Oversight",
+      "iso": "A.5.36 · Compliance with policies and standards",
+      "soc2": "CC4.1 · Evaluation of internal controls"
+    },
+    "requirements": {
+      "cis": {
+        "level": "none",
+        "ref": "No CIS safeguard"
+      },
+      "nist": {
+        "level": "recommended",
+        "ref": "GV.OV · Oversight"
+      },
+      "iso": {
+        "level": "recommended",
+        "ref": "A.5.36 · Compliance with policies and standards"
+      },
+      "soc2": {
+        "level": "recommended",
+        "ref": "CC4.1 · Evaluation of internal controls"
+      },
+      "pci": {
+        "level": "none",
+        "ref": "No specific requirement"
+      },
+      "hipaa": {
+        "level": "none",
+        "ref": "No specific requirement"
+      }
+    }
+  },
+  {
+    "id": "grc",
+    "name": "Risk & IRM",
+    "domain": "Governance",
+    "essential": false,
+    "summary": "Run policies, risks, and audit findings as one program of record.",
+    "nist": "GV.RM",
+    "controls": {
+      "cis": "CIS Controls · Governance and risk overlay",
+      "nist": "GV.RM · Risk management strategy",
+      "iso": "A.5.4 · Management responsibilities",
+      "soc2": "CC3.2 · Risk identification and analysis"
+    },
+    "requirements": {
+      "cis": {
+        "level": "none",
+        "ref": "No CIS safeguard; CIS assumes a risk process exists"
+      },
+      "nist": {
+        "level": "required",
+        "ref": "GV.RM · Risk management strategy"
+      },
+      "iso": {
+        "level": "required",
+        "ref": "Clause 6.1 · Risk assessment and treatment"
+      },
+      "soc2": {
+        "level": "required",
+        "ref": "CC3.2 · Risk identification and analysis"
+      },
+      "pci": {
+        "level": "required",
+        "ref": "12.3.1 · Targeted risk analysis"
+      },
+      "hipaa": {
+        "level": "required",
+        "ref": "164.308(a)(1)(ii)(A)–(B) · Risk analysis and risk management"
+      }
+    }
+  }
+]

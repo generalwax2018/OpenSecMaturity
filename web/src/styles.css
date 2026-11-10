@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Light is the default; dark follows the system setting
+ * unless the viewer picks a theme in the header (data-theme on <html>).
+ *   page     app background         surface  cards
+ *   subtle   insets, unselected     line     borders and dividers
+ *   ink      primary text           ink-muted secondary text
+ *   brand    accent and selection   on-brand text on brand fills
+ */
+@theme {
+  --color-page: #f5f7f8;
+  --color-surface: #ffffff;
+  --color-subtle: #eef2f4;
+  --color-line: #d9e0e4;
+  --color-ink: #14212b;
+  --color-ink-muted: #56656f;
+  --color-brand: #0f6e7a;
+  --color-brand-soft: #e1f0f2;
+  --color-on-brand: #ffffff;
+  --color-risk-high: #b42318;
+  --color-risk-high-soft: #fde8e6;
+  --color-risk-mid: #9a5b00;
+  --color-risk-mid-soft: #fdf0d9;
+  --color-chart-1: #0f6e7a;
+  --color-chart-2: #5b8def;
+  --color-chart-3: #a3b1ba;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(16 24 32 / 0.05);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --color-page: #0d1418;
+      --color-surface: #141d22;
+      --color-subtle: #1b262c;
+      --color-line: #2a3840;
+      --color-ink: #e6edf1;
+      --color-ink-muted: #9aabb5;
+      --color-brand: #4fc1cd;
+      --color-brand-soft: #143238;
+      --color-on-brand: #06191c;
+      --color-risk-high: #ff8a7e;
+      --color-risk-high-soft: #3a1714;
+      --color-risk-mid: #f2b552;
+      --color-risk-mid-soft: #33250c;
+      --color-chart-1: #4fc1cd;
+      --color-chart-2: #8fb0ff;
+      --color-chart-3: #5d6d77;
+      --shadow-card: none;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-page: #0d1418;
+    --color-surface: #141d22;
+    --color-subtle: #1b262c;
+    --color-line: #2a3840;
+    --color-ink: #e6edf1;
+    --color-ink-muted: #9aabb5;
+    --color-brand: #4fc1cd;
+    --color-brand-soft: #143238;
+    --color-on-brand: #06191c;
+    --color-risk-high: #ff8a7e;
+    --color-risk-high-soft: #3a1714;
+    --color-risk-mid: #f2b552;
+    --color-risk-mid-soft: #33250c;
+    --color-chart-1: #4fc1cd;
+    --color-chart-2: #8fb0ff;
+    --color-chart-3: #5d6d77;
+    --shadow-card: none;
+  }
+
+  html,
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  /* Cards get a hairline border instead of relying on a colour change. */
+  .bg-surface {
+    border: 1px solid var(--color-line);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  label:has(> input[type="file"]) {
+    cursor: pointer;
+  }
+
+  button,
+  label:has(> input[type="file"]) {
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  /* Unselected options in a choice group read as outlined, selected as filled. */
+  button[aria-pressed="false"] {
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-ink-muted);
+  }
+
+  button[aria-pressed="false"]:hover {
+    border-color: var(--color-brand);
+    color: var(--color-ink);
+  }
+
+  button[aria-pressed="true"] {
+    border: 1px solid var(--color-brand);
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    border: 1px solid var(--color-line);
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--color-brand);
+  }
+
+  input[type="checkbox"] {
+    accent-color: var(--color-brand);
+    width: 1.05rem;
+    height: 1.05rem;
+    border: none;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  label:focus-within {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

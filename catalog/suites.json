@@ -1,0 +1,88 @@
+[
+  {
+    "id": "m365-business-premium",
+    "name": "Microsoft 365 Business Premium",
+    "vendor": "Microsoft",
+    "includes": [
+      {
+        "product": "microsoft-defender",
+        "as": "Defender for Business"
+      },
+      {
+        "product": "entra",
+        "as": "Entra ID P1"
+      },
+      {
+        "product": "defender-office",
+        "as": "Defender for Office 365 Plan 1"
+      }
+    ],
+    "notes": "Entra ID P2 and Defender for Office 365 Plan 2 need the separate Defender Suite add-on.",
+    "sources": [
+      {
+        "title": "Microsoft 365 for business security overview",
+        "url": "https://learn.microsoft.com/en-us/microsoft-365/admin/security-and-compliance/m365b-security-overview?view=o365-worldwide"
+      }
+    ]
+  },
+  {
+    "id": "m365-e3",
+    "name": "Microsoft 365 E3",
+    "vendor": "Microsoft",
+    "includes": [
+      {
+        "product": "microsoft-defender",
+        "as": "Defender for Endpoint Plan 1"
+      },
+      {
+        "product": "entra",
+        "as": "Entra ID P1"
+      },
+      {
+        "product": "defender-office",
+        "as": "Defender for Office 365 Plan 1 (added from June 2026)"
+      }
+    ],
+    "notes": "Defender for Endpoint Plan 2, Defender for Identity, and Defender for Cloud Apps are E5 or add-ons.",
+    "sources": [
+      {
+        "title": "Microsoft Defender service description",
+        "url": "https://learn.microsoft.com/en-us/office365/servicedescriptions/microsoft-365-service-descriptions/microsoft-365-tenantlevel-services-licensing-guidance/microsoft-defender-service-description"
+      },
+      {
+        "title": "Defender for Office 365 Plan 1 rolling out to E3",
+        "url": "https://techcommunity.microsoft.com/blog/microsoftdefenderforoffice365blog/microsoft-defender-for-office-365-plan-1-is-now-rolling-out-to-microsoft-365-e3-/4527287"
+      }
+    ]
+  },
+  {
+    "id": "m365-e5",
+    "name": "Microsoft 365 E5",
+    "vendor": "Microsoft",
+    "includes": [
+      {
+        "product": "microsoft-defender",
+        "as": "Defender for Endpoint Plan 2"
+      },
+      {
+        "product": "entra",
+        "as": "Entra ID P2"
+      },
+      {
+        "product": "defender-office",
+        "as": "Defender for Office 365 Plan 2, incl. attack simulation training"
+      }
+    ],
+    "notes": "Also includes Defender for Identity and Defender for Cloud Apps. Microsoft Sentinel and Defender for Cloud are billed separately.",
+    "sources": [
+      {
+        "title": "Microsoft Defender service description",
+        "url": "https://learn.microsoft.com/en-us/office365/servicedescriptions/microsoft-365-service-descriptions/microsoft-365-tenantlevel-services-licensing-guidance/microsoft-defender-service-description"
+      },
+      {
+        "title": "Microsoft 365 enterprise plans",
+        "url": "https://www.microsoft.com/en-us/security/pricing/enterprise-plans"
+      }
+    ]
+  }
+]

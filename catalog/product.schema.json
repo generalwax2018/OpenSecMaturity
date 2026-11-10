@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpenSecMaturity product catalog",
+  "description": "Shape of catalog/products.json. The rules are enforced by web/scripts/validate-catalog.mjs.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "name",
+      "vendor",
+      "categoryId",
+      "priceTier",
+      "bestFor",
+      "openSource",
+      "deployment",
+      "description",
+      "lastReviewed",
+      "sources"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "description": "Stable, unique, lowercase."
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "vendor": {
+        "type": "string",
+        "minLength": 1
+      },
+      "aliases": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Other names people type, lowercase. Used to match an imported inventory."
+      },
+      "categoryId": {
+        "type": "string",
+        "description": "An id from categories.json."
+      },
+      "priceTier": {
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ]
+      },
+      "bestFor": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "enum": [
+            "SMB",
+            "Mid-market",
+            "Enterprise"
+          ]
+        }
+      },
+      "openSource": {
+        "type": "boolean"
+      },
+      "deployment": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "enum": [
+            "SaaS",
+            "Self-hosted"
+          ]
+        },
+        "description": "How the product can be run."
+      },
+      "fedramp": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "level",
+          "source"
+        ],
+        "properties": {
+          "level": {
+            "enum": [
+              "High",
+              "Moderate",
+              "Low",
+              "Authorized"
+            ]
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "pattern": "^https://"
+              }
+            }
+          }
+        },
+        "description": "Only when a source confirms the SaaS offering is FedRAMP authorized. Use Authorized when the level is not stated. Leave out when not checked."
+      },
+      "euResidency": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "pattern": "^https://"
+              }
+            }
+          }
+        },
+        "description": "Only when a source confirms customer data can be kept in the EU. Leave out when not checked."
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1,
+        "description": "One neutral sentence on what it does."
+      },
+      "extensions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "detail"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            },
+            "covers": {
+              "type": "string",
+              "description": "Category id this add-on also covers."
+            }
+          }
+        }
+      },
+      "compete": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "wins",
+          "loses"
+        ],
+        "properties": {
+          "wins": {
+            "type": "string",
+            "description": "Where it is the right choice."
+          },
+          "loses": {
+            "type": "string",
+            "description": "Where it is the wrong choice."
+          }
+        }
+      },
+      "lastReviewed": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date",
+        "description": "Date the entry was checked against its sources, or null."
+      },
+      "sources": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "url"
+          ],
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string",
+              "pattern": "^https://"
+            }
+          }
+        }
+      }
+    }
+  }
+}

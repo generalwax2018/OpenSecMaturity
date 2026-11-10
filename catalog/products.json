@@ -1,0 +1,3128 @@
+[
+  {
+    "id": "microsoft-defender",
+    "name": "Microsoft Defender",
+    "vendor": "Microsoft",
+    "aliases": [
+      "defender",
+      "mde",
+      "defender for endpoint",
+      "microsoft defender for endpoint"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Azure services in FedRAMP audit scope",
+        "url": "https://learn.microsoft.com/azure/azure-government/compliance/azure-services-in-fedramp-auditscope"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Microsoft completes EU Data Boundary",
+        "url": "https://blogs.microsoft.com/on-the-issues/2025/02/26/microsoft-completes-landmark-eu-data-boundary-offering-enhanced-data-residency-and-transparency/"
+      }
+    },
+    "description": "Endpoint protection and detection included with many Microsoft 365 plans.",
+    "extensions": [
+      {
+        "name": "Defender Vulnerability Management",
+        "detail": "Built-in exposure and patch priority on the same agent.",
+        "covers": "vuln"
+      },
+      {
+        "name": "Defender for Identity",
+        "detail": "Detect identity-based attacks on Active Directory.",
+        "covers": "identity"
+      }
+    ],
+    "compete": {
+      "wins": "Often already licensed with Microsoft 365. Vulnerability management and identity detections sit on the same agent.",
+      "loses": "A weaker fit when the estate is not mostly Microsoft, or when you want a vendor-operated SOC."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Microsoft Defender for Endpoint",
+        "url": "https://www.microsoft.com/en-us/security/business/endpoint-security/microsoft-defender-endpoint"
+      },
+      {
+        "title": "Defender for Endpoint Plan 1 overview",
+        "url": "https://learn.microsoft.com/en-us/defender-endpoint/defender-endpoint-plan-1"
+      }
+    ]
+  },
+  {
+    "id": "crowdstrike",
+    "name": "CrowdStrike",
+    "vendor": "CrowdStrike",
+    "aliases": [
+      "crowdstrike falcon",
+      "falcon"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "High",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "CrowdStrike earns FedRAMP High",
+        "url": "https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-earns-fedramp-high-authorization-protect-us"
+      }
+    },
+    "description": "Cloud-native EDR with a strong threat-intel graph and optional managed detection.",
+    "extensions": [
+      {
+        "name": "Falcon Complete",
+        "detail": "CrowdStrike-operated monitoring, triage, and containment."
+      },
+      {
+        "name": "Falcon Spotlight",
+        "detail": "Vulnerability assessment from the Falcon agent.",
+        "covers": "vuln"
+      }
+    ],
+    "compete": {
+      "wins": "Strong threat-intel graph, and Falcon Spotlight covers vulnerabilities without a second agent.",
+      "loses": "High cost. It does not improve the control if Defender is already licensed and staffed."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Falcon Insight XDR",
+        "url": "https://www.crowdstrike.com/en-us/platform/endpoint-security/falcon-insight-xdr/"
+      }
+    ]
+  },
+  {
+    "id": "sentinelone",
+    "name": "SentinelOne",
+    "vendor": "SentinelOne",
+    "aliases": [
+      "sentinel one",
+      "singularity"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "SentinelOne achieves FedRAMP High",
+        "url": "https://www.sentinelone.com/press/sentinelone-achieves-fedramp-high-authorization-for-singularity-platform-and-singularity-data-lake/"
+      }
+    },
+    "description": "Autonomous endpoint protection that can roll back ransomware changes.",
+    "extensions": [
+      {
+        "name": "Vigilance MDR",
+        "detail": "SentinelOne managed detection and response."
+      },
+      {
+        "name": "WatchTower",
+        "detail": "Threat hunting and intelligence add-on."
+      }
+    ],
+    "compete": {
+      "wins": "Can roll an endpoint back after ransomware without waiting on an analyst.",
+      "loses": "A third console if Falcon or Defender is already the operating EDR."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Singularity Endpoint",
+        "url": "https://www.sentinelone.com/platform/endpoint-security/"
+      },
+      {
+        "title": "SentinelOne packages",
+        "url": "https://www.sentinelone.com/platform-packages/"
+      }
+    ]
+  },
+  {
+    "id": "huntress",
+    "name": "Huntress",
+    "vendor": "Huntress",
+    "aliases": [
+      "huntress managed edr"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Managed EDR aimed at small IT teams that do not staff a SOC.",
+    "extensions": [
+      {
+        "name": "Managed ITDR",
+        "detail": "Identity threat detection for Microsoft 365 tenants."
+      },
+      {
+        "name": "Managed SIEM",
+        "detail": "Huntress-operated log pipeline for smaller estates."
+      }
+    ],
+    "compete": {
+      "wins": "A managed service for a small team that will not staff a SOC.",
+      "loses": "Not the product for a large estate with its own 24/7 detection team."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Huntress Managed EDR",
+        "url": "https://www.huntress.com/platform/managed-edr"
+      },
+      {
+        "title": "Huntress EDR pricing",
+        "url": "https://www.huntress.com/pricing/edr"
+      }
+    ]
+  },
+  {
+    "id": "microsoft-sentinel",
+    "name": "Microsoft Sentinel",
+    "vendor": "Microsoft",
+    "aliases": [
+      "sentinel",
+      "azure sentinel"
+    ],
+    "categoryId": "siem",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Azure services in FedRAMP audit scope",
+        "url": "https://learn.microsoft.com/azure/azure-government/compliance/azure-services-in-fedramp-auditscope"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Sentinel geographical availability and data residency",
+        "url": "https://learn.microsoft.com/en-us/azure/sentinel/geographical-availability-data-residency"
+      }
+    },
+    "description": "Cloud SIEM and SOAR on Azure, priced by ingestion and retention.",
+    "extensions": [
+      {
+        "name": "UEBA",
+        "detail": "User and entity behavior analytics on the same workspace."
+      },
+      {
+        "name": "Automation rules",
+        "detail": "Playbooks that triage and notify without a separate SOAR."
+      }
+    ],
+    "compete": {
+      "wins": "Stays inside Azure and can automate response without a separate SOAR.",
+      "loses": "The bill follows ingestion. A noisy estate gets expensive fast."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Microsoft Sentinel pricing",
+        "url": "https://www.microsoft.com/en-us/security/pricing/microsoft-sentinel"
+      },
+      {
+        "title": "Sentinel billing",
+        "url": "https://learn.microsoft.com/en-us/azure/sentinel/billing"
+      }
+    ]
+  },
+  {
+    "id": "wazuh",
+    "name": "Wazuh",
+    "vendor": "Wazuh",
+    "aliases": [
+      "wazuh siem"
+    ],
+    "categoryId": "siem",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Open-source XDR and SIEM for teams that can run the platform themselves.",
+    "extensions": [
+      {
+        "name": "Wazuh Cloud",
+        "detail": "Hosted deployment when you do not want to operate the indexer."
+      }
+    ],
+    "compete": {
+      "wins": "No license fee if the team can run the platform.",
+      "loses": "You own the uptime, the parsers, and the on-call. That is the cost."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Wazuh platform overview",
+        "url": "https://wazuh.com/platform/overview/"
+      },
+      {
+        "title": "Wazuh documentation",
+        "url": "https://documentation.wazuh.com/current/getting-started/index.html"
+      }
+    ]
+  },
+  {
+    "id": "splunk-es",
+    "name": "Splunk Enterprise Security",
+    "vendor": "Cisco (Splunk)",
+    "aliases": [
+      "splunk",
+      "splunk es",
+      "splunk enterprise security"
+    ],
+    "categoryId": "siem",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Splunk Cloud Platform attains FedRAMP High",
+        "url": "https://splunk.com/en_us/newsroom/press-releases/2024/splunk-cloud-platform-attains-fedramp-high-authorization.html"
+      }
+    },
+    "description": "SIEM built on the Splunk data platform, with detection, investigation, and SOAR in one workflow. Self-hosted or cloud.",
+    "compete": {
+      "wins": "Very flexible search and a large library of detections and integrations. A common choice for large SOCs.",
+      "loses": "Expensive at volume, and the search language and data onboarding need skilled staff."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Splunk Enterprise Security",
+        "url": "https://www.splunk.com/en_us/products/enterprise-security.html"
+      },
+      {
+        "title": "About Splunk Enterprise Security",
+        "url": "https://help.splunk.com/en/splunk-enterprise-security-8/user-guide/8.8/introduction/about-splunk-enterprise-security"
+      }
+    ]
+  },
+  {
+    "id": "google-secops",
+    "name": "Google Security Operations",
+    "vendor": "Google",
+    "aliases": [
+      "google secops",
+      "chronicle",
+      "google chronicle",
+      "secops"
+    ],
+    "categoryId": "siem",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "euResidency": {
+      "source": {
+        "title": "SecOps services locations",
+        "url": "https://cloud.google.com/terms/secops/data-residency"
+      }
+    },
+    "description": "Cloud-native SIEM and SOAR (formerly Chronicle) with Google threat intelligence built in.",
+    "compete": {
+      "wins": "Built for large log volumes, with long retention and fast search across it.",
+      "loses": "A cloud-only service, and the most value comes to teams already comfortable in Google Cloud."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Google Security Operations",
+        "url": "https://cloud.google.com/security/products/security-operations"
+      },
+      {
+        "title": "SIEM overview",
+        "url": "https://docs.cloud.google.com/chronicle/docs/overview"
+      }
+    ]
+  },
+  {
+    "id": "elastic-security",
+    "name": "Elastic Security",
+    "vendor": "Elastic",
+    "aliases": [
+      "elastic",
+      "elastic siem",
+      "elk",
+      "elasticsearch"
+    ],
+    "categoryId": "siem",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Elastic Cloud Hosted achieves FedRAMP High",
+        "url": "https://www.barchart.com/story/news/1064223/elastic-cloud-hosted-achieves-fedramp-high-authorization"
+      }
+    },
+    "description": "SIEM, endpoint protection, and analytics on Elasticsearch. Self-managed or Elastic Cloud. Elasticsearch and Kibana offer an AGPL licence option alongside Elastic's own licences.",
+    "compete": {
+      "wins": "A free self-managed starting point with real search power, and a path to a paid managed service.",
+      "loses": "Running Elasticsearch at scale is real work, and several advanced features need a paid subscription."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Elastic SIEM",
+        "url": "https://www.elastic.co/security/siem"
+      },
+      {
+        "title": "Elastic adds AGPL licence option (Business Wire)",
+        "url": "https://www.businesswire.com/news/home/20240829537786/en"
+      }
+    ]
+  },
+  {
+    "id": "exabeam",
+    "name": "Exabeam",
+    "vendor": "Exabeam",
+    "aliases": [
+      "exabeam new-scale",
+      "new-scale siem",
+      "logrhythm"
+    ],
+    "categoryId": "siem",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "SIEM with behavioural analytics. New-Scale is the cloud-native platform; LogRhythm SIEM is the self-hosted option after the 2024 merger.",
+    "compete": {
+      "wins": "User and entity behaviour analytics is the strength, useful for insider and account-takeover cases.",
+      "loses": "Two product lines after the merger. Check which one a quote is for and what its roadmap is."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Exabeam SIEM",
+        "url": "https://www.exabeam.com/capabilities/siem/"
+      }
+    ]
+  },
+  {
+    "id": "entra",
+    "name": "Microsoft Entra ID",
+    "vendor": "Microsoft",
+    "aliases": [
+      "entra",
+      "entra id",
+      "azure ad",
+      "microsoft entra"
+    ],
+    "categoryId": "identity",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Azure services in FedRAMP audit scope",
+        "url": "https://learn.microsoft.com/azure/azure-government/compliance/azure-services-in-fedramp-auditscope"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Entra ID data storage for European customers",
+        "url": "https://learn.microsoft.com/en-us/entra/fundamentals/data-storage-eu"
+      }
+    },
+    "description": "Workforce identity for Microsoft estates, from free MFA up through conditional access.",
+    "extensions": [
+      {
+        "name": "ID Protection",
+        "detail": "Risk-based sign-in detections and automated response."
+      },
+      {
+        "name": "Privileged Identity Management",
+        "detail": "Just-in-time admin roles instead of standing privilege."
+      }
+    ],
+    "compete": {
+      "wins": "The identity system you already have if the company lives in Microsoft 365.",
+      "loses": "A poor fit as the only identity layer for a large non-Microsoft SaaS estate."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Microsoft Entra ID",
+        "url": "https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id"
+      },
+      {
+        "title": "Microsoft Entra pricing",
+        "url": "https://www.microsoft.com/en-us/security/business/microsoft-entra-pricing"
+      }
+    ]
+  },
+  {
+    "id": "okta",
+    "name": "Okta",
+    "vendor": "Okta",
+    "aliases": [
+      "okta workforce"
+    ],
+    "categoryId": "identity",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Okta for Government High achieves FedRAMP High",
+        "url": "https://www.okta.com/newsroom/press-releases/okta-for-government-high-achieves-fedramp-high-authorization/"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Okta data residency",
+        "url": "https://www.okta.com/okta-data-residency/"
+      }
+    },
+    "description": "Independent workforce identity with deep SaaS SSO and lifecycle automation.",
+    "extensions": [
+      {
+        "name": "Okta Workflows",
+        "detail": "No-code joiner, mover, and leaver automation."
+      },
+      {
+        "name": "Adaptive MFA",
+        "detail": "Step-up authentication based on device and risk signals."
+      }
+    ],
+    "compete": {
+      "wins": "Deep SaaS single sign-on and lifecycle when identity is not only Microsoft.",
+      "loses": "A second identity bill on top of Entra, unless Entra cannot see the apps."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Okta Workforce Identity",
+        "url": "https://www.okta.com/products/workforce-identity/"
+      },
+      {
+        "title": "Okta plans and pricing",
+        "url": "https://www.okta.com/pricing/"
+      }
+    ]
+  },
+  {
+    "id": "ping-identity",
+    "name": "Ping Identity",
+    "vendor": "Ping Identity",
+    "aliases": [
+      "ping",
+      "pingone",
+      "pingfederate"
+    ],
+    "categoryId": "identity",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Ping Identity achieves FedRAMP High",
+        "url": "https://press.pingidentity.com/2023-10-31-Ping-Identity-Achieves-FedRAMP-High-Certification"
+      }
+    },
+    "description": "Workforce and customer identity: SSO, MFA, and access policy, available as PingOne cloud or self-hosted software.",
+    "compete": {
+      "wins": "Handles hybrid and on-premises applications and complex federation that cloud-only tools struggle with.",
+      "loses": "More configuration than a simple SaaS SSO tool. Small teams with only SaaS apps will not use most of it."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "PingOne for Workforce",
+        "url": "https://www.pingidentity.com/en/solutions/workforce-identity"
+      }
+    ]
+  },
+  {
+    "id": "cyberark",
+    "name": "CyberArk",
+    "vendor": "Palo Alto Networks",
+    "aliases": [
+      "cyberark pam",
+      "privilege cloud",
+      "idira"
+    ],
+    "categoryId": "identity",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "CyberArk achieves FedRAMP High",
+        "url": "https://www.businesswire.com/news/home/20240319067744/en/CyberArk-Achieves-FedRAMP-High-Authorization"
+      }
+    },
+    "description": "Privileged access management: vaulting, rotation, and session control for admin and machine accounts. Part of Palo Alto Networks since 2026 and being brought into its Idira identity platform.",
+    "compete": {
+      "wins": "The established choice for controlling privileged accounts, with self-hosted and SaaS deployment.",
+      "loses": "Not a replacement for workforce SSO, and a full deployment is a long project. Watch how the move into Palo Alto changes licensing."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "CyberArk privileged access",
+        "url": "https://www.cyberark.com/products/dynamic-privileged-access/"
+      },
+      {
+        "title": "Palo Alto Networks completes CyberArk acquisition (Techzine)",
+        "url": "https://www.techzine.eu/news/security/138718/palo-alto-completes-25-billion-acquisition-of-cyberark"
+      },
+      {
+        "title": "Palo Alto rebrands CyberArk with Idira (SDxCentral)",
+        "url": "https://www.sdxcentral.com/news/palo-alto-networks-rebrands-cyberark-with-idira-platform-release/"
+      }
+    ]
+  },
+  {
+    "id": "jumpcloud",
+    "name": "JumpCloud",
+    "vendor": "JumpCloud",
+    "categoryId": "identity",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Cloud directory with SSO, MFA, and device management for Windows, macOS, and Linux.",
+    "compete": {
+      "wins": "One tool for users and devices in a small company with no Active Directory.",
+      "loses": "Less depth than a dedicated identity platform for complex enterprise federation or governance."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "JumpCloud open directory",
+        "url": "https://jumpcloud.com/platform/cloud-directory"
+      },
+      {
+        "title": "JumpCloud pricing",
+        "url": "https://jumpcloud.com/pricing"
+      }
+    ]
+  },
+  {
+    "id": "keycloak",
+    "name": "Keycloak",
+    "vendor": "Keycloak project (CNCF)",
+    "categoryId": "identity",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source identity and access management: SSO with OpenID Connect and SAML, user federation, and MFA.",
+    "compete": {
+      "wins": "No licence fee, and full control over where identity data lives.",
+      "loses": "You run it, patch it, and keep it highly available. It is not a managed workforce directory."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Keycloak",
+        "url": "https://www.keycloak.org/"
+      },
+      {
+        "title": "Keycloak Server Administration Guide",
+        "url": "https://www.keycloak.org/docs/latest/server_admin/index.html"
+      }
+    ]
+  },
+  {
+    "id": "defender-office",
+    "name": "Defender for Office 365",
+    "vendor": "Microsoft",
+    "aliases": [
+      "defender for office",
+      "mdo",
+      "office 365 atp"
+    ],
+    "categoryId": "email",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Defender for Office 365 for US Government",
+        "url": "https://learn.microsoft.com/en-us/defender-office-365/mdo-gov"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Microsoft completes EU Data Boundary",
+        "url": "https://blogs.microsoft.com/on-the-issues/2025/02/26/microsoft-completes-landmark-eu-data-boundary-offering-enhanced-data-residency-and-transparency/"
+      }
+    },
+    "description": "Email and collaboration protection for phishing, malware, and safe links.",
+    "extensions": [
+      {
+        "name": "Attack simulation training",
+        "detail": "Phishing simulations inside the Microsoft 365 tenant. Plan 2 only (E5 or add-on).",
+        "covers": "awareness"
+      },
+      {
+        "name": "Safe Links",
+        "detail": "Time-of-click URL detonation on mail and Teams links."
+      }
+    ],
+    "compete": {
+      "wins": "Phishing controls and attack simulation inside the Microsoft 365 tenant.",
+      "loses": "Does not replace a gateway if mail is not in Exchange Online."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Microsoft Defender for Office 365",
+        "url": "https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-defender-office-365"
+      },
+      {
+        "title": "Defender for Office 365 service description",
+        "url": "https://learn.microsoft.com/en-us/office365/servicedescriptions/office-365-advanced-threat-protection-service-description"
+      }
+    ]
+  },
+  {
+    "id": "proofpoint",
+    "name": "Proofpoint Email Protection",
+    "vendor": "Proofpoint",
+    "aliases": [
+      "proofpoint",
+      "proofpoint email"
+    ],
+    "categoryId": "email",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Proofpoint FedRAMP certification for email",
+        "url": "https://www.proofpoint.com/us/newsroom/press-releases/proofpoint-achieves-fedramp-certification-proofpoint-email-and-information"
+      }
+    },
+    "description": "Email security as a gateway, through an API on Microsoft 365, or both, with phishing, malware, and impersonation protection.",
+    "compete": {
+      "wins": "Deep threat intelligence and policy control for large or heavily targeted organisations.",
+      "loses": "Enterprise cost and administration. Smaller Microsoft 365 tenants may get enough from built-in protection."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Proofpoint email protection",
+        "url": "https://www.proofpoint.com/us/products/email-protection"
+      }
+    ]
+  },
+  {
+    "id": "mimecast",
+    "name": "Mimecast Email Security",
+    "vendor": "Mimecast",
+    "aliases": [
+      "mimecast"
+    ],
+    "categoryId": "email",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "euResidency": {
+      "source": {
+        "title": "Mimecast opens German data centers",
+        "url": "https://investors.mimecast.com/news-releases/news-release-details/mimecast-opens-german-data-centers-help-european-firms-address"
+      }
+    },
+    "description": "Email security offered as a secure email gateway or as a cloud-integrated (API) service for Microsoft 365 and Google Workspace.",
+    "compete": {
+      "wins": "Gateway and API options from one vendor, with archiving and continuity available alongside.",
+      "loses": "The gateway model means changing mail routing. Compare against the API option and what the mail platform already includes."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Mimecast Secure Email Gateway",
+        "url": "https://www.mimecast.com/products/email-security/secure-email-gateway/"
+      },
+      {
+        "title": "Mimecast Email Security, Cloud Integrated",
+        "url": "https://www.mimecast.com/products/email-security/integrated-cloud-email-security/"
+      }
+    ]
+  },
+  {
+    "id": "abnormal",
+    "name": "Abnormal AI",
+    "vendor": "Abnormal AI",
+    "aliases": [
+      "abnormal security"
+    ],
+    "categoryId": "email",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Moderate",
+      "source": {
+        "title": "Abnormal AI achieves FedRAMP Moderate",
+        "url": "https://abnormal.ai/newsroom/press-releases/announcing-fedramp-moderate-authorization"
+      }
+    },
+    "description": "API-based email security that models normal behaviour to catch phishing, business email compromise, and account takeover. Formerly Abnormal Security.",
+    "compete": {
+      "wins": "Adds to Microsoft 365 or Google Workspace through an API without changing mail routing.",
+      "loses": "A layer on top of the mail platform's own filtering, not a gateway replacement for on-premises mail."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Abnormal platform",
+        "url": "https://abnormal.ai/platform"
+      },
+      {
+        "title": "Abnormal + Microsoft 365",
+        "url": "https://abnormal.ai/solutions/microsoft"
+      }
+    ]
+  },
+  {
+    "id": "veeam",
+    "name": "Veeam",
+    "vendor": "Veeam",
+    "aliases": [
+      "veeam backup"
+    ],
+    "categoryId": "backup",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Backup and recovery for virtual, physical, and Microsoft 365 workloads.",
+    "extensions": [
+      {
+        "name": "Veeam ONE",
+        "detail": "Monitoring and reporting on backup health and capacity."
+      },
+      {
+        "name": "Hardened repository",
+        "detail": "Immutable backup target that resists ransomware deletion."
+      }
+    ],
+    "compete": {
+      "wins": "Restores virtual, physical, and Microsoft 365 data, with an immutable repository option.",
+      "loses": "Backup software is not a recovery plan. Untested restores do not count."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Veeam Data Platform",
+        "url": "https://www.veeam.com/products/veeam-data-platform.html"
+      },
+      {
+        "title": "Hardened repository immutability",
+        "url": "https://helpcenter.veeam.com/docs/vbr/userguide/hardened_repository_immutability.html"
+      }
+    ]
+  },
+  {
+    "id": "rubrik",
+    "name": "Rubrik",
+    "vendor": "Rubrik",
+    "categoryId": "backup",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Rubrik Security Cloud – Government FedRAMP",
+        "url": "https://www.rubrik.com/company/newsroom/press-releases/24/rubrik-security-cloud-government-achieves-fedramp-authorization"
+      }
+    },
+    "description": "Backup and recovery for data centre, cloud, and SaaS data, with immutable backups and ransomware recovery tools.",
+    "compete": {
+      "wins": "Built around immutability and fast recovery, with threat detection on backup data.",
+      "loses": "Premium pricing. A small estate may not need its breadth."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Rubrik backup and recovery",
+        "url": "https://www.rubrik.com/solutions/backup-recovery"
+      },
+      {
+        "title": "Rubrik products",
+        "url": "https://www.rubrik.com/products"
+      }
+    ]
+  },
+  {
+    "id": "cohesity",
+    "name": "Cohesity",
+    "vendor": "Cohesity",
+    "aliases": [
+      "cohesity dataprotect",
+      "veritas",
+      "netbackup"
+    ],
+    "categoryId": "backup",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "Moderate",
+      "source": {
+        "title": "Cohesity achieves FedRAMP Moderate",
+        "url": "https://www.cohesity.com/newsroom/press/cohesity-achieves-fedramp-moderate-authorization/"
+      }
+    },
+    "description": "Data protection for on-premises, cloud, and SaaS workloads, as software, appliances, or backup as a service. Merged with Veritas's data protection business in 2024.",
+    "compete": {
+      "wins": "Wide workload coverage and a choice of deployment models.",
+      "loses": "The Veritas merger means product lines are being combined. Confirm which product a quote covers."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Cohesity DataProtect",
+        "url": "https://www.cohesity.com/platform/dataprotect/"
+      },
+      {
+        "title": "Cohesity",
+        "url": "https://www.cohesity.com/"
+      }
+    ]
+  },
+  {
+    "id": "commvault",
+    "name": "Commvault",
+    "vendor": "Commvault",
+    "aliases": [
+      "commvault cloud"
+    ],
+    "categoryId": "backup",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Commvault Cloud for Government FedRAMP High",
+        "url": "https://commvault.com/news/fedramp-high-authorization-announcement"
+      }
+    },
+    "description": "Backup and disaster recovery across on-premises, cloud, databases, and SaaS, self-managed or as a service.",
+    "compete": {
+      "wins": "Very broad workload and storage support for complex estates.",
+      "loses": "Powerful but complex to design and run. Small teams may find it more than they need."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Commvault backup and disaster recovery",
+        "url": "https://www.commvault.com/solutions/backup-disaster-recovery-software"
+      }
+    ]
+  },
+  {
+    "id": "druva",
+    "name": "Druva",
+    "vendor": "Druva",
+    "categoryId": "backup",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Moderate",
+      "source": {
+        "title": "Druva expands FedRAMP Moderate",
+        "url": "https://www.druva.com/about/press-releases/expanded-fedramp-authorization-and-new-cyber-resiliency-capabilities-for-public-sector"
+      }
+    },
+    "description": "SaaS backup for Microsoft 365, Google Workspace, endpoints, and cloud workloads, with no backup infrastructure to run.",
+    "compete": {
+      "wins": "Nothing to deploy or patch, which suits small teams and SaaS-heavy companies.",
+      "loses": "Cloud-only. Large on-premises estates with tight recovery-time targets may prefer local copies."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Druva Microsoft 365 backup",
+        "url": "https://www.druva.com/use-cases/saas-apps-and-endpoints/productivity/microsoft-365"
+      },
+      {
+        "title": "Druva SaaS backup plans",
+        "url": "https://www.druva.com/products/saas-backup/plans"
+      }
+    ]
+  },
+  {
+    "id": "tenable",
+    "name": "Tenable",
+    "vendor": "Tenable",
+    "aliases": [
+      "nessus",
+      "tenable one",
+      "tenable.io"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Tenable FedRAMP authorization for Tenable One",
+        "url": "https://www.tenable.com/press-releases/tenable-achieves-fedramp-authorization-for-tenable-one-and-tenable-cloud-security"
+      }
+    },
+    "description": "Vulnerability scanning and exposure management, from Nessus up to Tenable One.",
+    "extensions": [
+      {
+        "name": "Tenable OT Security",
+        "detail": "Visibility for operational technology networks."
+      },
+      {
+        "name": "Tenable Cloud Security",
+        "detail": "Cloud workload and entitlement exposure.",
+        "covers": "cloud"
+      }
+    ],
+    "compete": {
+      "wins": "Broad vulnerability scanning from Nessus up to cloud and OT add-ons.",
+      "loses": "Skip it if Defender or Falcon already scans from the endpoint agent and you will not use the extra depth."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Tenable Vulnerability Management",
+        "url": "https://www.tenable.com/products/vulnerability-management"
+      },
+      {
+        "title": "Nessus Essentials",
+        "url": "https://www.tenable.com/products/nessus/nessus-essentials"
+      }
+    ]
+  },
+  {
+    "id": "qualys",
+    "name": "Qualys VMDR",
+    "vendor": "Qualys",
+    "aliases": [
+      "qualys",
+      "vmdr"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Qualys achieves FedRAMP High",
+        "url": "https://www.qualys.com/company/newsroom/news-releases/usa/qualys-achieves-fedramp-high-authorization"
+      }
+    },
+    "description": "Cloud vulnerability management with agent and network scanning, prioritisation, and optional patching.",
+    "compete": {
+      "wins": "A single cloud console for discovery, scanning, and patch tasks.",
+      "loses": "Licensed per asset and module, so costs grow with the estate and add-ons."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Qualys VMDR overview",
+        "url": "https://docs.qualys.com/en/vm/latest/about_qualys_vm_vmdr.htm"
+      },
+      {
+        "title": "VMDR with Patch Management",
+        "url": "https://www.qualys.com/apps/vmdr-patch"
+      }
+    ]
+  },
+  {
+    "id": "rapid7-insightvm",
+    "name": "Rapid7 InsightVM",
+    "vendor": "Rapid7",
+    "aliases": [
+      "insightvm",
+      "rapid7 vm",
+      "nexpose"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Rapid7 InsightGovCloud FedRAMP authorization",
+        "url": "https://rapid7.com/about/press-releases/rapid7-achieves-fedramp-authorization-for-insightgovcloud-platform"
+      }
+    },
+    "description": "Vulnerability management with agent and network scanning, risk scoring, and remediation tracking.",
+    "compete": {
+      "wins": "Good remediation workflow and dashboards for teams that hand work to IT owners.",
+      "loses": "Overlaps with agent-based scanning if the EDR already reports vulnerabilities."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "InsightVM",
+        "url": "https://www.rapid7.com/products/insightvm/"
+      },
+      {
+        "title": "InsightVM documentation",
+        "url": "https://docs.rapid7.com/insightvm/"
+      }
+    ]
+  },
+  {
+    "id": "openvas",
+    "name": "OpenVAS",
+    "vendor": "Greenbone",
+    "aliases": [
+      "greenbone",
+      "openvas community"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source network vulnerability scanner, with a free community edition and paid Greenbone products.",
+    "compete": {
+      "wins": "No licence fee for the community edition, and it can run fully offline.",
+      "loses": "The community feed and tooling need hands-on maintenance, and reporting is basic compared with commercial tools."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "OpenVAS",
+        "url": "https://openvas.org/"
+      },
+      {
+        "title": "Greenbone products",
+        "url": "https://www.greenbone.net/en/products/"
+      }
+    ]
+  },
+  {
+    "id": "defender-cloud",
+    "name": "Defender for Cloud",
+    "vendor": "Microsoft",
+    "aliases": [
+      "microsoft defender for cloud",
+      "mdc"
+    ],
+    "categoryId": "cloud",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Azure services in FedRAMP audit scope",
+        "url": "https://learn.microsoft.com/azure/azure-government/compliance/azure-services-in-fedramp-auditscope"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Microsoft completes EU Data Boundary",
+        "url": "https://blogs.microsoft.com/on-the-issues/2025/02/26/microsoft-completes-landmark-eu-data-boundary-offering-enhanced-data-residency-and-transparency/"
+      }
+    },
+    "description": "Cloud security posture and workload protection, strongest inside Azure.",
+    "extensions": [
+      {
+        "name": "Defender CSPM",
+        "detail": "Attack-path analysis and cloud security graph."
+      },
+      {
+        "name": "Workload plans",
+        "detail": "Servers, containers, storage, and database protections."
+      }
+    ],
+    "compete": {
+      "wins": "The practical cloud posture tool when the estate is Azure.",
+      "loses": "Weaker across AWS and GCP than a cloud-only graph such as Wiz."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Defender for Cloud overview",
+        "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+      },
+      {
+        "title": "Defender for Cloud multicloud support matrix",
+        "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/multicloud-support-matrix"
+      }
+    ]
+  },
+  {
+    "id": "wiz",
+    "name": "Wiz",
+    "vendor": "Wiz",
+    "aliases": [
+      "wiz cloud"
+    ],
+    "categoryId": "cloud",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Wiz achieves FedRAMP High",
+        "url": "https://wiz.io/blog/wiz-achieves-fedramp-high-authorization"
+      }
+    },
+    "description": "Agentless cloud security graph for posture, identity, and toxic combinations. Owned by Google since 2026.",
+    "extensions": [
+      {
+        "name": "Wiz Code",
+        "detail": "Shift-left scanning for repos and pipelines."
+      },
+      {
+        "name": "Wiz Defend",
+        "detail": "Runtime detections on cloud workloads."
+      }
+    ],
+    "compete": {
+      "wins": "Agentless graph of identity, exposure, and toxic combinations across clouds.",
+      "loses": "High cost. Wrong buy for a single-cloud Azure estate that Defender for Cloud already sees."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Wiz platform",
+        "url": "https://www.wiz.io/platform"
+      },
+      {
+        "title": "Google completes acquisition of Wiz (Cleary Gottlieb)",
+        "url": "https://www.clearygottlieb.com/news-and-insights/news-listing/google-completes-32-billion-acquisition-of-wiz"
+      }
+    ]
+  },
+  {
+    "id": "cortex-cloud",
+    "name": "Cortex Cloud",
+    "vendor": "Palo Alto Networks",
+    "aliases": [
+      "prisma cloud"
+    ],
+    "categoryId": "cloud",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Cortex Cloud FedRAMP High and Moderate",
+        "url": "https://www2.paloaltonetworks.com/blog/cloud-security/cortex-cloud-stands-alone-to-secure-mission-critical-workloads-with-fedramp-high-and-moderate.md"
+      }
+    },
+    "description": "Cloud-native application protection platform: posture, workload, code-to-cloud, and runtime protection. Successor to Prisma Cloud.",
+    "compete": {
+      "wins": "Broad coverage from code to runtime for organisations already standardised on Palo Alto Networks.",
+      "loses": "Large and complex. Prisma Cloud customers face a migration to the new platform."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Cortex Cloud",
+        "url": "https://www.paloaltonetworks.com/cortex/cloud"
+      },
+      {
+        "title": "Upgrade from Prisma Cloud to Cortex Cloud",
+        "url": "https://cortex-docs.paloaltonetworks.com/r/Cortex-CLOUD/Cortex-Cloud-Posture-Management-Documentation/Upgrade-from-Prisma-Cloud-to-Cortex-Cloud"
+      }
+    ]
+  },
+  {
+    "id": "orca",
+    "name": "Orca Security",
+    "vendor": "Orca Security",
+    "aliases": [
+      "orca"
+    ],
+    "categoryId": "cloud",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Orca Security earns FedRAMP authorization",
+        "url": "https://orca.security/resources/blog/orca-security-earns-fedramp-authorization/"
+      }
+    },
+    "description": "Agentless cloud security platform covering posture, workload vulnerabilities, and data risk across AWS, Azure, and GCP.",
+    "compete": {
+      "wins": "Agentless setup gives full multi-cloud coverage quickly.",
+      "loses": "Agentless scanning is periodic. Add runtime protection if you need real-time workload detection."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Orca CNAPP",
+        "url": "https://orca.security/platform/cnapp-cloud-security-platform/"
+      }
+    ]
+  },
+  {
+    "id": "prowler",
+    "name": "Prowler",
+    "vendor": "Prowler",
+    "categoryId": "cloud",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Open-source cloud security and compliance scanner for AWS, Azure, GCP, Kubernetes, and more, with a paid hosted service.",
+    "compete": {
+      "wins": "Free, scriptable posture checks mapped to compliance frameworks.",
+      "loses": "Findings without a managed workflow. Someone has to schedule scans and drive fixes."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Prowler on GitHub",
+        "url": "https://github.com/prowler-cloud/prowler"
+      },
+      {
+        "title": "Prowler open source",
+        "url": "https://prowler.com/prowler-oss"
+      }
+    ]
+  },
+  {
+    "id": "zscaler",
+    "name": "Zscaler",
+    "vendor": "Zscaler",
+    "aliases": [
+      "zscaler internet access",
+      "zia"
+    ],
+    "categoryId": "sse",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Zscaler achieves FedRAMP High",
+        "url": "https://www.zscaler.com/press/zscaler-achieves-zero-trust-security-service-fedramp-high-authorization"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "Zscaler data control in Europe",
+        "url": "https://www.zscaler.com/blogs/product-insights/how-zscaler-ensures-data-control-and-supports-digital-sovereignty-across-europe"
+      }
+    },
+    "description": "Zero trust exchange for web traffic and private application access.",
+    "extensions": [
+      {
+        "name": "Zscaler Private Access",
+        "detail": "Broker user-to-app connections without network access."
+      },
+      {
+        "name": "ZDX",
+        "detail": "Digital experience monitoring for SaaS and network paths."
+      }
+    ],
+    "compete": {
+      "wins": "Web and private-app access without a flat network.",
+      "loses": "A large project. Do not buy it to replace an endpoint agent."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Zscaler Private Access",
+        "url": "https://www.zscaler.com/products-and-solutions/zscaler-private-access"
+      },
+      {
+        "title": "Zscaler Internet Access data sheet",
+        "url": "https://www.zscaler.com/resources/data-sheets/zscaler-internet-access.pdf"
+      }
+    ]
+  },
+  {
+    "id": "netskope",
+    "name": "Netskope One SSE",
+    "vendor": "Netskope",
+    "aliases": [
+      "netskope"
+    ],
+    "categoryId": "sse",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Netskope achieves FedRAMP High",
+        "url": "https://www.netskope.com/press-releases/netskope-achieves-fedramp-high-authorization"
+      }
+    },
+    "description": "Security service edge: secure web gateway, CASB, zero trust private access, and data loss prevention in one cloud service.",
+    "compete": {
+      "wins": "Strong SaaS visibility and data protection alongside web and private-app access.",
+      "loses": "A large project, and the value depends on actually using the data protection features."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Netskope One SSE",
+        "url": "https://www.netskope.com/products/security-service-edge"
+      }
+    ]
+  },
+  {
+    "id": "prisma-access",
+    "name": "Prisma Access",
+    "vendor": "Palo Alto Networks",
+    "aliases": [
+      "prisma sase"
+    ],
+    "categoryId": "sse",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Prisma SASE achieves FedRAMP High",
+        "url": "https://www.paloaltonetworks.com/blog/sase/prisma-sase-achieves-fedramp-high-authorization/"
+      }
+    },
+    "description": "Cloud-delivered SASE and SSE for web, SaaS, and private application access.",
+    "compete": {
+      "wins": "Fits well where Palo Alto firewalls and policy are already the standard.",
+      "loses": "Enterprise cost and complexity. Less attractive without the wider Palo Alto estate."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Prisma Access",
+        "url": "https://www.paloaltonetworks.com/sase/access"
+      }
+    ]
+  },
+  {
+    "id": "cloudflare-one",
+    "name": "Cloudflare One",
+    "vendor": "Cloudflare",
+    "aliases": [
+      "cloudflare zero trust",
+      "cloudflare access",
+      "cloudflare warp"
+    ],
+    "categoryId": "sse",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Cloudflare for Government FedRAMP High",
+        "url": "https://blog.cloudflare.com/fedramp-class-d-certification/"
+      }
+    },
+    "description": "Zero trust access, secure web gateway, and CASB on Cloudflare's network. A free plan covers up to 50 users.",
+    "compete": {
+      "wins": "Free for small teams and simple to start, with pay-as-you-go pricing after that.",
+      "loses": "Advanced data protection and support need a contract plan. Check feature depth against enterprise needs."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Cloudflare SASE and zero trust plans",
+        "url": "https://www.cloudflare.com/plans/sase-zero-trust"
+      },
+      {
+        "title": "Cloudflare Access",
+        "url": "https://www.cloudflare.com/sase/products/access/"
+      }
+    ]
+  },
+  {
+    "id": "cisco-secure-access",
+    "name": "Cisco Secure Access",
+    "vendor": "Cisco",
+    "aliases": [
+      "cisco umbrella",
+      "umbrella"
+    ],
+    "categoryId": "sse",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "Cisco Secure Access for Government FedRAMP High",
+        "url": "https://blogs.cisco.com/industries/cisco-secure-access-for-government-achieves-fedramp-certified-class-d-high-2"
+      }
+    },
+    "description": "Cisco's security service edge: secure web gateway, CASB, DNS security, and zero trust network access.",
+    "compete": {
+      "wins": "A natural step for organisations already using Cisco Umbrella, Duo, or Cisco networking.",
+      "loses": "Most compelling inside a Cisco estate. Compare packages carefully, because features vary by tier."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Cisco Secure Access",
+        "url": "https://www.cisco.com/site/us/en/products/security/secure-access/index.html"
+      },
+      {
+        "title": "SSE packages comparison guide",
+        "url": "https://www.cisco.com/c/en/us/solutions/collateral/security-service-edge-sse/security-service-edge-sse-package-og.pdf"
+      }
+    ]
+  },
+  {
+    "id": "burp",
+    "name": "Burp Suite",
+    "vendor": "PortSwigger",
+    "aliases": [
+      "burp",
+      "portswigger"
+    ],
+    "categoryId": "webapp",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Web security testing proxy used to inspect and attack application requests.",
+    "extensions": [
+      {
+        "name": "Burp Enterprise",
+        "detail": "Scheduled scanning and CI integration for app teams."
+      },
+      {
+        "name": "Burp Collaborator",
+        "detail": "Out-of-band interaction checks for blind vulnerabilities."
+      }
+    ],
+    "compete": {
+      "wins": "The standard proxy for testing a web app request by request.",
+      "loses": "A tester’s tool, not a scanner you can point at the company and walk away from."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Burp Suite Professional",
+        "url": "https://portswigger.net/burp/pro"
+      },
+      {
+        "title": "Burp Suite Community Edition",
+        "url": "https://portswigger.net/burp/communitydownload"
+      }
+    ]
+  },
+  {
+    "id": "zap",
+    "name": "ZAP",
+    "vendor": "ZAP (supported by Checkmarx)",
+    "aliases": [
+      "owasp zap",
+      "zaproxy",
+      "zed attack proxy"
+    ],
+    "categoryId": "webapp",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source web application scanner and intercepting proxy, formerly OWASP ZAP. Its core team joined Checkmarx in 2024.",
+    "compete": {
+      "wins": "Free, automatable in CI, and good for baseline scans and manual testing.",
+      "loses": "Less polish and support than commercial scanners. Authenticated scans of complex apps take setup."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "ZAP",
+        "url": "https://www.zaproxy.org/"
+      },
+      {
+        "title": "ZAP has joined forces with Checkmarx",
+        "url": "https://www.zaproxy.org/blog/2024-09-24-zap-has-joined-forces-with-checkmarx/"
+      }
+    ]
+  },
+  {
+    "id": "invicti",
+    "name": "Invicti",
+    "vendor": "Invicti",
+    "aliases": [
+      "netsparker",
+      "acunetix"
+    ],
+    "categoryId": "webapp",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Dynamic application and API security testing at scale, with proof-based confirmation of findings.",
+    "compete": {
+      "wins": "Scans many apps on a schedule and confirms many findings automatically, cutting false positives.",
+      "loses": "Enterprise cost. A team with a few apps may get further with Burp or ZAP."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Invicti",
+        "url": "https://www.invicti.com/"
+      },
+      {
+        "title": "Invicti DAST overview",
+        "url": "https://docs.invicti.com/appsec/dast-overview"
+      }
+    ]
+  },
+  {
+    "id": "stackhawk",
+    "name": "StackHawk",
+    "vendor": "StackHawk",
+    "categoryId": "webapp",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Developer-focused dynamic testing for web apps and APIs, run in CI pipelines.",
+    "compete": {
+      "wins": "Fits engineering teams that want DAST results in the pull request.",
+      "loses": "Built for apps you develop and can run in a pipeline, not for scanning third-party sites."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "StackHawk DAST",
+        "url": "https://www.stackhawk.com/solutions/dast/"
+      }
+    ]
+  },
+  {
+    "id": "rapid7-insightappsec",
+    "name": "Rapid7 InsightAppSec",
+    "vendor": "Rapid7",
+    "aliases": [
+      "insightappsec"
+    ],
+    "categoryId": "webapp",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Rapid7 InsightGovCloud FedRAMP authorization",
+        "url": "https://rapid7.com/about/press-releases/rapid7-achieves-fedramp-authorization-for-insightgovcloud-platform"
+      }
+    },
+    "description": "Cloud dynamic application security testing for web apps and APIs, with an optional managed service.",
+    "compete": {
+      "wins": "Pairs with InsightVM for teams already on Rapid7.",
+      "loses": "Most useful inside the Rapid7 platform. Compare scan depth against specialist DAST vendors."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "InsightAppSec documentation",
+        "url": "https://docs.rapid7.com/insightappsec/"
+      },
+      {
+        "title": "Rapid7 application security",
+        "url": "https://www.rapid7.com/solutions/application-security/"
+      }
+    ]
+  },
+  {
+    "id": "snyk",
+    "name": "Snyk",
+    "vendor": "Snyk",
+    "aliases": [
+      "snyk code"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Moderate",
+      "source": {
+        "title": "Snyk achieves FedRAMP Moderate",
+        "url": "https://snyk.io/jp/news/snyk-achieves-fedramp-moderate-authorization/"
+      }
+    },
+    "description": "Developer security for open-source dependencies, code, containers, and IaC.",
+    "extensions": [
+      {
+        "name": "Snyk Code",
+        "detail": "SAST in the IDE and pull request."
+      },
+      {
+        "name": "Snyk Container",
+        "detail": "Image and base-image vulnerability scanning."
+      },
+      {
+        "name": "Snyk IaC",
+        "detail": "Misconfiguration checks for Terraform and Kubernetes."
+      }
+    ],
+    "compete": {
+      "wins": "Finds vulnerable dependencies, code, containers, and IaC in the developer workflow.",
+      "loses": "Does not test a running web app the way Burp does. They are not substitutes."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "What is Snyk",
+        "url": "https://docs.snyk.io/discover-snyk/whats-snyk"
+      },
+      {
+        "title": "Snyk plans and pricing",
+        "url": "https://snyk.io/plans/"
+      }
+    ]
+  },
+  {
+    "id": "checkmarx",
+    "name": "Checkmarx",
+    "vendor": "Checkmarx",
+    "aliases": [
+      "checkmarx one",
+      "cxone",
+      "cxsast",
+      "chexmarx"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "Moderate",
+      "source": {
+        "title": "Checkmarx One for Government FedRAMP Moderate",
+        "url": "https://checkmarx.com/blog/checkmarx-one-for-government-achieves-fedramp-moderate-certification/"
+      }
+    },
+    "description": "Enterprise application security platform covering static analysis, open-source dependency analysis, and API and IaC scanning.",
+    "compete": {
+      "wins": "Deep static analysis across many languages, aimed at large engineering organizations with a dedicated application security team.",
+      "loses": "Enterprise cost and real tuning effort. Too heavy for a small team that only needs dependency and basic code scanning."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Checkmarx One",
+        "url": "https://checkmarx.com/"
+      },
+      {
+        "title": "Checkmarx pricing",
+        "url": "https://checkmarx.com/pricing/"
+      }
+    ]
+  },
+  {
+    "id": "veracode",
+    "name": "Veracode",
+    "vendor": "Veracode",
+    "aliases": [
+      "vericode"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "Veracode achieves FedRAMP authorization",
+        "url": "https://www.veracode.com/press-release/veracode-achieves-public-sector-milestone-fedramp-authorization/"
+      }
+    },
+    "description": "Cloud-delivered application security testing: static analysis, open-source dependency analysis, and dynamic scanning, with policy reporting.",
+    "compete": {
+      "wins": "Policy and compliance reporting built for audits and customer reviews. Can scan compiled binaries when source code is not available.",
+      "loses": "Enterprise cost, and code or binaries are uploaded to the vendor's cloud for scanning, which some teams cannot allow."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Veracode static analysis",
+        "url": "https://www.veracode.com/security/static-analysis-tool/"
+      },
+      {
+        "title": "Veracode: scan code",
+        "url": "https://docs.veracode.com/r/c_static_overview"
+      }
+    ]
+  },
+  {
+    "id": "sonarqube",
+    "name": "SonarQube",
+    "vendor": "Sonar",
+    "aliases": [
+      "sonar",
+      "sonarcloud",
+      "sonarqube cloud",
+      "sonarqube server"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Code quality and static security analysis, with a free self-hosted community edition and paid tiers.",
+    "compete": {
+      "wins": "Free to start and already familiar to many developers. Quality gates run in the build pipeline.",
+      "loses": "The free edition's security analysis is limited. Deeper security rules and some languages need a paid edition."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "SonarQube Community Build",
+        "url": "https://www.sonarsource.com/open-source-editions/sonarqube-community-edition/"
+      },
+      {
+        "title": "SonarQube feature comparison",
+        "url": "https://docs.sonarsource.com/sonarqube-community-build/feature-comparison-table"
+      }
+    ]
+  },
+  {
+    "id": "semgrep",
+    "name": "Semgrep",
+    "vendor": "Semgrep",
+    "categoryId": "appsec",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Pattern-based static analysis. The Community Edition engine is open source (LGPL 2.1); the cross-file Pro engine, managed rules, secrets, and supply-chain scanning are paid.",
+    "compete": {
+      "wins": "Fast scans and rules a developer can read and write. The engine is free.",
+      "loses": "Cross-file analysis, managed rules, and secrets scanning are in the paid platform. The community rules carry a licence limited to internal business use, and someone has to own the rules."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Semgrep Community Edition",
+        "url": "https://semgrep.dev/products/community-edition/"
+      },
+      {
+        "title": "Semgrep licensing",
+        "url": "https://docs.semgrep.dev/licensing"
+      }
+    ]
+  },
+  {
+    "id": "github-advanced-security",
+    "name": "GitHub Secret Protection & Code Security",
+    "vendor": "GitHub",
+    "aliases": [
+      "github advanced security",
+      "ghas",
+      "codeql",
+      "github code scanning",
+      "github secret protection",
+      "github code security"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "FedRAMP and GitHub",
+        "url": "https://government.github.com/fedramp-faq"
+      }
+    },
+    "description": "Secret scanning (Secret Protection) and CodeQL code scanning with dependency review (Code Security), built into GitHub. Core features are free on public repositories.",
+    "compete": {
+      "wins": "No separate tool if the code already lives in GitHub. Findings appear in the pull request.",
+      "loses": "Only helps repositories hosted on GitHub. On private repositories each product is billed per active committer per month."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "GitHub security plans",
+        "url": "https://github.com/security/plans"
+      },
+      {
+        "title": "GitHub Advanced Security billing",
+        "url": "https://docs.github.com/en/billing/concepts/product-billing/github-advanced-security"
+      }
+    ]
+  },
+  {
+    "id": "black-duck",
+    "name": "Black Duck",
+    "vendor": "Black Duck",
+    "aliases": [
+      "blackduck",
+      "black duck sca",
+      "coverity"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Open-source component and license analysis, with Coverity static analysis and other testing in the same portfolio (formerly Synopsys Software Integrity).",
+    "compete": {
+      "wins": "Strong open-source license and component analysis, often used for software bills of materials and due diligence.",
+      "loses": "Enterprise cost, and the portfolio is several products rather than one developer workflow."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Black Duck",
+        "url": "https://www.blackduck.com/"
+      },
+      {
+        "title": "Coverity static analysis data sheet",
+        "url": "https://www.blackduck.com/content/dam/black-duck/en-us/datasheets/SAST-Coverity-datasheet.pdf"
+      }
+    ]
+  },
+  {
+    "id": "fortify",
+    "name": "OpenText Fortify",
+    "vendor": "OpenText",
+    "aliases": [
+      "fortify",
+      "fortify sca",
+      "fortify on demand",
+      "webinspect"
+    ],
+    "categoryId": "appsec",
+    "priceTier": "High",
+    "bestFor": [
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Static and dynamic application security testing, available on-premises or as a hosted service.",
+    "compete": {
+      "wins": "Long-established static analyzer with broad language coverage, and it can run fully on-premises.",
+      "loses": "Needs dedicated staff to deploy and tune. A large commitment for a team without an application security function."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "OpenText Fortify SAST",
+        "url": "https://www.opentext.com/products/static-application-security-testing"
+      }
+    ]
+  },
+  {
+    "id": "atomic-red-team",
+    "name": "Atomic Red Team",
+    "vendor": "Red Canary",
+    "aliases": [
+      "atomic",
+      "atomic red"
+    ],
+    "categoryId": "emulation",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open library of small tests mapped to adversary techniques.",
+    "extensions": [
+      {
+        "name": "Invoke-AtomicRedTeam",
+        "detail": "PowerShell runner that executes the test library locally."
+      }
+    ],
+    "compete": {
+      "wins": "Free, repeatable tests that show whether a detection fires.",
+      "loses": "Someone has to run it and read the result. It is not a managed red team."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Atomic Red Team",
+        "url": "https://www.atomicredteam.io/"
+      },
+      {
+        "title": "Atomic Red Team on GitHub",
+        "url": "https://github.com/redcanaryco/atomic-red-team"
+      }
+    ]
+  },
+  {
+    "id": "caldera",
+    "name": "Caldera",
+    "vendor": "MITRE / Apache Software Foundation",
+    "aliases": [
+      "mitre caldera"
+    ],
+    "categoryId": "emulation",
+    "priceTier": "Low",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source automated adversary emulation platform from MITRE, now hosted under the Apache organisation, mapped to MITRE ATT&CK.",
+    "compete": {
+      "wins": "Free, with automated multi-step operations and plugins.",
+      "loses": "Needs someone who can build and read operations. It is a framework, not a service."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Caldera on GitHub",
+        "url": "https://github.com/apache/caldera"
+      }
+    ]
+  },
+  {
+    "id": "stratus-red-team",
+    "name": "Stratus Red Team",
+    "vendor": "Datadog",
+    "categoryId": "emulation",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source tool that runs cloud attack techniques in AWS, Azure, GCP, and Kubernetes to test detections.",
+    "compete": {
+      "wins": "Free, focused tests for cloud detections, each with setup and cleanup.",
+      "loses": "Cloud-only, and someone has to check whether alerts fired."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Stratus Red Team on GitHub",
+        "url": "https://github.com/DataDog/stratus-red-team"
+      }
+    ]
+  },
+  {
+    "id": "scythe",
+    "name": "SCYTHE",
+    "vendor": "SCYTHE",
+    "categoryId": "emulation",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Commercial adversary emulation platform for building and running realistic attack campaigns.",
+    "compete": {
+      "wins": "Lets red and purple teams build custom campaigns without writing their own tools.",
+      "loses": "Needs an operator. Small teams may get the same answer from free frameworks."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "SCYTHE platform overview data sheet",
+        "url": "https://scythe.io/hubfs/Datasheets/SCYTHE%20Platform%20Overview%20-%20Datasheet.pdf?hsLang=en"
+      }
+    ]
+  },
+  {
+    "id": "pentera",
+    "name": "Pentera",
+    "vendor": "Pentera",
+    "aliases": [
+      "pentera core"
+    ],
+    "categoryId": "validation",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Automated security validation that executes real attack techniques inside the network.",
+    "extensions": [
+      {
+        "name": "Credential exposure",
+        "detail": "Validates leaked or cracked credentials against live systems."
+      },
+      {
+        "name": "RansomwareReady",
+        "detail": "Tests paths an encryption attack would actually take."
+      }
+    ],
+    "compete": {
+      "wins": "Runs real attack paths inside the network and shows which controls failed.",
+      "loses": "High cost. Atomic Red Team answers the same question if a person will run the tests."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Pentera platform",
+        "url": "https://pentera.io/pentera-platform/"
+      },
+      {
+        "title": "Pentera Core",
+        "url": "https://pentera.io/pentera-core/"
+      }
+    ]
+  },
+  {
+    "id": "attackiq",
+    "name": "AttackIQ",
+    "vendor": "AttackIQ",
+    "categoryId": "validation",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Breach and attack simulation that runs attack scenarios against production controls, mapped to MITRE ATT&CK.",
+    "compete": {
+      "wins": "Continuous, repeatable tests of whether controls detect and block.",
+      "loses": "Needs ongoing ownership to act on results. An unread dashboard does not raise maturity."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "AttackIQ Enterprise",
+        "url": "https://www.attackiq.com/products/enterprise/"
+      }
+    ]
+  },
+  {
+    "id": "safebreach",
+    "name": "SafeBreach",
+    "vendor": "SafeBreach",
+    "categoryId": "validation",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Breach and attack simulation with a large library of attack scenarios.",
+    "compete": {
+      "wins": "Broad scenario coverage for testing many controls on a schedule.",
+      "loses": "Enterprise cost, and value depends on a team fixing what it finds."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "SafeBreach Validate",
+        "url": "https://www.safebreach.com/validate-breach-and-attack-simulation/"
+      }
+    ]
+  },
+  {
+    "id": "cymulate",
+    "name": "Cymulate",
+    "vendor": "Cymulate",
+    "categoryId": "validation",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Exposure validation platform combining breach and attack simulation with attack-surface and control testing.",
+    "compete": {
+      "wins": "Modular, so a team can start with the tests it needs most.",
+      "loses": "The module menu makes quotes hard to compare. Check exactly what is included."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Cymulate platform",
+        "url": "https://cymulate.com/platform/"
+      },
+      {
+        "title": "Cymulate breach and attack simulation",
+        "url": "https://cymulate.com/breach-and-attack-simulation/"
+      }
+    ]
+  },
+  {
+    "id": "picus",
+    "name": "Picus",
+    "vendor": "Picus Security",
+    "aliases": [
+      "picus security"
+    ],
+    "categoryId": "validation",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Security control validation with attack simulation and vendor-specific mitigation guidance.",
+    "compete": {
+      "wins": "Gives fixes written for the specific security products in place.",
+      "loses": "Most useful when someone will apply the mitigations it suggests."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Picus exposure validation platform",
+        "url": "https://www.picussecurity.com/security-validation-platform"
+      }
+    ]
+  },
+  {
+    "id": "nodezero",
+    "name": "NodeZero",
+    "vendor": "Horizon3.ai",
+    "aliases": [
+      "horizon3",
+      "horizon3.ai"
+    ],
+    "categoryId": "validation",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "NodeZero Federal FedRAMP High",
+        "url": "https://horizon3.ai/vertical/federal/"
+      }
+    },
+    "description": "Autonomous penetration testing that chains real attack paths across internal, external, and cloud networks.",
+    "compete": {
+      "wins": "Can be run as often as needed without booking a pentest firm.",
+      "loses": "Not a substitute for a human tester's judgement on business logic and scope."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "NodeZero platform",
+        "url": "https://horizon3.ai/nodezero/"
+      }
+    ]
+  },
+  {
+    "id": "knowbe4",
+    "name": "KnowBe4",
+    "vendor": "KnowBe4",
+    "aliases": [
+      "knowbe 4",
+      "know be4"
+    ],
+    "categoryId": "awareness",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Authorized",
+      "source": {
+        "title": "KnowBe4 achieves FedRAMP authorization",
+        "url": "https://www.knowbe4.com/press/knowbe4-achieves-fedramp-authorization-from-u.s.-federal-government"
+      }
+    },
+    "euResidency": {
+      "source": {
+        "title": "KnowBe4 data storage locations",
+        "url": "https://support.knowbe4.com/hc/en-us/articles/45880984844179-KnowBe4-Data-Storage-Locations"
+      }
+    },
+    "description": "Security awareness training and simulated phishing for the whole company.",
+    "extensions": [
+      {
+        "name": "PhishER",
+        "detail": "Shared inbox triage for user-reported phishing."
+      },
+      {
+        "name": "Compliance Plus",
+        "detail": "Extra modules for regulated training content."
+      }
+    ],
+    "compete": {
+      "wins": "Phishing simulation and training for the whole company.",
+      "loses": "Overlaps with Microsoft attack simulation training if Defender for Office 365 Plan 2 is already licensed and used."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "KnowBe4 Security Awareness Training",
+        "url": "https://www.knowbe4.com/products/security-awareness-training"
+      },
+      {
+        "title": "KnowBe4 pricing",
+        "url": "https://www.knowbe4.com/products/security-awareness-training/pricing"
+      }
+    ]
+  },
+  {
+    "id": "proofpoint-zenguide",
+    "name": "Proofpoint ZenGuide",
+    "vendor": "Proofpoint",
+    "aliases": [
+      "zenguide",
+      "proofpoint security awareness"
+    ],
+    "categoryId": "awareness",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Risk-based security awareness training and phishing simulation, linked to Proofpoint email threat data.",
+    "compete": {
+      "wins": "Targets training at the people email data shows are attacked most.",
+      "loses": "Strongest alongside Proofpoint email security. Less of an edge on its own."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Proofpoint risk-based security awareness training",
+        "url": "https://www.proofpoint.com/us/products/mitigate-human-risk"
+      }
+    ]
+  },
+  {
+    "id": "hoxhunt",
+    "name": "Hoxhunt",
+    "vendor": "Hoxhunt",
+    "categoryId": "awareness",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Adaptive phishing training that adjusts difficulty to each person and rewards reporting.",
+    "compete": {
+      "wins": "Focuses on building the habit of reporting, not just completion rates.",
+      "loses": "Narrower content library than the largest training vendors."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Hoxhunt security awareness training",
+        "url": "https://hoxhunt.com/product/security-awareness-training"
+      }
+    ]
+  },
+  {
+    "id": "mimecast-engage",
+    "name": "Mimecast Engage",
+    "vendor": "Mimecast",
+    "categoryId": "awareness",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "euResidency": {
+      "source": {
+        "title": "Mimecast opens German data centers",
+        "url": "https://investors.mimecast.com/news-releases/news-release-details/mimecast-opens-german-data-centers-help-european-firms-address"
+      }
+    },
+    "description": "Security awareness training and human risk scoring from Mimecast.",
+    "compete": {
+      "wins": "Combines training with risk scores from Mimecast email data.",
+      "loses": "Most value alongside Mimecast email security."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Mimecast Engage awareness training",
+        "url": "https://www.mimecast.com/products/mimecast-engage-awareness-training/"
+      }
+    ]
+  },
+  {
+    "id": "gophish",
+    "name": "Gophish",
+    "vendor": "Gophish project",
+    "categoryId": "awareness",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source phishing simulation framework you host yourself.",
+    "compete": {
+      "wins": "Free, and full control over simulation content and data.",
+      "loses": "Phishing simulation only, with no training content. You host it and manage sending reputation."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Gophish",
+        "url": "https://getgophish.com/"
+      },
+      {
+        "title": "Gophish on GitHub",
+        "url": "https://github.com/gophish/gophish"
+      }
+    ]
+  },
+  {
+    "id": "vanta",
+    "name": "Vanta",
+    "vendor": "Vanta",
+    "aliases": [
+      "vanta trust"
+    ],
+    "categoryId": "compliance",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "Moderate",
+      "source": {
+        "title": "Vanta receives FedRAMP 20x Moderate",
+        "url": "https://www.businesswire.com/news/home/20260428674042/en/Vanta-Receives-FedRAMP-20x-Moderate-Authorization"
+      }
+    },
+    "description": "Automated evidence collection for SOC 2, ISO 27001, and similar audits.",
+    "extensions": [
+      {
+        "name": "Trust Center",
+        "detail": "Customer-facing security page fed by live controls."
+      },
+      {
+        "name": "Vendor Risk Management",
+        "detail": "Questionnaires and reviews for third parties."
+      }
+    ],
+    "compete": {
+      "wins": "Collects evidence for SOC 2, ISO 27001, and similar reviews without a spreadsheet.",
+      "loses": "Not an enterprise risk register. Once risk, audit, and policy work span many business units, a GRC platform does that job."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Vanta automated compliance",
+        "url": "https://www.vanta.com/products/automated-compliance"
+      }
+    ]
+  },
+  {
+    "id": "drata",
+    "name": "Drata",
+    "vendor": "Drata",
+    "categoryId": "compliance",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Compliance automation with continuous control monitoring across SOC 2, ISO 27001, and many other frameworks.",
+    "compete": {
+      "wins": "Broad framework coverage and integrations for continuous evidence.",
+      "loses": "Like its peers, it collects evidence. It does not make the controls work."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Drata compliance automation",
+        "url": "https://drata.com/products/compliance-automation"
+      },
+      {
+        "title": "Drata frameworks",
+        "url": "https://drata.com/frameworks"
+      }
+    ]
+  },
+  {
+    "id": "secureframe",
+    "name": "Secureframe",
+    "vendor": "Secureframe",
+    "categoryId": "compliance",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Compliance automation for SOC 2, ISO 27001, PCI DSS, CMMC, and others, with policy templates and evidence collection.",
+    "compete": {
+      "wins": "Covers several regulated frameworks beyond SOC 2, including CMMC and PCI DSS.",
+      "loses": "Overlaps heavily with Vanta and Drata. Compare integrations and auditor fit, not marketing."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Secureframe Comply",
+        "url": "https://secureframe.com/products/secureframe-comply"
+      }
+    ]
+  },
+  {
+    "id": "sprinto",
+    "name": "Sprinto",
+    "vendor": "Sprinto",
+    "categoryId": "compliance",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Compliance automation aimed at startups and growing companies, with continuous monitoring for SOC 2, ISO 27001, and more.",
+    "compete": {
+      "wins": "Often priced for smaller companies getting a first certification.",
+      "loses": "Less suited to complex, multi-entity enterprise programs."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Sprinto",
+        "url": "https://sprinto.com/"
+      },
+      {
+        "title": "Sprinto SOC 2",
+        "url": "https://sprinto.com/frameworks/soc-2/"
+      }
+    ]
+  },
+  {
+    "id": "thoropass",
+    "name": "Thoropass",
+    "vendor": "Thoropass",
+    "categoryId": "compliance",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Compliance automation bundled with audit services, so readiness and the audit are bought together.",
+    "compete": {
+      "wins": "One contract for the platform and the audit, which can simplify a first SOC 2.",
+      "loses": "Bundling ties you to its audit partners. Teams that want to choose their own auditor lose that freedom."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Thoropass compliance automation",
+        "url": "https://www.thoropass.com/platform/compliance-automation"
+      }
+    ]
+  },
+  {
+    "id": "servicenow-irm",
+    "name": "ServiceNow IRM",
+    "vendor": "ServiceNow",
+    "aliases": [
+      "servicenow",
+      "servicenow irm",
+      "snow irm"
+    ],
+    "categoryId": "grc",
+    "priceTier": "High",
+    "bestFor": [
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "fedramp": {
+      "level": "High",
+      "source": {
+        "title": "ServiceNow secures FedRAMP High",
+        "url": "https://www.nasdaq.com/press-release/servicenow-secures-fedramp-high-authorization-2019-09-18"
+      }
+    },
+    "description": "Integrated risk management for policies, risks, issues, and audit work.",
+    "extensions": [
+      {
+        "name": "Policy and Compliance",
+        "detail": "Control testing and citation mapping inside the IRM suite."
+      },
+      {
+        "name": "Risk Management",
+        "detail": "Enterprise risk register with scoring and workflows."
+      }
+    ],
+    "compete": {
+      "wins": "Policies, risks, and audit findings in one system of record.",
+      "loses": "Enterprise cost and an implementation. A mid-market SOC 2 program does not need it."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "ServiceNow Integrated Risk Management",
+        "url": "https://www.servicenow.com/products/integrated-risk-management.html"
+      }
+    ]
+  },
+  {
+    "id": "archer",
+    "name": "Archer",
+    "vendor": "Archer",
+    "aliases": [
+      "rsa archer",
+      "archer irm"
+    ],
+    "categoryId": "grc",
+    "priceTier": "High",
+    "bestFor": [
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Integrated risk management for enterprise, operational, IT, and third-party risk, audit, and compliance.",
+    "compete": {
+      "wins": "Long-established and highly configurable for large, regulated programs.",
+      "loses": "Heavy implementation and administration. Usually needs dedicated staff or partners."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "Archer enterprise and operational risk",
+        "url": "https://www.archerirm.com/enterprise-operational-risk"
+      },
+      {
+        "title": "About Archer",
+        "url": "https://www.archerirm.com/about-us"
+      }
+    ]
+  },
+  {
+    "id": "optro",
+    "name": "Optro",
+    "vendor": "Optro",
+    "aliases": [
+      "auditboard"
+    ],
+    "categoryId": "grc",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Connected audit, risk, infosec compliance, and IT risk platform. Formerly AuditBoard, renamed in March 2026.",
+    "compete": {
+      "wins": "Strong with internal audit and SOX teams, and quicker to adopt than heavier GRC suites.",
+      "loses": "Its roots are in audit. Check depth for security operations and third-party risk needs."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "AuditBoard is now Optro",
+        "url": "https://optro.ai/blog/meet-optro-auditboard-unveils-new-identity-as-ai-transforms-grc"
+      },
+      {
+        "title": "IT and cyber risk management",
+        "url": "https://www.auditboard.com/solutions/use-cases/it-risk-management/"
+      }
+    ]
+  },
+  {
+    "id": "onetrust-grc",
+    "name": "OneTrust Tech Risk & Compliance",
+    "vendor": "OneTrust",
+    "aliases": [
+      "onetrust"
+    ],
+    "categoryId": "grc",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "IT risk and compliance management, part of a wider platform that also covers privacy and third-party risk.",
+    "compete": {
+      "wins": "Useful where privacy, third-party risk, and security compliance should share one platform.",
+      "loses": "Modules are sold separately. The full value depends on buying several of them."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "OneTrust Tech Risk and Compliance",
+        "url": "https://www.onetrust.com/solutions/tech-risk-and-compliance/"
+      }
+    ]
+  },
+  {
+    "id": "logicgate",
+    "name": "LogicGate Risk Cloud",
+    "vendor": "LogicGate",
+    "aliases": [
+      "logicgate",
+      "risk cloud"
+    ],
+    "categoryId": "grc",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "No-code GRC platform for building risk, compliance, and third-party risk workflows.",
+    "compete": {
+      "wins": "Workflows can be configured without developers.",
+      "loses": "Flexibility means design work. Plan time to model the program before go-live."
+    },
+    "lastReviewed": "2026-11-10",
+    "sources": [
+      {
+        "title": "LogicGate Risk Cloud overview",
+        "url": "https://www.logicgate.com/resources/risk-cloud-platform-overview/"
+      }
+    ]
+  }
+]
