@@ -19,33 +19,25 @@ import {
   diffInventory,
   domainStats,
   lookupTool,
-  maturityScore,
-  ownedToolIds,
   recommendTools,
   SAMPLE_INVENTORY,
   scanInventory,
   reviewCounts,
   reviewState,
   vendorOf,
-  gapFit,
   addonKey,
   addonOpportunities,
   activeCatalogVersion,
   BUNDLED_CATALOG_VERSION,
   compareVersions,
   PRICING_LABEL,
-  type AddonOpportunity,
   type ToolExtension,
   gapPriority,
-  licensedProducts,
   requiredBy,
   requirementLabel,
   SUITES,
-  FIT_ORDER,
-  type FitKind,
   type Tool,
   windowForSeverity,
-  OPERATING_STATUSES,
   PLAN_WINDOWS,
   SEVERITIES,
   type Budget,
@@ -64,7 +56,23 @@ import { downloadInventoryTemplate, parseInventoryFile } from "@/lib/inventory-i
 import { downloadPdfReport, downloadTextReport, downloadWorkbook } from "@/lib/report-files";
 import { checkGitHub, type GitHubCheck } from "@/lib/github-check";
 import { fetchRemoteCatalog, installCatalog, resetCatalog, type CatalogCheck } from "@/lib/catalog-update";
-import { GITHUB_REPO } from "@/data/app-meta";
+import {
+  StatusPicker,
+  StateText,
+  StateBadge,
+  AddonLine,
+  AddonList,
+  LevelBadge,
+  StarButton,
+  FedrampText,
+  EuText,
+  FitBadge,
+  PlanSelect,
+  ChoiceRow,
+} from "@/components/ui";
+import { correctionUrl, safeHref } from "@/lib/links";
+import { assess, LEVEL_NAMES, MAX_LEVEL, productField, vendorQuestionLines } from "@/lib/assessment";
+import { MaturityTable, PracticeChecklist, VendorQuestionsCard } from "@/components/maturity-panels";
 import { exportWorkspace, importWorkspace, loadWorkspaceData, resetWorkspace, usePersistedState, useTheme, type Theme } from "@/lib/persist";
 
 const DOMAIN_ICON: Record<Domain, typeof Shield> = {
@@ -86,12 +94,11 @@ const EXAMPLE_WORKSPACE: Record<string, unknown> = {
   suites: ["m365-e3"],
   picked: ["microsoft-defender", "okta", "veeam", "knowbe4", "microsoft-sentinel"],
   categoryStatus: { endpoint: "Deployed", identity: "Deployed", backup: "Partial", awareness: "Deployed", siem: "Partial" },
+  practices: { endpoint: ["coverage", "prevent"], identity: ["mfa"] },
   board: "compete",
   competeFilter: "gaps",
   competeId: "email",
 };
-
-type CategoryState = "Covered" | "Not proven" | "Licensed" | "Gap";
 
 type BoardId = "overview" | "stack" | "risk" | "plan" | "compete" | "controls";
 
@@ -128,33 +135,6 @@ function nameKey(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
-function StatusPicker({
-  value,
-  onChange,
-}: {
-  value: OperatingStatus;
-  onChange: (status: OperatingStatus) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-1">
-      {OPERATING_STATUSES.map((status) => (
-        <button
-          key={status}
-          type="button"
-          aria-pressed={value === status}
-          onClick={() => onChange(status)}
-          className={
-            "min-h-11 md:min-h-9 rounded-lg px-3 text-xs font-medium " +
-            (value === status ? "bg-brand text-on-brand" : "bg-surface text-ink-muted")
-          }
-        >
-          {status}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export function MaturityApp() {
   const [size, setSize] = usePersistedState<CompanySize>("size", "Mid-market");
   const [budget, setBudget] = usePersistedState<Budget>("budget", "Balanced");
@@ -162,6 +142,7 @@ export function MaturityApp() {
     { id: "company", name: "Company-wide", frameworks: ["cis"] },
   ]);
   const [categoryStatus, setCategoryStatus] = usePersistedState<Record<string, OperatingStatus>>("categoryStatus", {});
+  const [practices, setPractices] = usePersistedState<Record<string, string[]>>("practices", {});
   const [owners, setOwners] = usePersistedState<Record<string, string>>("owners", {});
   const [severities, setSeverities] = usePersistedState<Record<string, Severity>>("severities", {});
   const [likelihoods, setLikelihoods] = usePersistedState<Record<string, Severity>>("likelihoods", {});
@@ -220,50 +201,13 @@ export function MaturityApp() {
 
   const stackNames = stack.map((item) => item.name).join(", ");
   const ownedCombined = [owned, stackNames].filter(Boolean).join(", ");
-  const ownedIds = useMemo(() => {
-    const ids = ownedToolIds(TOOLS, ownedCombined);
-    for (const id of picked) ids.add(id);
-    return ids;
-  }, [ownedCombined, picked]);
-  const licensed = useMemo(() => licensedProducts(suites), [suites]);
-  const pickedCategories = useMemo(
-    () => new Set(TOOLS.filter((tool) => picked.includes(tool.id)).map((tool) => tool.categoryId)),
-    [picked],
+  const assessment = useMemo(
+    () => assess({ checked, ownedText: ownedCombined, picked, suites, addons, categoryStatus, stack, practices }),
+    [checked, ownedCombined, picked, suites, addons, categoryStatus, stack, practices],
   );
-  // Add-ons you have on products you run can cover another category (for example Falcon Spotlight for vulnerabilities).
-  const addonCovers = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const tool of TOOLS) {
-      if (!ownedIds.has(tool.id)) continue;
-      for (const extension of tool.extensions ?? []) {
-        if (extension.covers && addons.includes(addonKey(tool.id, extension.name))) {
-          map.set(extension.covers, extension.name + " on " + tool.name);
-        }
-      }
-    }
-    return map;
-  }, [ownedIds, addons]);
-  const present = useMemo(() => {
-    const ids = new Set(checked);
-    for (const tool of TOOLS) {
-      if (ownedIds.has(tool.id)) ids.add(tool.categoryId);
-    }
-    for (const id of addonCovers.keys()) ids.add(id);
-    return ids;
-  }, [checked, ownedIds, addonCovers]);
-  const operating = useMemo(() => {
-    const ids = new Set<string>();
-    for (const id of [...checked, ...pickedCategories, ...addonCovers.keys()]) {
-      if ((categoryStatus[id] ?? "Untested") === "Deployed") ids.add(id);
-    }
-    for (const item of stack) {
-      if (item.status !== "Deployed") continue;
-      const match = lookupTool(TOOLS, item.name);
-      if (match) ids.add(match.tool.categoryId);
-    }
-    return ids;
-  }, [checked, pickedCategories, addonCovers, categoryStatus, stack]);
-  const score = useMemo(() => maturityScore(CATEGORIES, operating), [operating]);
+  const { ownedIds, licensed, addonCovers, present, operating, levels, ownedTools, pickedCategories } = assessment;
+  const score = assessment.maturity;
+  const coverage = assessment.coverage;
   const domains = useMemo(() => domainStats(CATEGORIES, operating), [operating]);
   const recommendations = useMemo(
     () => recommendTools(TOOLS, size, budget, present, ownedCombined).filter((tool) => !ownedIds.has(tool.id)),
@@ -296,7 +240,6 @@ export function MaturityApp() {
     coverage: row.percent,
   }));
   const lookupNeedle = lookup.trim().toLowerCase();
-  const ownedTools = TOOLS.filter((tool) => ownedIds.has(tool.id));
 
   function provenKeys(): Set<string> {
     const keys = new Set<string>();
@@ -437,8 +380,14 @@ export function MaturityApp() {
     });
     const lines = [
       "OpenSecMaturity report",
-      `Score: ${score} / 100 (deployed essentials only)`,
+      `Maturity score: ${score} / 100 (average level of the essentials, 0 to ${MAX_LEVEL} each)`,
+      `Coverage: ${coverage}% (${essentialCovered} of ${essential.length} essentials operating)`,
       `Company: ${size} | Budget: ${budget} | up to ${BUDGET_TIER[budget]}`,
+      "",
+      "Maturity by category",
+      ...[...levels.values()].map(
+        (row) => `${row.category.name}${row.category.essential ? " (essential)" : ""}: level ${row.level} of ${MAX_LEVEL}, ${LEVEL_NAMES[row.level]}`,
+      ),
       "",
       "Domains",
       ...domains.map((row) => `${row.domain}: ${row.percent}% (${row.covered} of ${row.total})`),
@@ -534,11 +483,21 @@ export function MaturityApp() {
     if (format === "xlsx") {
       void downloadWorkbook({
         Summary: [
-          { Item: "Score", Value: score },
+          { Item: "Maturity score", Value: score },
+          { Item: "Coverage %", Value: coverage },
           { Item: "Company size", Value: size },
           { Item: "Budget", Value: budget },
           { Item: "Price ceiling", Value: BUDGET_TIER[budget] },
         ],
+        Maturity: [...levels.values()].map((row) => ({
+          Category: row.category.name,
+          Essential: row.category.essential ? "Yes" : "",
+          Level: row.level,
+          Stage: LEVEL_NAMES[row.level],
+          "Practices confirmed": row.confirmed
+            .map((id) => row.category.practices.find((practice) => practice.id === id)?.text ?? id)
+            .join(" | "),
+        })),
         Domains: domains.map((row) => ({
           Domain: row.domain,
           Percent: row.percent,
@@ -611,12 +570,7 @@ export function MaturityApp() {
     setCategoryStatus((current) => (current[tool.categoryId] ? current : { ...current, [tool.categoryId]: "Deployed" }));
   }
 
-  function categoryState(id: string): CategoryState {
-    if (operating.has(id)) return "Covered";
-    if (present.has(id)) return "Not proven";
-    if (TOOLS.some((tool) => tool.categoryId === id && licensed.has(tool.id))) return "Licensed";
-    return "Gap";
-  }
+  const categoryState = assessment.state;
 
   const builtInFrameworkIds = frameworkIds.filter((id): id is FrameworkId =>
     (["cis", "nist", "iso", "soc2", "pci", "hipaa"] as string[]).includes(id),
@@ -631,24 +585,7 @@ export function MaturityApp() {
   }
 
   function fieldFor(categoryId: string) {
-    const held = ownedTools.filter((tool) => tool.categoryId === categoryId);
-    const call = competeCall(held, TOOLS, categoryId, size, budget);
-    const viaAddon = held.length === 0 ? addonCovers.get(categoryId) : undefined;
-    return call.field
-      .map((tool) => {
-        const fit = gapFit(tool, ownedTools, size, budget, licensed);
-        if (viaAddon && (fit.kind === "Fills the gap" || fit.kind === "Fills it, with a catch")) {
-          return {
-            tool,
-            fit: {
-              kind: "Overlaps" as const,
-              detail: `You already run ${viaAddon} here. ${tool.name} would be a second product for the same job.`,
-            },
-          };
-        }
-        return { tool, fit };
-      })
-      .sort((x, y) => FIT_ORDER[x.fit.kind] - FIT_ORDER[y.fit.kind]);
+    return productField(assessment, categoryId, size, budget);
   }
 
   const addonRows = addonOpportunities(ownedTools, addons, present);
@@ -698,9 +635,19 @@ export function MaturityApp() {
         `Sources: ${tool.sources.map((source) => source.url).join(" ")}`,
         "",
       ]),
+      ...vendorQuestionLines(category),
+      "",
       "Price tiers and strengths and weaknesses are editorial. Confirm current terms with each vendor.",
     ];
     downloadPdfReport(lines, "opensecmaturity-shortlist-" + category.id + ".pdf");
+  }
+
+  function togglePractice(categoryId: string, practiceId: string, on: boolean) {
+    setPractices((current) => {
+      const list = current[categoryId] ?? [];
+      const next = on ? [...new Set([...list, practiceId])] : list.filter((id) => id !== practiceId);
+      return { ...current, [categoryId]: next };
+    });
   }
 
   function toggleCategory(id: string) {
@@ -949,7 +896,7 @@ export function MaturityApp() {
                     </button>
                   ) : null}
                   <p className="mt-2 text-xs text-ink-muted">
-                    Catalog updates are data only: products, sources, and review dates. They are checked before use.
+                    Catalog updates are data only, taken from the latest tagged release and checked against its published digest before use.
                   </p>
                 </div>
                 <div>
@@ -965,7 +912,7 @@ export function MaturityApp() {
                       </p>
                       {!gitCheck.matches && gitCheck.remoteVersion ? (
                         <a
-                          href={"https://github.com/" + GITHUB_REPO + "/releases/latest"}
+                          href={safeHref(gitCheck.releaseUrl)}
                           target="_blank"
                           rel="noreferrer"
                           className="mt-2 inline-flex min-h-11 items-center rounded-lg bg-brand px-3 text-sm font-medium text-on-brand md:min-h-8"
@@ -1028,17 +975,17 @@ export function MaturityApp() {
               <p className="mt-2 text-6xl font-light leading-none tracking-tight text-ink md:text-7xl" aria-live="polite">
                 {score}
               </p>
-              <p className="mt-3 text-sm text-ink-muted">out of 100 · deployed essentials only</p>
+              <p className="mt-3 text-sm text-ink-muted">out of 100 · average level of the essentials</p>
             </div>
             <div className="mt-8">
               <div className="h-2 overflow-hidden rounded-full bg-subtle">
                 <div className="h-full rounded-full bg-brand" style={{ width: `${score}%` }} />
               </div>
               <p className="mt-3 text-sm text-ink">
-                {essentialCovered} of {essential.length} essentials operating
+                Coverage {coverage}% · {essentialCovered} of {essential.length} essentials operating
               </p>
               <p className="mt-2 text-sm text-ink-muted">
-                Partial and untested tools do not move the score. A license is not the same as a control that works.
+                Each essential is scored 0 to {MAX_LEVEL}: deployed counts 1, and each practice you confirm adds 1. Partial and untested tools score 0. A license is not the same as a control that works.
               </p>
             </div>
           </article>
@@ -1075,6 +1022,20 @@ export function MaturityApp() {
               ) : null}
             </div>
           </article>
+        </section>
+
+        <section className="rounded-card bg-surface p-5 text-ink shadow-card md:p-6">
+          <h2 className="font-display text-lg font-semibold">Maturity by category</h2>
+          <p className="mt-1 max-w-2xl text-sm text-ink-muted">
+            Weakest essentials first. Confirm practices on the Compare tab, or from a deployed category on Setup.
+          </p>
+          <MaturityTable
+            levels={[...levels.values()]}
+            onOpen={(id) => {
+              setCompeteId(id);
+              setBoard("compete");
+            }}
+          />
         </section>
 
         {addonRows.length > 0 ? (
@@ -1423,6 +1384,19 @@ export function MaturityApp() {
                                 onChange={(status) => setCategoryStatus((current) => ({ ...current, [category.id]: status }))}
                               />
                             ) : null}
+                            {operating.has(category.id) && levels.get(category.id) ? (
+                              <details className="rounded-lg bg-subtle px-3 py-2">
+                                <summary className="cursor-pointer text-sm text-ink">
+                                  How well it runs: Level {levels.get(category.id)?.level} of {MAX_LEVEL}
+                                </summary>
+                                <PracticeChecklist
+                                  compact
+                                  level={levels.get(category.id)!}
+                                  operating
+                                  onToggle={(practiceId, on) => togglePractice(category.id, practiceId, on)}
+                                />
+                              </details>
+                            ) : null}
                           </div>
                         </div>
                       );
@@ -1453,6 +1427,7 @@ export function MaturityApp() {
           <h2 className="sr-only">Environment</h2>
           <p className="mt-1 max-w-2xl text-sm text-ink-muted">
             Import an Excel or CSV inventory, or add a tool by hand. A lookup confirms the vendor and purpose. Nothing counts until you confirm it.
+            An app list exported from your identity provider works too, for example Microsoft Entra ID enterprise applications or Okta applications saved as CSV. The file is read in this browser and never uploaded.
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -2099,7 +2074,17 @@ export function MaturityApp() {
                       </>
                     )}
                   </div>
+
+                  {levels.get(category.id) ? (
+                    <PracticeChecklist
+                      level={levels.get(category.id)!}
+                      operating={operating.has(category.id)}
+                      onToggle={(practiceId, on) => togglePractice(category.id, practiceId, on)}
+                    />
+                  ) : null}
                 </article>
+
+                <VendorQuestionsCard category={category} />
 
                 {addonRows.some((row) => row.categoryId === category.id) ? (
                   <article className="rounded-card bg-surface p-5 text-ink shadow-card md:p-6">
@@ -2650,206 +2635,3 @@ export function MaturityApp() {
 }
 
 /** Opens a pre-filled GitHub issue. Nothing is sent until the person submits it on GitHub. */
-function correctionUrl(tool: Tool): string {
-  const params = new URLSearchParams({ template: "correction.yml", title: "Correction: " + tool.name, product: tool.id });
-  return "https://github.com/" + GITHUB_REPO + "/issues/new?" + params.toString();
-}
-
-/** Only https links leave the app; anything else is neutralised. */
-function safeHref(url: string): string {
-  return /^https:\/\//i.test(url) ? url : "#";
-}
-
-function StateText({ state }: { state: CategoryState }) {
-  const tone = state === "Covered" ? "text-brand" : state === "Gap" ? "text-risk-high" : "text-risk-mid";
-  return <span className={tone}>{state}</span>;
-}
-
-function StateBadge({ state, large = false }: { state: CategoryState; large?: boolean }) {
-  const tone =
-    state === "Covered"
-      ? "bg-brand-soft text-brand"
-      : state === "Gap"
-        ? "bg-risk-high-soft text-risk-high"
-        : "bg-risk-mid-soft text-risk-mid";
-  return (
-    <span className={"shrink-0 rounded-full font-medium " + tone + (large ? " px-3 py-1 text-sm" : " px-2 py-0.5 text-xs")}>
-      {state}
-    </span>
-  );
-}
-
-function AddonLine({ extension }: { extension: ToolExtension }) {
-  return (
-    <span className="block">
-      <span className="font-medium text-ink">{extension.name}</span>
-      {extension.ai ? <span className="ml-1.5 rounded-full bg-brand-soft px-1.5 py-0.5 text-xs font-medium text-brand">AI</span> : null}
-      <span
-        className={
-          "ml-1.5 rounded-full px-1.5 py-0.5 text-xs font-medium " +
-          (extension.pricing ? "bg-subtle text-ink" : "bg-subtle text-ink-muted")
-        }
-      >
-        {extension.pricing ? PRICING_LABEL[extension.pricing] : "Pricing not checked"}
-      </span>
-      <span className="block">{extension.detail}</span>
-      {extension.pricingNote || extension.pricingSource ? (
-        <span className="block text-xs">
-          {extension.pricingNote}
-          {extension.pricingSource ? (
-            <>
-              {" "}
-              <a href={safeHref(extension.pricingSource.url)} target="_blank" rel="noreferrer" className="text-brand hover:underline">
-                Source
-              </a>
-            </>
-          ) : null}
-        </span>
-      ) : null}
-    </span>
-  );
-}
-
-function AddonList({ rows, showProduct = false }: { rows: AddonOpportunity[]; showProduct?: boolean }) {
-  const tone = (effect: AddonOpportunity["effect"]) =>
-    effect === "Closes a gap" ? "bg-brand-soft text-brand" : effect === "Overlaps" ? "bg-subtle text-ink-muted" : "bg-risk-mid-soft text-risk-mid";
-  return (
-    <ul className="mt-4 flex flex-col divide-y divide-line rounded-lg border border-line">
-      {rows.map((row) => (
-        <li key={row.key} className="flex flex-col gap-2 p-3 md:flex-row md:items-start md:justify-between">
-          <div className="min-w-0 text-sm text-ink-muted">
-            {showProduct ? <p className="text-xs font-medium text-ink-muted">{row.product.name}</p> : null}
-            <AddonLine extension={row.addon} />
-          </div>
-          <div className="md:w-64 md:shrink-0">
-            <span className={"inline-block rounded-full px-2 py-0.5 text-xs font-medium " + tone(row.effect)}>
-              {row.effect === "Strengthens" ? "Strengthens, no score change" : row.effect}
-            </span>
-            <p className="mt-1 text-xs text-ink-muted">{row.why}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function LevelBadge({ level, label }: { level: "required" | "addressable" | "recommended" | "none"; label: string }) {
-  const tone =
-    level === "required"
-      ? "bg-risk-high-soft text-risk-high"
-      : level === "addressable"
-        ? "bg-risk-mid-soft text-risk-mid"
-        : level === "recommended"
-          ? "bg-subtle text-ink"
-          : "bg-subtle text-ink-muted";
-  return <span className={"rounded-full px-2 py-0.5 text-xs font-medium " + tone}>{label}</span>;
-}
-
-function StarButton({ on, disabled, name, onClick }: { on: boolean; disabled: boolean; name: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={(on ? "Remove " : "Shortlist ") + name}
-      title={disabled ? "Shortlist holds three products" : on ? "Remove from shortlist" : "Add to shortlist"}
-      className={
-        "flex h-11 w-11 items-center justify-center rounded-md text-lg leading-none md:h-8 md:w-8 " +
-        (on ? "text-brand" : "text-ink-muted hover:text-brand") +
-        " disabled:opacity-40"
-      }
-    >
-      {on ? "★" : "☆"}
-    </button>
-  );
-}
-
-function FedrampText({ tool }: { tool: Tool }) {
-  if (tool.fedramp) return <span>{tool.fedramp.level}</span>;
-  if (tool.deployment.includes("Self-hosted") && !tool.deployment.includes("SaaS")) return <span className="text-ink-muted">n/a</span>;
-  return <span className="text-ink-muted">Not checked</span>;
-}
-
-function EuText({ tool }: { tool: Tool }) {
-  if (tool.euResidency) return <span>Yes</span>;
-  if (tool.deployment.includes("Self-hosted")) return <span className="text-ink-muted">You host</span>;
-  return <span className="text-ink-muted">Not checked</span>;
-}
-
-function FitBadge({ kind }: { kind: FitKind }) {
-  const tone =
-    kind === "Fills the gap" || kind === "Already licensed"
-      ? "bg-brand-soft text-brand"
-      : kind === "Fills it, with a catch"
-        ? "bg-risk-mid-soft text-risk-mid"
-        : kind === "Yours"
-          ? "bg-brand text-on-brand"
-          : "bg-subtle text-ink-muted";
-  return <span className={"inline-block shrink-0 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap " + tone}>{kind}</span>;
-}
-
-function PlanSelect<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: readonly T[];
-  onChange: (next: T) => void;
-}) {
-  return (
-    <label className="flex flex-col gap-1 text-xs text-ink-muted">
-      {label}
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value as T)}
-        className="min-h-11 rounded-lg bg-surface px-2 text-sm text-ink md:min-h-9"
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}
-
-function ChoiceRow<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: readonly T[];
-  onChange: (next: T) => void;
-}) {
-  return (
-    <div>
-      <p className="mb-2 text-sm font-medium text-ink">{label}</p>
-      <div className="flex flex-wrap gap-2">
-        {options.map((option) => {
-          const active = option === value;
-          return (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={active}
-              onClick={() => onChange(option)}
-              className={
-                "min-h-11 md:min-h-9 rounded-lg px-4 text-sm font-medium transition-colors duration-200 " +
-                (active ? "bg-brand text-on-brand" : "bg-subtle text-ink")
-              }
-            >
-              {option}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}

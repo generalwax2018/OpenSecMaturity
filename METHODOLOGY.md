@@ -18,9 +18,29 @@ The price tier, the company sizes, and the wins/loses note are editorial judgeme
 
 ## Maturity score
 
-The score is the share of essential categories that are operating. A category counts only when it, or a product you own in it, is marked Deployed. Partial and Untested do not move the score: a licence is not the same as a control that works.
+Each category has a level from 0 to 4:
 
-Limits: Deployed is your own statement. The app does not verify it.
+- **0, Not operating**: nothing in the category is marked Deployed. Partial, Untested, and licensed-but-not-running all score 0: a licence is not the same as a control that works.
+- **1, Deployed**: a product you own in the category, or one you marked as covering it, is Deployed.
+- **2 to 4**: one more for each of the category's practices you confirm. Each category has three yes/no practices about how well the control runs, for example for endpoint detection: every managed device reports to the console and the count is reconciled monthly; blocking is on; high-severity alerts are triaged within an agreed time around the clock.
+
+Practices count only while the category is operating. A process around a tool that is not running is not a control.
+
+The **maturity score** is the average level of the essential categories, as a share of the top level: the sum of their levels divided by four times the number of essentials. **Coverage**, the share of essential categories that are operating, is shown next to it. Maturity is never higher than coverage.
+
+The practices are deliberately few, concrete, and checkable by an auditor or a peer. They are not a full capability model such as CMMI or the NIST CSF implementation tiers, and they do not weigh one practice above another.
+
+Limits: Deployed and each practice are your own statements. The app does not verify them. The practices are maintainer judgement; corrections and better wording are welcome.
+
+## Questions to ask vendors
+
+Each category in `catalog/categories.json` lists:
+
+- **Claims to challenge**: common sales claims in that category and the question that tests each one.
+- **Proof to request**: evidence to ask for before you buy, ideally from a trial on your own data.
+- **Red flags**: answers or terms that should make you push back or walk away.
+
+They describe patterns in each market, not any one vendor, and appear on the Compare tab and in the shortlist PDF.
 
 ## Framework requirements
 
@@ -61,7 +81,13 @@ For the products you run, the app says what each add-on would do for your maturi
 
 ## Updates
 
-"Check for updates" looks at the project's GitHub repository. Catalog updates (products, sources, add-ons, review dates) are data, so the app can download them, check them, and use them straight away; you can always go back to the built-in catalog. New app versions are a download you choose to install. The app never replaces its own code in the background, and the Content-Security-Policy would block it from running downloaded code.
+"Check for updates" reads the latest release of the project's GitHub repository, not the main branch, so nothing reaches users until a maintainer tags a release. Catalog updates (products, sources, add-ons, practices, vendor questions, review dates) are data. The app downloads the catalog files at the release's tag, checks that they match the `catalog-sha256` digest the release workflow writes into the release notes, then checks their shape, and only then offers to use them. You can always go back to the built-in catalog.
+
+New app versions are a download you choose to install, or the hosted copy, which is redeployed from each release. The app never replaces its own code in the background, and the Content-Security-Policy would block it from running downloaded code.
+
+## Freshness
+
+Every product records the date its facts were last checked. A weekly GitHub Actions job lists products not reviewed in 180 days and source links that no longer work, and keeps one open issue with the list. The build warns about the same stale entries.
 
 ## Shortlist
 

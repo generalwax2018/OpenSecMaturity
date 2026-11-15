@@ -1,8 +1,9 @@
 // Catalog updates: new products, sources, and review dates are plain data,
-// so the app can fetch them from the project's GitHub repository without
-// changing any code. The data is checked before use and cached in this
-// browser. App code itself only changes when you download a new release.
-import { GITHUB_REPO } from "@/data/app-meta";
+// so the app can fetch them from the project's latest GitHub release without
+// changing any code. The files are checked against the release's digest and
+// then for shape before use, and cached in this browser. App code itself only
+// changes when you download a new release.
+import { CATALOG_FILES, catalogDigest, latestRelease, rawUrl } from "@/lib/release";
 import {
   BUNDLED_CATALOG_VERSION,
   CATALOG_FORMAT,
@@ -11,7 +12,6 @@ import {
   type CatalogData,
 } from "@/data/catalog";
 
-const RAW = "https://raw.githubusercontent.com/" + GITHUB_REPO + "/main/catalog/";
 const CACHE_KEY = "opensecmaturity:catalog";
 const MAX_BYTES = 4 * 1024 * 1024;
 
@@ -41,6 +41,22 @@ export function checkCatalog(data: CatalogData): string[] {
     for (const id of FRAMEWORK_IDS) {
       const row = category?.requirements?.[id as "cis"];
       if (!row || !LEVELS.includes(row.level) || !text(row.ref, 400)) fail("Category " + category?.id + " is missing the " + id + " requirement.");
+    }
+    const practices = category?.practices;
+    if (!Array.isArray(practices) || practices.length === 0 || practices.length > 3 || !practices.every((row) => text(row?.id, 80) && text(row?.text, 600))) {
+      fail("Category " + category?.id + " needs one to three practices.");
+    }
+    const questions = category?.vendorQuestions;
+    const lines = (value: unknown) => Array.isArray(value) && value.length > 0 && value.length <= 20 && value.every((line) => text(line, 600));
+    if (
+      !questions ||
+      !Array.isArray(questions.claims) ||
+      questions.claims.length === 0 ||
+      !questions.claims.every((row) => text(row?.claim, 300) && text(row?.ask, 600)) ||
+      !lines(questions.proof) ||
+      !lines(questions.redFlags)
+    ) {
+      fail("Category " + category?.id + " is missing its vendor questions.");
     }
     categoryIds.add(category.id);
   }
@@ -87,26 +103,35 @@ export function loadCachedCatalog(): void {
   }
 }
 
-async function getJson(name: string): Promise<unknown> {
-  const response = await fetch(RAW + name, { cache: "no-store" });
+async function getFile(tag: string, name: string): Promise<{ name: string; bytes: ArrayBuffer; json: unknown }> {
+  const response = await fetch(rawUrl(tag, "catalog/" + name), { cache: "no-store" });
   if (!response.ok) throw new Error("Could not download " + name + " (" + response.status + ").");
-  const body = await response.text();
-  if (body.length > MAX_BYTES) throw new Error(name + " is larger than expected.");
-  return JSON.parse(body);
+  const bytes = await response.arrayBuffer();
+  if (bytes.byteLength > MAX_BYTES) throw new Error(name + " is larger than expected.");
+  return { name, bytes, json: JSON.parse(new TextDecoder().decode(bytes)) };
 }
 
-export type CatalogCheck = { remoteVersion: string; data: CatalogData; problems: string[] };
+export type CatalogCheck = { remoteVersion: string; tag: string; data: CatalogData; problems: string[] };
 
-/** Downloads the catalog from GitHub and checks it. Nothing about the assessment is sent. */
+/**
+ * Downloads the catalog from the latest release tag and checks it: the files
+ * must match the digest in the release notes, then pass the shape checks.
+ * Nothing about the assessment is sent.
+ */
 export async function fetchRemoteCatalog(): Promise<CatalogCheck> {
-  const [version, categories, products, suites] = await Promise.all([
-    getJson("version.json"),
-    getJson("categories.json"),
-    getJson("products.json"),
-    getJson("suites.json"),
-  ]);
+  const release = await latestRelease();
+  const files = await Promise.all(CATALOG_FILES.map((name) => getFile(release.tag, name)));
+  const [version, categories, products, suites] = files.map((file) => file.json);
   const data = { version, categories, products, suites } as CatalogData;
-  return { remoteVersion: (version as { version?: string })?.version ?? "unknown", data, problems: checkCatalog(data) };
+  const remoteVersion = (version as { version?: string })?.version ?? "unknown";
+  if (!release.catalogSha256) {
+    return { remoteVersion, tag: release.tag, data, problems: ["Release " + release.tag + " does not publish a catalog digest."] };
+  }
+  const digest = await catalogDigest(files);
+  if (digest !== release.catalogSha256) {
+    return { remoteVersion, tag: release.tag, data, problems: ["The catalog files at " + release.tag + " do not match the digest in the release notes."] };
+  }
+  return { remoteVersion, tag: release.tag, data, problems: checkCatalog(data) };
 }
 
 /** Saves a checked catalog and reloads so every screen uses it. */

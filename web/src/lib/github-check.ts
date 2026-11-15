@@ -1,4 +1,6 @@
 import { APP_VERSION, GITHUB_API, GITHUB_REPO } from "@/data/app-meta";
+import { latestRelease } from "@/lib/release";
+import { compareVersions } from "@/data/catalog";
 
 export type GitCommit = {
   sha: string;
@@ -10,7 +12,9 @@ export type GitCommit = {
 export type GitHubCheck = {
   localVersion: string;
   remoteVersion: string | null;
+  /** True when this copy is the latest release or newer. */
   matches: boolean;
+  releaseUrl: string;
   features: GitCommit[];
   vendors: GitCommit[];
 };
@@ -21,7 +25,6 @@ type ApiCommit = {
   commit?: { message?: string; committer?: { date?: string } };
 };
 
-const RAW = "https://raw.githubusercontent.com/" + GITHUB_REPO + "/main/";
 const CATALOG_PATHS = ["catalog", "web/public/standards.json"];
 
 async function getJson(url: string): Promise<unknown | null> {
@@ -59,12 +62,13 @@ export async function checkGitHub(): Promise<GitHubCheck> {
     .filter((item, index, all) => all.findIndex((row) => row.sha === item.sha) === index)
     .slice(0, 5);
   const vendorShas = new Set(vendors.map((item) => item.sha));
-  const versionFile = (await getJson(RAW + "web/public/app.json")) as { version?: string } | null;
-  const remoteVersion = versionFile?.version ?? null;
+  const release = await latestRelease().catch(() => null);
+  const remoteVersion = release?.version ?? null;
   return {
     localVersion: APP_VERSION,
     remoteVersion,
-    matches: remoteVersion !== null && remoteVersion === APP_VERSION,
+    matches: remoteVersion !== null && compareVersions(remoteVersion, APP_VERSION) <= 0,
+    releaseUrl: release?.url ?? "https://github.com/" + GITHUB_REPO + "/releases/latest",
     features: main.filter((item) => !vendorShas.has(item.sha)).slice(0, 6),
     vendors,
   };

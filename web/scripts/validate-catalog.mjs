@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const strict = process.argv.includes("--strict");
-const STALE_DAYS = 365;
+const STALE_DAYS = 180;
 const load = (name) => JSON.parse(readFileSync(fileURLToPath(new URL("../../catalog/" + name, import.meta.url)), "utf8"));
 
 const categories = load("categories.json");
@@ -44,6 +44,23 @@ for (const category of categories) {
     const row = category.requirements?.[key];
     if (!row || !LEVELS.includes(row.level) || !text(row.ref)) errors.push(at + ": requirements." + key + " needs a level (" + LEVELS.join(", ") + ") and a ref");
     if (row?.level === "addressable" && key !== "hipaa") errors.push(at + ": only HIPAA uses the addressable level");
+  }
+  if (!Array.isArray(category.practices) || category.practices.length < 1 || category.practices.length > 3) {
+    errors.push(at + ": practices must list one to three yes/no practices (the level tops out at 4)");
+  }
+  const practiceIds = new Set();
+  for (const practice of category.practices ?? []) {
+    if (!ID.test(practice.id ?? "") || practiceIds.has(practice.id)) errors.push(at + ": each practice needs a unique id of lowercase letters, digits, and hyphens");
+    practiceIds.add(practice.id);
+    if (!text(practice.text)) errors.push(at + ": practice " + practice.id + " needs text");
+  }
+  const questions = category.vendorQuestions;
+  if (!questions || !Array.isArray(questions.claims) || !Array.isArray(questions.proof) || !Array.isArray(questions.redFlags)) {
+    errors.push(at + ": vendorQuestions needs claims, proof, and redFlags lists");
+  } else {
+    if (questions.claims.length === 0 || questions.claims.some((row) => !text(row.claim) || !text(row.ask))) errors.push(at + ": each vendor claim needs a claim and an ask");
+    if (questions.proof.length === 0 || !questions.proof.every(text)) errors.push(at + ": vendorQuestions.proof needs at least one line");
+    if (questions.redFlags.length === 0 || !questions.redFlags.every(text)) errors.push(at + ": vendorQuestions.redFlags needs at least one line");
   }
 }
 
@@ -135,7 +152,7 @@ for (const suite of suites) {
   }
 }
 
-if (version.format !== 2) errors.push("version.json: format must be 2 for this app");
+if (version.format !== 3) errors.push("version.json: format must be 3 for this app");
 if (!/^\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(version.version ?? "")) errors.push("version.json: version must look like 2026.11.10 or 2026.11.10.2");
 
 for (const line of warnings) console.log("warning  " + line);

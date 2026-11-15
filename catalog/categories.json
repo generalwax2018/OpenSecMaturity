@@ -37,6 +37,46 @@
         "level": "addressable",
         "ref": "164.308(a)(5)(ii)(B) · Protection from malicious software"
       }
+    },
+    "practices": [
+      {
+        "id": "coverage",
+        "text": "Every managed laptop and server reports to the console, and you reconcile that count against your asset list at least monthly."
+      },
+      {
+        "id": "prevent",
+        "text": "Blocking is on in the standard policy, not detect-only, and every exception has an owner and a reason."
+      },
+      {
+        "id": "triage",
+        "text": "High-severity alerts are triaged within an agreed time, around the clock, by your team or a managed service."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Top results in MITRE ATT&CK Evaluations",
+          "ask": "Which steps were detected with the default configuration, without changes made during the test?"
+        },
+        {
+          "claim": "Autonomous or AI response, no analysts needed",
+          "ask": "Who investigates when the product is unsure, and how fast? Show a recent real case."
+        },
+        {
+          "claim": "Lightweight agent with no performance impact",
+          "ask": "Show CPU, memory, and crash data for the operating systems you run, including Linux and macOS."
+        }
+      ],
+      "proof": [
+        "A proof of concept on your own device builds, in blocking mode, with your own test techniques (for example Atomic Red Team).",
+        "The managed service's response-time commitment and a sanitised sample incident report.",
+        "What raw telemetry you can export to your SIEM, and whether that costs extra."
+      ],
+      "redFlags": [
+        "You are not allowed to run your own tests during the trial.",
+        "Pricing depends on a multi-year commitment before you have tested it.",
+        "Telemetry stays locked in their console unless you buy a higher tier."
+      ]
     }
   },
   {
@@ -77,6 +117,46 @@
         "level": "required",
         "ref": "164.312(b) · Audit controls"
       }
+    },
+    "practices": [
+      {
+        "id": "sources",
+        "text": "Identity, endpoint, email, cloud control-plane, and network logs all arrive, and a source that goes quiet raises an alert."
+      },
+      {
+        "id": "tested",
+        "text": "Detections are mapped to MITRE ATT&CK and tested at least quarterly, for example with adversary emulation."
+      },
+      {
+        "id": "retention",
+        "text": "Logs are kept as long as your frameworks require, and investigations follow a written runbook."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Predictable pricing that scales",
+          "ask": "Quote the cost at your current log volume and at double it, including retention and search."
+        },
+        {
+          "claim": "Hundreds of detections out of the box",
+          "ask": "How many fire usefully on your data, and how many need tuning first?"
+        },
+        {
+          "claim": "AI triage cuts alerts by 90%",
+          "ask": "On whose data, measured how, and what does the AI do when it is wrong?"
+        }
+      ],
+      "proof": [
+        "Parsers for your top ten log sources working in the trial, not on the roadmap.",
+        "Detections firing on your own test activity, with the false-positive rate over two weeks.",
+        "How you get your data and detection content out if you leave, in what format, and at what cost."
+      ],
+      "redFlags": [
+        "Only ingest is quoted; search, long retention, or detections are sold separately.",
+        "Detection content cannot be exported or managed as code.",
+        "Key log sources need professional services to onboard."
+      ]
     }
   },
   {
@@ -117,6 +197,46 @@
         "level": "required",
         "ref": "164.312(a)(1) · Access control, unique user identification"
       }
+    },
+    "practices": [
+      {
+        "id": "mfa",
+        "text": "MFA is enforced for every user, and administrators use phishing-resistant methods such as FIDO2 keys or passkeys."
+      },
+      {
+        "id": "privileged",
+        "text": "Admin work uses separate accounts with time-bound or approved access, not everyday accounts."
+      },
+      {
+        "id": "lifecycle",
+        "text": "Joiners, movers, and leavers are driven from HR, and privileged and critical-app access is reviewed at least quarterly."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Passwordless for everyone",
+          "ask": "What happens when a user loses their only device? Show the recovery flow."
+        },
+        {
+          "claim": "Zero trust in one product",
+          "ask": "Which device, network, and app signals does a sign-in decision actually use?"
+        },
+        {
+          "claim": "Connects to all your apps",
+          "ask": "Which of your top 20 apps support SSO and automatic provisioning, and on which tier?"
+        }
+      ],
+      "proof": [
+        "Phishing-resistant MFA options and how enrolment works for your workforce.",
+        "How the vendor protects its own admin access, and its public incident history.",
+        "Licence tiers needed for conditional access, governance, and privileged access."
+      ],
+      "redFlags": [
+        "SSO or provisioning is held back for an enterprise-only tier that was not disclosed upfront.",
+        "No documented break-glass process.",
+        "Vague answers about the vendor's own past breaches."
+      ]
     }
   },
   {
@@ -157,6 +277,46 @@
         "level": "recommended",
         "ref": "164.312(e)(1) · Transmission security"
       }
+    },
+    "practices": [
+      {
+        "id": "dmarc",
+        "text": "Every sending domain has SPF, DKIM, and DMARC at quarantine or reject."
+      },
+      {
+        "id": "report",
+        "text": "Staff have a report button, and reported mail is triaged and pulled from other inboxes."
+      },
+      {
+        "id": "detonate",
+        "text": "Attachments are sandboxed and links are checked at the time of click."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Catches 99.9% of threats",
+          "ask": "Of what sample, and what does it miss? Run it against your own mail."
+        },
+        {
+          "claim": "AI stops business email compromise",
+          "ask": "Show the BEC messages it would have flagged from your last 90 days."
+        },
+        {
+          "claim": "No tuning needed",
+          "ask": "What is the false-positive rate, and who releases quarantined mail?"
+        }
+      ],
+      "proof": [
+        "A retro-scan of 30 to 90 days of your mail, showing what it caught that your current filter missed, message by message.",
+        "Whether it works by API or needs an MX change, and what happens to mail if the service is down.",
+        "How it handles the protection already in your Microsoft 365 or Google Workspace licence."
+      ],
+      "redFlags": [
+        "Retro-scan results shown only as totals, never individual messages.",
+        "An MX change with no failover plan.",
+        "Claims that it removes the need for SPF, DKIM, and DMARC."
+      ]
     }
   },
   {
@@ -197,6 +357,46 @@
         "level": "required",
         "ref": "164.308(a)(7)(ii)(A) · Data backup plan"
       }
+    },
+    "practices": [
+      {
+        "id": "immutable",
+        "text": "Critical systems have an immutable or offline copy that a compromised admin account cannot delete."
+      },
+      {
+        "id": "restore",
+        "text": "A full restore of a critical system is tested at least twice a year and meets the agreed recovery time."
+      },
+      {
+        "id": "separate",
+        "text": "Backup consoles use separate credentials with MFA, not domain admin accounts."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Immutable backups",
+          "ask": "Can an administrator, or the vendor's support team, shorten retention or delete a copy?"
+        },
+        {
+          "claim": "Ransomware-proof",
+          "ask": "Walk through a scenario where an attacker holds domain admin. What still survives?"
+        },
+        {
+          "claim": "Instant recovery",
+          "ask": "Time a restore of a system your size during the trial."
+        }
+      ],
+      "proof": [
+        "How immutability is enforced: storage lock, separate account, or only a setting.",
+        "Measured restore throughput for your data volume, not best-case figures.",
+        "Every fee in a restore: egress, recovery, or professional services."
+      ],
+      "redFlags": [
+        "Immutability is a policy setting a compromised admin can switch off.",
+        "Restore testing is a paid extra.",
+        "Egress or recovery fees are left out of the quote."
+      ]
     }
   },
   {
@@ -237,6 +437,46 @@
         "level": "recommended",
         "ref": "164.308(a)(1)(ii)(A) · Risk analysis"
       }
+    },
+    "practices": [
+      {
+        "id": "scope",
+        "text": "Scans cover endpoints, servers, cloud, and the external perimeter at least weekly, authenticated where possible."
+      },
+      {
+        "id": "sla",
+        "text": "Fix times are set by risk, for example known-exploited vulnerabilities within 14 days, and are measured."
+      },
+      {
+        "id": "exceptions",
+        "text": "Every exception has an owner, a compensating control, and an expiry date."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Complete visibility",
+          "ask": "How many assets did discovery find in the trial compared with your asset list?"
+        },
+        {
+          "claim": "Risk-based prioritisation",
+          "ask": "Which inputs drive the score (CISA KEV, EPSS, exploit code, asset value), and can you see them?"
+        },
+        {
+          "claim": "Agentless covers everything",
+          "ask": "What is missed without credentials or an agent?"
+        }
+      ],
+      "proof": [
+        "Authenticated scan coverage on your operating systems and cloud services.",
+        "An API that exports every finding, with fix status.",
+        "How short-lived cloud assets are counted for licensing."
+      ],
+      "redFlags": [
+        "The priority score is a black box.",
+        "Per-IP licensing that quietly penalises autoscaling.",
+        "Findings cannot be exported in bulk."
+      ]
     }
   },
   {
@@ -277,6 +517,46 @@
         "level": "recommended",
         "ref": "164.312(a)(1) · Access control"
       }
+    },
+    "practices": [
+      {
+        "id": "accounts",
+        "text": "Every cloud account and subscription is connected automatically, including new ones."
+      },
+      {
+        "id": "critical",
+        "text": "Critical misconfigurations such as public storage or exposed admin ports alert an owner and are fixed within an agreed time."
+      },
+      {
+        "id": "guardrails",
+        "text": "Preventive guardrails (for example AWS SCPs, Azure Policy, or GCP organization policies) block the most dangerous settings instead of only reporting them."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Agentless, deploys in minutes",
+          "ask": "What permissions does it need, and is any of it write access?"
+        },
+        {
+          "claim": "Covers every cloud equally",
+          "ask": "Show feature parity for AWS, Azure, and GCP for the services you actually use."
+        },
+        {
+          "claim": "Attack path analysis",
+          "ask": "Show three real attack paths from your account and how you would fix each."
+        }
+      ],
+      "proof": [
+        "Connect a real account in the trial and review the top ten findings with your engineers.",
+        "How it reaches your ticketing system and your infrastructure-as-code pipeline.",
+        "How workloads are counted for pricing when you autoscale."
+      ],
+      "redFlags": [
+        "Write permissions required for basic posture checks.",
+        "Success measured by the number of findings, not risk reduced.",
+        "Pricing per workload that is not explained for autoscaling."
+      ]
     }
   },
   {
@@ -317,6 +597,46 @@
         "level": "recommended",
         "ref": "164.312(e)(1) · Transmission security"
       }
+    },
+    "practices": [
+      {
+        "id": "always",
+        "text": "All managed devices send web traffic through it, on and off the office network."
+      },
+      {
+        "id": "perapp",
+        "text": "Private apps are reached per app, not through a VPN onto a flat network."
+      },
+      {
+        "id": "tls",
+        "text": "TLS inspection is on for high-risk categories, with documented exceptions."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Replaces your VPN",
+          "ask": "Which of your private apps and protocols work through it today, not only web apps?"
+        },
+        {
+          "claim": "Zero trust access",
+          "ask": "Which user and device signals decide access to each app?"
+        },
+        {
+          "claim": "No added latency",
+          "ask": "Measure latency from your users' locations in the trial."
+        }
+      ],
+      "proof": [
+        "Points of presence near your users and where traffic is decrypted and logged.",
+        "How TLS inspection exceptions and certificate-pinned apps are handled.",
+        "Tested compatibility with your endpoint agent."
+      ],
+      "redFlags": [
+        "You cannot choose the regions where your traffic is processed.",
+        "The client has not been tested alongside your endpoint agent.",
+        "The price is driven by bundled modules you will not use."
+      ]
     }
   },
   {
@@ -357,6 +677,46 @@
         "level": "none",
         "ref": "No specific requirement"
       }
+    },
+    "practices": [
+      {
+        "id": "cadence",
+        "text": "Every internet-facing app is tested before major releases and at least once a year."
+      },
+      {
+        "id": "authenticated",
+        "text": "Testing is authenticated and covers access control and business logic, not only an unauthenticated scan."
+      },
+      {
+        "id": "retest",
+        "text": "Findings are tracked to a fix and retested, and fix times are measured."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Zero false positives",
+          "ask": "Are findings verified by a person before they reach the report?"
+        },
+        {
+          "claim": "Automated testing replaces people",
+          "ask": "Which access control and business logic flaws did it find for a customer like you?"
+        },
+        {
+          "claim": "Full OWASP coverage",
+          "ask": "Which methodology (for example the OWASP Web Security Testing Guide), and what is out of scope?"
+        }
+      ],
+      "proof": [
+        "A sanitised report from a comparable engagement.",
+        "Named testers, their experience, and whether a retest is included.",
+        "How login, MFA, and single-page apps are handled."
+      ],
+      "redFlags": [
+        "The report is mostly scanner output.",
+        "Retests cost extra.",
+        "The testers are not named or vetted."
+      ]
     }
   },
   {
@@ -397,6 +757,46 @@
         "level": "none",
         "ref": "No specific requirement"
       }
+    },
+    "practices": [
+      {
+        "id": "pr",
+        "text": "Code, dependency, and secrets scanning run on every pull request for production code."
+      },
+      {
+        "id": "gate",
+        "text": "Critical findings block the build or need a recorded approval."
+      },
+      {
+        "id": "sbom",
+        "text": "You keep an SBOM for each release and can find where a newly disclosed vulnerable library is used within a day."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Shift left with no developer friction",
+          "ask": "How long does a scan add to a pull request on a repo your size?"
+        },
+        {
+          "claim": "Low false positives",
+          "ask": "Run it on one of your real repos and count true and false findings."
+        },
+        {
+          "claim": "AI auto-fix",
+          "ask": "Are the suggested fixes tested, and who reviews them?"
+        }
+      ],
+      "proof": [
+        "Languages and frameworks covered at full depth, not only syntax.",
+        "Exactly what is sent to the vendor's cloud, including source code, and how long it is kept.",
+        "How findings are de-duplicated across code, dependency, and container scans."
+      ],
+      "redFlags": [
+        "Source code is uploaded without clear retention terms.",
+        "Per-developer pricing that counts every occasional committer.",
+        "Auto-fix pull requests that arrive without tests."
+      ]
     }
   },
   {
@@ -437,6 +837,46 @@
         "level": "recommended",
         "ref": "164.308(a)(8) · Periodic technical evaluation"
       }
+    },
+    "practices": [
+      {
+        "id": "plan",
+        "text": "A scheduled emulation plan is based on the threats that target your sector."
+      },
+      {
+        "id": "record",
+        "text": "Each run records which detections fired, and every miss becomes a detection-engineering ticket."
+      },
+      {
+        "id": "regression",
+        "text": "Tests rerun after detection or tool changes to catch regressions."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Covers the full ATT&CK matrix",
+          "ask": "How many techniques have working tests on each of your platforms?"
+        },
+        {
+          "claim": "Safe to run in production",
+          "ask": "How does each test clean up after itself?"
+        },
+        {
+          "claim": "Turn-key threat emulation",
+          "ask": "Show a gap a customer found and the detection it led to."
+        }
+      ],
+      "proof": [
+        "The list of implemented tests per platform.",
+        "Cleanup and rollback behaviour for each test.",
+        "Exportable results you can keep outside their console."
+      ],
+      "redFlags": [
+        "Coverage counted by technique names, not working tests.",
+        "No cleanup or rollback.",
+        "Results can only be viewed in their console."
+      ]
     }
   },
   {
@@ -477,6 +917,46 @@
         "level": "recommended",
         "ref": "164.308(a)(8) · Periodic technical evaluation"
       }
+    },
+    "practices": [
+      {
+        "id": "production",
+        "text": "Validation runs in production at least monthly, not only in a lab."
+      },
+      {
+        "id": "trend",
+        "text": "Results are tracked over time per control: prevented, detected, or missed."
+      },
+      {
+        "id": "owners",
+        "text": "Failed controls have owners and are retested after the fix."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Continuous validation",
+          "ask": "How often does it actually run in production, and what change approval does it need?"
+        },
+        {
+          "claim": "Safe in production",
+          "ask": "How are payloads made safe, and what happens if a test is interrupted?"
+        },
+        {
+          "claim": "Proves the value of your stack",
+          "ask": "Compare its results in the trial with what your SOC actually saw."
+        }
+      ],
+      "proof": [
+        "Integrations with your EDR and SIEM that confirm detections automatically.",
+        "The evidence behind each pass or fail.",
+        "The rights its agents or accounts need."
+      ],
+      "redFlags": [
+        "Scores shown without the evidence behind them.",
+        "Broad domain admin rights required.",
+        "The vendor also sells the products it recommends replacing yours with."
+      ]
     }
   },
   {
@@ -517,6 +997,46 @@
         "level": "required",
         "ref": "164.308(a)(5)(i) · Security awareness and training"
       }
+    },
+    "practices": [
+      {
+        "id": "everyone",
+        "text": "Everyone, including executives and contractors, is trained at hire and at least yearly."
+      },
+      {
+        "id": "report-rate",
+        "text": "Phishing simulations run at least quarterly, and you track how many people report them, not only who clicks."
+      },
+      {
+        "id": "roles",
+        "text": "High-risk roles such as finance, administrators, developers, and the help desk get training for their role."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Reduces human risk by 80%",
+          "ask": "Measured how, on what population, over what period?"
+        },
+        {
+          "claim": "Gamified and engaging",
+          "ask": "Show completion rates and module length from a customer your size."
+        },
+        {
+          "claim": "AI-personalised training",
+          "ask": "What data about staff does the personalisation use?"
+        }
+      ],
+      "proof": [
+        "Sample training content and how long each module takes.",
+        "Report-rate and repeat-clicker trends from a comparable customer.",
+        "How simulations respect HR and works-council rules."
+      ],
+      "redFlags": [
+        "Click rate is the only metric.",
+        "Simulations that fake bonuses or pay changes in ways that damage trust.",
+        "Basic content is locked behind higher tiers."
+      ]
     }
   },
   {
@@ -557,6 +1077,46 @@
         "level": "none",
         "ref": "No specific requirement"
       }
+    },
+    "practices": [
+      {
+        "id": "automated",
+        "text": "Evidence for technical controls is collected from your systems through integrations, not screenshots."
+      },
+      {
+        "id": "alerts",
+        "text": "A failing control alerts its owner and is tracked to closure."
+      },
+      {
+        "id": "crosswalk",
+        "text": "One set of controls is mapped to all your frameworks, so each control is tested once."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "Audit-ready in weeks",
+          "ask": "How long did it take a customer with your stack and frameworks?"
+        },
+        {
+          "claim": "100% automated evidence",
+          "ask": "Which of your controls are collected automatically and which are uploaded by hand?"
+        },
+        {
+          "claim": "The auditor is included",
+          "ask": "How is the auditor's independence from the platform protected?"
+        }
+      ],
+      "proof": [
+        "Integrations for the systems you actually run.",
+        "Export of all evidence and policies in open formats.",
+        "How one control is mapped across your frameworks."
+      ],
+      "redFlags": [
+        "An auditor paid through the platform with no independence safeguards.",
+        "Template policies that are not tailored to how you work.",
+        "Evidence locked in the platform with no export."
+      ]
     }
   },
   {
@@ -597,6 +1157,46 @@
         "level": "required",
         "ref": "164.308(a)(1)(ii)(A)–(B) · Risk analysis and risk management"
       }
+    },
+    "practices": [
+      {
+        "id": "register",
+        "text": "A risk register with owners, ratings, and treatment decisions is reviewed by leadership at least quarterly."
+      },
+      {
+        "id": "policies",
+        "text": "Policies have owners and review dates, and staff acknowledge them."
+      },
+      {
+        "id": "findings",
+        "text": "Audit findings and exceptions are tracked to closure with due dates."
+      }
+    ],
+    "vendorQuestions": {
+      "claims": [
+        {
+          "claim": "One platform for everything",
+          "ask": "Which modules do you need for your use case, and what does each cost?"
+        },
+        {
+          "claim": "Quick to deploy",
+          "ask": "How long and how much did implementation cost a customer your size?"
+        },
+        {
+          "claim": "AI risk scoring",
+          "ask": "Can you explain each score to an auditor?"
+        }
+      ],
+      "proof": [
+        "Implementation time, partner costs, and admin skills needed.",
+        "How workflows are changed and by whom.",
+        "Data export formats if you leave."
+      ],
+      "redFlags": [
+        "An implementation partner is required but not in the quote.",
+        "Basic features are split into separately licensed modules.",
+        "Risk scores you cannot explain to your auditors."
+      ]
     }
   }
 ]

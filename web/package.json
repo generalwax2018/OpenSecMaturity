@@ -1,20 +1,23 @@
 {
   "name": "opensecmaturity",
-  "version": "2026.11.10",
+  "version": "2026.11.14",
   "private": true,
   "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "npm run validate:catalog && vite build && node scripts/add-csp.mjs",
+    "build": "npm run validate:catalog && npm run check:versions && vite build && node scripts/add-csp.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "validate:catalog": "node scripts/validate-catalog.mjs",
     "validate:catalog:strict": "node scripts/validate-catalog.mjs --strict",
-    "test": "npm run validate:catalog && npm run typecheck",
+    "check:versions": "node scripts/check-versions.mjs",
+    "check:freshness": "node scripts/check-freshness.mjs",
+    "test": "npm run validate:catalog && npm run typecheck && npm run test:unit",
     "lint": "eslint .",
     "test:e2e": "node --test tests/app.test.mjs",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "lucide-react": "^0.510.0",
@@ -41,7 +44,8 @@
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.56.1",
     "vite": "^7.0.0",
-    "vite-plugin-singlefile": "^2.3.0"
+    "vite-plugin-singlefile": "^2.3.0",
+    "vitest": "^3.2.7"
   },
   "overrides": {
     "@typescript-eslint/typescript-estree": {

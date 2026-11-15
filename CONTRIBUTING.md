@@ -55,9 +55,9 @@ See `METHODOLOGY.md` for how the app turns the catalog into a verdict.
 
 Each entry in `extensions` can carry `pricing` (`included`, `higher-tier`, `add-on`, `usage`, or `service`), `ai: true` for AI features, a short `pricingNote`, and a `pricingSource`. Set `covers` when the add-on can cover another category on its own. Leave pricing out if you have not checked it.
 
-## Catalog version
+## Versions
 
-When you change anything in `catalog/`, bump `catalog/version.json` (for example `2026.11.10.3` to `2026.11.12`). That is how the app's "Check for updates" knows there is a newer catalog.
+The app, the package, and the catalog share one version, such as `2026.11.14` (add `.2` for a second release on the same day). It lives in `catalog/version.json`, `web/package.json`, `web/public/app.json`, and `web/src/data/app-meta.ts`, and `CHANGELOG.md` needs a section for it. `npm run check:versions` fails when they disagree. Contributors do not need to bump it; maintainers do when they release.
 
 ## Rules for FedRAMP and EU residency
 
@@ -71,19 +71,30 @@ Edit `catalog/suites.json`. List the catalog products the suite includes, with t
 
 Edit `catalog/categories.json`. A category needs a control reference for CIS, NIST CSF, ISO 27001, and SOC 2, plus a `requirements` entry (level and reference) for each of the six frameworks, and should arrive with at least three products so there is something to compare.
 
+It also needs:
+
+- `practices`: one to three yes/no statements about how well the control runs, each with a short `id`. Write them so an auditor could check them, for example "A full restore of a critical system is tested at least twice a year." Confirming each one raises the category's level by one.
+- `vendorQuestions`: `claims` (a common sales claim and the question that tests it), `proof` (evidence to ask for), and `redFlags`. Describe patterns in the market, not any one vendor.
+
 ## App changes
 
 ```bash
 cd web
 npm install
 npm run dev        # http://127.0.0.1:8080
-npm test           # catalog checks and type check
+npm test           # catalog checks, type check, and unit tests
+npm run lint
+npm run build && npm run test:e2e   # browser tests against the built file
 ```
+
+Scoring and verdict rules live in `web/src/lib/assessment.ts` and `web/src/data/catalog.ts`, with unit tests in `web/tests/unit/`. Change the rule and its test together.
 
 ## Releasing (maintainers)
 
-1. Update the version in `web/src/data/app-meta.ts` and `web/public/app.json`, and add an entry to `CHANGELOG.md`.
+1. Set the new version in the four files listed under Versions and add a section to `CHANGELOG.md`. `npm run check:versions` confirms they agree.
 2. Commit, then tag and push: `git tag v2026.11.20` and `git push origin v2026.11.20`.
-3. The Release workflow builds the app, runs the tests, and publishes the `.html` file with a SHA-256 checksum.
+3. The Release workflow checks the tag matches the version, runs the tests, publishes the `.html` file with a SHA-256 checksum and a build provenance attestation, writes the catalog digest into the release notes, and deploys the same file to GitHub Pages.
+
+Catalog changes reach users only through a release: the app reads the catalog at the latest release tag and refuses files that do not match the digest in its notes.
 
 To refresh the README screenshots: `npm run build && npm run screenshots` in `web/`.

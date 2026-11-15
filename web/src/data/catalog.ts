@@ -29,6 +29,21 @@ export type Category = {
     soc2: string;
   };
   requirements: Record<FrameworkId, Requirement>;
+  /** Yes/no practices that raise the category's maturity level once it is operating. */
+  practices: Practice[];
+  /** What to ask vendors in this category. */
+  vendorQuestions: VendorQuestions;
+};
+
+export type Practice = { id: string; text: string };
+
+export type VendorQuestions = {
+  /** A common sales claim and the question that tests it. */
+  claims: { claim: string; ask: string }[];
+  /** Evidence to request before buying. */
+  proof: string[];
+  /** Answers or terms that should make you walk away or push back. */
+  redFlags: string[];
 };
 
 export type RequirementLevel = "required" | "addressable" | "recommended" | "none";
@@ -695,7 +710,7 @@ export type CatalogData = {
   suites: Suite[];
 };
 
-export const CATALOG_FORMAT = 2;
+export const CATALOG_FORMAT = 3;
 export const BUNDLED_CATALOG_VERSION: string = (versionData as { version: string }).version;
 export let activeCatalogVersion = BUNDLED_CATALOG_VERSION;
 

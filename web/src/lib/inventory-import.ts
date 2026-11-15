@@ -11,22 +11,39 @@ export type InventoryRow = {
 const MAX_INVENTORY_BYTES = 10 * 1024 * 1024;
 const MAX_INVENTORY_ROWS = 5_000;
 
-const NAME_KEYS = ["tool", "name", "product", "application", "app"];
+// Column names are matched loosely so tool inventories and identity-provider
+// app exports (for example Microsoft Entra ID enterprise applications or an
+// Okta app list) both work. "displayName" and Okta's "label" hold the app name.
+const NAME_KEYS = ["tool", "name", "displayname", "label", "product", "application", "applicationname", "appname", "app"];
 const VENDOR_KEYS = ["vendor", "publisher", "manufacturer"];
 const PURPOSE_KEYS = ["purpose", "description", "use"];
 const EVIDENCE_KEYS = ["source", "evidence", "table", "location"];
+// Columns that contain a name-like word but hold something else, such as applicationId or appOwner.
+const NOT_A_NAME = /(id|ids|url|uri|uris|type|types|date|time|count|status|owner|owners|tags|key|secret|sign(in|on).*)$/;
 
 function cell(value: unknown): string {
   return typeof value === "string" || typeof value === "number" ? String(value).trim() : "";
 }
 
+function normalizeKey(key: string): string {
+  return key.toLowerCase().replace(/[^a-z]/g, "");
+}
+
 function pick(row: Record<string, unknown>, keys: string[]): string {
-  for (const key of Object.keys(row)) {
-    const normalized = key.toLowerCase().replace(/[^a-z]/g, "");
-    if (keys.some((candidate) => normalized === candidate || normalized.includes(candidate))) {
-      const value = cell(row[key]);
+  const columns = Object.keys(row).map((key) => ({ key, normalized: normalizeKey(key) }));
+  // An exact column name wins, in the order of `keys`; then a column that contains one of them.
+  for (const candidate of keys) {
+    for (const column of columns) {
+      if (column.normalized !== candidate) continue;
+      const value = cell(row[column.key]);
       if (value) return value;
     }
+  }
+  for (const column of columns) {
+    if (NOT_A_NAME.test(column.normalized)) continue;
+    if (!keys.some((candidate) => column.normalized.includes(candidate))) continue;
+    const value = cell(row[column.key]);
+    if (value) return value;
   }
   return "";
 }

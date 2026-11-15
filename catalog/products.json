@@ -243,6 +243,136 @@
     ]
   },
   {
+    "id": "sophos-endpoint",
+    "name": "Sophos Endpoint",
+    "vendor": "Sophos",
+    "aliases": [
+      "intercept x",
+      "sophos intercept x",
+      "intercept x advanced"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Endpoint protection with EDR and XDR, managed from Sophos Central. Sold as Intercept X until the 2025 rename.",
+    "extensions": [
+      {
+        "name": "Sophos XDR",
+        "detail": "Adds investigation across endpoint, firewall, email, and cloud data."
+      },
+      {
+        "name": "Sophos MDR",
+        "detail": "Sophos analysts monitor and respond around the clock."
+      }
+    ],
+    "compete": {
+      "wins": "Prevention, EDR, and a managed service option in one console, a common fit for mid-sized teams.",
+      "loses": "Much of the cross-product value assumes you also run Sophos firewalls and email."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Sophos Endpoint (Intercept X)",
+        "url": "https://www.sophos.com/en-us/products/intercept-x"
+      },
+      {
+        "title": "Sophos partner news: Intercept X is now Sophos Endpoint",
+        "url": "https://partnernews.sophos.com/en-us/?p=9758"
+      }
+    ]
+  },
+  {
+    "id": "bitdefender-gravityzone",
+    "name": "Bitdefender GravityZone",
+    "vendor": "Bitdefender",
+    "aliases": [
+      "gravityzone",
+      "bitdefender"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Endpoint protection and EDR on one agent, with an optional managed detection and response service.",
+    "extensions": [
+      {
+        "name": "Bitdefender MDR",
+        "detail": "Bitdefender's SOC monitors and responds 24/7 for teams without analysts."
+      }
+    ],
+    "compete": {
+      "wins": "Low cost per device and simple to run, with an MDR option for teams that have no analysts.",
+      "loses": "Less hunting depth and fewer integrations than the enterprise-focused EDRs."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Bitdefender GravityZone platform",
+        "url": "https://www.bitdefender.com/business/gravityzone"
+      },
+      {
+        "title": "GravityZone EDR",
+        "url": "https://bitdefender.com/business/products/endpoint-detection-response.html"
+      }
+    ]
+  },
+  {
+    "id": "cortex-xdr",
+    "name": "Cortex XDR",
+    "vendor": "Palo Alto Networks",
+    "aliases": [
+      "palo alto cortex xdr",
+      "cortex xdr agent",
+      "traps"
+    ],
+    "categoryId": "endpoint",
+    "priceTier": "High",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Endpoint prevention and detection on the Cortex XDR agent, correlated with network and cloud data.",
+    "extensions": [
+      {
+        "name": "Unit 42 Managed Detection & Response",
+        "detail": "Palo Alto Networks' Unit 42 team runs detection and response."
+      }
+    ],
+    "compete": {
+      "wins": "Strong prevention plus correlation with Palo Alto firewall and cloud data in one console.",
+      "loses": "Priced and staffed for larger teams; much of the value assumes the wider Palo Alto platform."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Cortex XDR",
+        "url": "https://www.paloaltonetworks.com/cortex/cortex-xdr"
+      },
+      {
+        "title": "Cortex XDR documentation: endpoint protection",
+        "url": "https://cortex-docs.paloaltonetworks.com/cortex-xdr/protect-your-endpoints/endpoint-protection"
+      }
+    ]
+  },
+  {
     "id": "microsoft-sentinel",
     "name": "Microsoft Sentinel",
     "vendor": "Microsoft",
@@ -1060,6 +1190,140 @@
     ]
   },
   {
+    "id": "check-point-email",
+    "name": "Check Point Email Security",
+    "vendor": "Check Point",
+    "aliases": [
+      "harmony email & collaboration",
+      "harmony email and collaboration",
+      "avanan",
+      "check point harmony email"
+    ],
+    "categoryId": "email",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "API-connected protection for Microsoft 365 and Google Workspace that can block mail before the inbox, and covers Teams, Slack, and file sharing. Formerly Avanan, then Harmony Email & Collaboration.",
+    "compete": {
+      "wins": "Blocks inline through the API, so mail is stopped before delivery without an MX change, and it covers collaboration apps.",
+      "loses": "Reviewers report Google Workspace support is less complete than Microsoft 365."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Check Point email security: about",
+        "url": "https://emailsecurity.checkpoint.com/about"
+      },
+      {
+        "title": "Check Point email security overview",
+        "url": "https://emailsecurity.checkpoint.com"
+      },
+      {
+        "title": "AWS Marketplace: Check Point Email Security (formerly Harmony Email & Collaboration)",
+        "url": "https://aws.amazon.com/marketplace/reviews/reviews-list/prodview-5v23pwcdewapi?page=45"
+      }
+    ]
+  },
+  {
+    "id": "ironscales",
+    "name": "IRONSCALES",
+    "vendor": "IRONSCALES",
+    "aliases": [
+      "ironscales email protect"
+    ],
+    "categoryId": "email",
+    "priceTier": "Medium",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "API-based email security for Microsoft 365 and Google Workspace with automated remediation across mailboxes and built-in phishing simulation.",
+    "extensions": [
+      {
+        "name": "Complete Protect",
+        "detail": "Adds Microsoft Teams protection, account takeover detection, and awareness training.",
+        "pricing": "higher-tier",
+        "pricingSource": {
+          "title": "IRONSCALES Complete Protect",
+          "url": "https://secure.ironscales.com/complete-protect"
+        }
+      }
+    ],
+    "compete": {
+      "wins": "Quick API deployment, with user reports, mailbox-wide remediation, and training in one product.",
+      "loses": "Works after delivery through the API rather than as a gateway, so a message can land before it is pulled."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "IRONSCALES email security platform",
+        "url": "https://secure.ironscales.com/email-security"
+      },
+      {
+        "title": "IRONSCALES Email Protect",
+        "url": "https://ironscales.com/plan/email-protect/"
+      }
+    ]
+  },
+  {
+    "id": "sublime-security",
+    "name": "Sublime Security",
+    "vendor": "Sublime Security",
+    "aliases": [
+      "sublime email security"
+    ],
+    "categoryId": "email",
+    "priceTier": "Medium",
+    "bestFor": [
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS",
+      "Self-hosted"
+    ],
+    "description": "Email security for Microsoft 365 and Google Workspace built on detection rules you can read and edit, run as SaaS or in your own cloud.",
+    "extensions": [
+      {
+        "name": "Email DLP",
+        "detail": "Outbound data loss prevention for email.",
+        "pricing": "add-on",
+        "pricingNote": "An add-on for Sublime Enterprise customers.",
+        "pricingSource": {
+          "title": "Sublime Security launches Email DLP",
+          "url": "https://vmblog.com/news/sublime-security-launches-email-dlp-becoming-the-first-platform-to-deliver-agentic-email-security-for-both-inbound-threat-detection-and-outbound-data-protection"
+        }
+      }
+    ],
+    "compete": {
+      "wins": "Detection logic is visible and editable, and it can run in your own cloud, which suits regulated teams.",
+      "loses": "Getting the most from it assumes staff who will write or tune detection rules."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Sublime features overview",
+        "url": "https://sublime.security/features-overview"
+      },
+      {
+        "title": "Try Sublime: cloud and self-hosted options",
+        "url": "https://sublime.security/start/"
+      }
+    ]
+  },
+  {
     "id": "veeam",
     "name": "Veeam",
     "vendor": "Veeam",
@@ -1441,6 +1705,118 @@
       {
         "title": "Greenbone products",
         "url": "https://www.greenbone.net/en/products/"
+      }
+    ]
+  },
+  {
+    "id": "intruder",
+    "name": "Intruder",
+    "vendor": "Intruder",
+    "aliases": [
+      "intruder io",
+      "intruder.io"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Continuous vulnerability scanning for external, cloud, and web targets, with internal scanning on the higher plans.",
+    "compete": {
+      "wins": "Simple for a small team, with a free plan and pricing by target.",
+      "loses": "Internal scanning and discovery of unknown assets need the higher plans; less depth than the large platforms."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Intruder pricing",
+        "url": "https://www.intruder.io/pricing"
+      },
+      {
+        "title": "Intruder: which plan is right for me",
+        "url": "https://help.intruder.io/en/articles/4808243-which-service-is-right-for-me"
+      }
+    ]
+  },
+  {
+    "id": "nuclei",
+    "name": "Nuclei",
+    "vendor": "ProjectDiscovery",
+    "aliases": [
+      "projectdiscovery nuclei"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source, template-based scanner for known vulnerabilities and misconfigurations, with a large community template library.",
+    "extensions": [
+      {
+        "name": "ProjectDiscovery Cloud",
+        "detail": "Hosted scanning, asset inventory, scheduling, and reporting around Nuclei."
+      }
+    ],
+    "compete": {
+      "wins": "Free and fast, and community templates for headline vulnerabilities often appear soon after disclosure.",
+      "loses": "A scanner, not a program: no asset inventory, credentialed host checks, or workflow unless you build them."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Nuclei on GitHub",
+        "url": "https://github.com/projectdiscovery/nuclei"
+      },
+      {
+        "title": "Nuclei templates on GitHub",
+        "url": "https://github.com/projectdiscovery/nuclei-templates"
+      }
+    ]
+  },
+  {
+    "id": "defender-vulnerability-management",
+    "name": "Microsoft Defender Vulnerability Management",
+    "vendor": "Microsoft",
+    "aliases": [
+      "mdvm",
+      "defender vulnerability management standalone"
+    ],
+    "categoryId": "vuln",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market",
+      "Enterprise"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Vulnerability and configuration assessment on the Defender sensor, sold standalone to pair with another EDR or as an add-on to Defender for Endpoint Plan 2.",
+    "compete": {
+      "wins": "Low cost and no new agent if you already run Defender; core assessment comes with Defender for Endpoint Plan 2.",
+      "loses": "Depends on the Defender sensor, so network devices and non-Microsoft estates get less coverage."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Sign up for Microsoft Defender Vulnerability Management",
+        "url": "https://learn.microsoft.com/en-us/defender-vulnerability-management/get-defender-vulnerability-management"
+      },
+      {
+        "title": "Microsoft Defender Vulnerability Management",
+        "url": "https://www.microsoft.com/en-ie/security/business/threat-protection/microsoft-defender-vulnerability-management"
       }
     ]
   },
@@ -2565,6 +2941,67 @@
       {
         "title": "SCYTHE platform overview data sheet",
         "url": "https://scythe.io/hubfs/Datasheets/SCYTHE%20Platform%20Overview%20-%20Datasheet.pdf?hsLang=en"
+      }
+    ]
+  },
+  {
+    "id": "infection-monkey",
+    "name": "Infection Monkey",
+    "vendor": "Akamai",
+    "aliases": [
+      "guardicore infection monkey"
+    ],
+    "categoryId": "emulation",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": true,
+    "deployment": [
+      "Self-hosted"
+    ],
+    "description": "Open-source attack emulation that spreads through your network like malware to show which controls stop lateral movement and ransomware.",
+    "compete": {
+      "wins": "Free, and shows lateral movement paths across on-premises, container, and cloud networks without a red team.",
+      "loses": "The last tagged release is v2.3.0 from September 2023, although the code still receives commits; check activity before relying on it."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "Akamai Infection Monkey",
+        "url": "https://www.akamai.com/products/akamai-guardicore-segmentation/infection-monkey"
+      },
+      {
+        "title": "Infection Monkey on GitHub",
+        "url": "https://github.com/guardicore/monkey"
+      }
+    ]
+  },
+  {
+    "id": "attackiq-flex",
+    "name": "AttackIQ Flex",
+    "vendor": "AttackIQ",
+    "categoryId": "emulation",
+    "priceTier": "Low",
+    "bestFor": [
+      "SMB",
+      "Mid-market"
+    ],
+    "openSource": false,
+    "deployment": [
+      "SaaS"
+    ],
+    "description": "Agentless, test-as-a-service emulation of known adversary campaigns and baseline control tests, with a free tier.",
+    "compete": {
+      "wins": "A free tier and no install, so a small team can run a first emulation quickly.",
+      "loses": "Windows only, and a smaller test library than AttackIQ's enterprise platform."
+    },
+    "lastReviewed": "2026-11-14",
+    "sources": [
+      {
+        "title": "AttackIQ Flex",
+        "url": "https://www.attackiq.com/products/flex/"
       }
     ]
   },

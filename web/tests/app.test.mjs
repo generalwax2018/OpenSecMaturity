@@ -2,6 +2,7 @@
 //   npm run test:e2e
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -135,31 +136,80 @@ test("the example company loads", async () => {
   assert.match(await page.getByText(/^Verdict:/).textContent(), /Use what you license/);
 });
 
-test("catalog updates are checked, installed, and can be undone", async () => {
+test("maturity levels count practices only once a category is deployed", async () => {
+  await freshPage();
+  await page.getByRole("button", { name: "CrowdStrike", exact: true }).click();
+  await compareTab().click();
+  await categoryButton(/Endpoint detection/).click();
+  const practices = page.locator("#panel-compete fieldset input[type=checkbox]");
+  assert.equal(await practices.count(), 3);
+  await practices.nth(0).check();
+  await practices.nth(1).check();
+  assert.match(await page.locator("#panel-compete fieldset legend").textContent(), /Level 3/);
+  await page.getByRole("tab", { name: "Overview" }).click();
+  // Endpoint at level 3 of 4, seven other essentials at 0: 3 / 32 = 9.
+  assert.equal((await page.locator("#panel-overview p[aria-live=polite]").textContent()).trim(), "9");
+  await page.getByText(/Coverage 13%/).waitFor();
+  await setupTab().click();
+  await page.getByRole("button", { name: "Untested" }).first().click();
+  await page.getByRole("tab", { name: "Overview" }).click();
+  assert.equal((await page.locator("#panel-overview p[aria-live=polite]").textContent()).trim(), "0");
+});
+
+test("each category shows questions to ask vendors", async () => {
+  await freshPage();
+  await compareTab().click();
+  await categoryButton(/Email security/).click();
+  await page.getByRole("heading", { name: "Questions to ask vendors" }).waitFor();
+  assert.ok((await page.getByText("Red flags").count()) > 0);
+});
+
+const sha256 = (text) => createHash("sha256").update(text).digest("hex");
+const CATALOG_FILES = ["version.json", "categories.json", "products.json", "suites.json"];
+const catalogDigest = (files) => sha256(CATALOG_FILES.map((name) => sha256(files[name]) + "  " + name + "\n").join(""));
+
+test("catalog updates come from the latest release, match its digest, and can be undone", async () => {
   await freshPage();
   const read = (name) => JSON.parse(readFileSync(join(catalogDir, name), "utf8"));
   const products = read("products.json");
   products.push({ ...products[0], id: "test-new-edr", name: "Test New EDR", aliases: [], extensions: [] });
-  const remote = {
-    "version.json": { format: 2, version: "2099.01.01" },
-    "categories.json": read("categories.json"),
-    "products.json": products,
-    "suites.json": read("suites.json"),
-    "app.json": { version: "2099.01.01.1" },
+  const files = {
+    "version.json": JSON.stringify({ format: 3, version: "2099.01.01" }),
+    "categories.json": JSON.stringify(read("categories.json")),
+    "products.json": JSON.stringify(products),
+    "suites.json": JSON.stringify(read("suites.json")),
   };
+  const release = { tag_name: "v2099.01.01", html_url: "https://github.com/generalwax2018/OpenSecMaturity/releases/tag/v2099.01.01", body: "catalog-sha256: " + catalogDigest(files) };
+  const requested = [];
+  await context.unroute("https://api.github.com/**");
+  await context.route("https://api.github.com/**", (route) =>
+    route.request().url().endsWith("/releases/latest") ? route.fulfill({ json: release }) : route.fulfill({ json: [] }),
+  );
   await context.unroute("https://raw.githubusercontent.com/**");
   await context.route("https://raw.githubusercontent.com/**", (route) => {
-    const body = remote[route.request().url().split("/").pop()];
-    return body ? route.fulfill({ json: body }) : route.fulfill({ status: 404, body: "" });
+    const url = route.request().url();
+    requested.push(url);
+    const body = files[url.split("/").pop()];
+    return body ? route.fulfill({ body, contentType: "application/json" }) : route.fulfill({ status: 404, body: "" });
   });
   await page.getByRole("button", { name: "Check for updates" }).click();
   await page.getByRole("link", { name: "Download the new version" }).waitFor();
+  assert.ok(requested.length > 0 && requested.every((url) => url.includes("/v2099.01.01/catalog/")), "catalog read at the release tag");
   await page.getByRole("button", { name: "Update catalog" }).click();
   await page.waitForLoadState();
   await page.waitForSelector("h1");
   assert.equal(await page.getByRole("button", { name: "Test New EDR", exact: true }).count(), 1);
-  remote["version.json"] = { format: 2, version: "2099.02.01" };
-  remote["products.json"] = [{ id: "x", name: "x", vendor: "x", categoryId: "nope", description: "x" }];
+
+  // Files changed after the release was published are refused.
+  files["version.json"] = JSON.stringify({ format: 3, version: "2099.02.01" });
+  await page.getByRole("button", { name: "Check for updates" }).click();
+  await page.getByText(/do not match the digest/).waitFor();
+
+  // A release whose digest matches but whose data is broken is refused too.
+  files["products.json"] = JSON.stringify([{ id: "x", name: "x", vendor: "x", categoryId: "nope", description: "x" }]);
+  release.body = "catalog-sha256: " + catalogDigest(files);
+  await page.reload();
+  await page.waitForSelector("h1");
   await page.getByRole("button", { name: "Check for updates" }).click();
   await page.getByText(/did not pass the checks/).waitFor();
   await page.getByRole("button", { name: "Go back to the built-in catalog" }).click();

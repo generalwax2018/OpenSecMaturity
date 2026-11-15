@@ -43,6 +43,7 @@ export const WORKSPACE_SCHEMA: Record<string, Guard> = {
   budget: oneOf("Lean", "Balanced", "Open"),
   areas: arrayOf(shape({ id: isString, name: isString, frameworks: arrayOf(isString) })),
   categoryStatus: recordOf(status),
+  practices: recordOf(arrayOf(isString)),
   owners: recordOf(isString),
   severities: recordOf(severity),
   likelihoods: recordOf(severity),
